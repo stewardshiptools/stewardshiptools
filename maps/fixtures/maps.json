@@ -1,0 +1,209 @@
+[
+	{
+		"pk": 1,
+		"model": "maps.leafletmap",
+		"fields": {
+			"layer_control_collapsed": false,
+			"base_layers": [
+				1,
+				3,
+				2
+			],
+			"other_settings": null,
+			"default_initial_zoom": 4,
+			"default_center_lon": -128.0,
+			"default_base_layer": 1,
+			"machine_name": "map_template",
+			"name": "Template map",
+			"visible_overlay_layers": [],
+			"default_center_lat": 54.9,
+			"description": "A map to use as a starter with OSM layers added.   This map is for any custom maps that want to load a starter and then add their own functionality in code.",
+			"available_overlay_layers": []
+		}
+	},
+	{
+		"pk": 2,
+		"model": "maps.leafletmap",
+		"fields": {
+			"layer_control_collapsed": false,
+			"base_layers": [
+				2,
+				8,
+				7
+			],
+			"other_settings": {},
+			"default_initial_zoom": 4,
+			"default_center_lon": -128.0,
+			"default_base_layer": 2,
+			"machine_name": "map_default",
+			"name": "Default  map",
+			"visible_overlay_layers": [],
+			"default_center_lat": 54.9,
+			"description": "The map used by default.",
+			"available_overlay_layers": []
+		}
+	},
+	{
+		"pk": 1,
+		"model": "maps.leafletbaselayer",
+		"fields": {
+			"machine_name": "osm_mapquest",
+			"description": "Open Street Map",
+			"name": "OSM Mapquest"
+		}
+	},
+	{
+		"pk": 2,
+		"model": "maps.leafletbaselayer",
+		"fields": {
+			"machine_name": "osm_basic",
+			"description": "Open Street Map",
+			"name": "OSM Basic"
+		}
+	},
+	{
+		"pk": 3,
+		"model": "maps.leafletbaselayer",
+		"fields": {
+			"machine_name": "osm_mapquest_satelite",
+			"description": "Open Street Map",
+			"name": "Mapquest Satelite"
+		}
+	},
+	{
+		"pk": 4,
+		"model": "maps.leafletbaselayer",
+		"fields": {
+			"machine_name": "cartodb_positron",
+			"description": "",
+			"name": "CartoDB Positron"
+		}
+	},
+	{
+		"pk": 5,
+		"model": "maps.leafletbaselayer",
+		"fields": {
+			"machine_name": "cartodb_darkmatter",
+			"description": "",
+			"name": "CartoDB Dark Matter"
+		}
+	},
+	{
+		"pk": 6,
+		"model": "maps.leafletbaselayer",
+		"fields": {
+			"machine_name": "mapbox_satellite",
+			"description": "",
+			"name": "Mapbox Satellite"
+		}
+	},
+	{
+		"pk": 7,
+		"model": "maps.leafletbaselayer",
+		"fields": {
+			"machine_name": "google_hybrid",
+			"description": "",
+			"name": "Google Hybrid"
+		}
+	},
+	{
+		"pk": 8,
+		"model": "maps.leafletbaselayer",
+		"fields": {
+			"machine_name": "google_terrain",
+			"description": "",
+			"name": "Google Terrain"
+		}
+	},
+	{
+		"pk": 1,
+		"model": "maps.leaflettilelayer",
+		"fields": {
+			"url_template": "http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png",
+			"attribution": "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://c",
+			"max_zoom": 18,
+			"sub_domains": "otile1,otile2",
+			"other_settings": null
+		}
+	},
+	{
+		"pk": 2,
+		"model": "maps.leaflettilelayer",
+		"fields": {
+			"url_template": "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+			"attribution": "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://c",
+			"max_zoom": 18,
+			"sub_domains": "abc",
+			"other_settings": {}
+		}
+	},
+	{
+		"pk": 3,
+		"model": "maps.leaflettilelayer",
+		"fields": {
+			"url_template": "http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png",
+			"attribution": "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://c",
+			"max_zoom": 11,
+			"sub_domains": "otile1,otile2,otile3,otile4",
+			"other_settings": null
+		}
+	},
+	{
+		"pk": 4,
+		"model": "maps.leaflettilelayer",
+		"fields": {
+			"url_template": "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+			"attribution": "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors, &copy; <a href=\"https://cartodb.com/attributions\">CartoDB</a>",
+			"max_zoom": null,
+			"sub_domains": "abc",
+			"other_settings": {}
+		}
+	},
+	{
+		"pk": 5,
+		"model": "maps.leaflettilelayer",
+		"fields": {
+			"url_template": "http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
+			"attribution": "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors, &copy; <a href=\"https://cartodb.com/attributions\">CartoDB</a>",
+			"max_zoom": null,
+			"sub_domains": "abc",
+			"other_settings": {}
+		}
+	},
+	{
+		"pk": 6,
+		"model": "maps.leaflettilelayer",
+		"fields": {
+			"url_template": "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
+			"attribution": "",
+			"max_zoom": null,
+			"sub_domains": "abc",
+			"other_settings": {
+				"accessToken": "",
+				"id": "mapbox.satellite"
+			}
+		}
+	},
+	{
+		"pk": 7,
+		"model": "maps.leaflettilelayer",
+		"fields": {
+			"url_template": "http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}",
+			"attribution": "",
+			"max_zoom": 20,
+			"sub_domains": "mt0,mt1,mt2,mt3",
+			"other_settings": {}
+		}
+	},
+	{
+		"pk": 8,
+		"model": "maps.leaflettilelayer",
+		"fields": {
+			"url_template": "http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}",
+			"attribution": "",
+			"max_zoom": 20,
+			"sub_domains": "mt0,mt1,mt2,mt3",
+			"other_settings": {}
+		}
+	}
+]

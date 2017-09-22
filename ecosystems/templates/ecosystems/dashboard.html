@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load cedar_extras %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link href="{% static 'bower_components/select2/dist/css/select2.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/materialize_select2.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/task-mon.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Ecosystems App{% endblock %}
+{% block second_bar_secondary_title %}Welcome to the CedarBox Ecosystems App{% endblock %}
+{% block second_bar_secondary_content_right %} {% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="background-image">
+        <div class="row">
+            <div class="col s12 m6 l4">
+                <div class="card dashboard-card big-card hoverable">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">work</i>
+                                <a href="{% url 'ecosystems:project-list' %}">Projects ({{ project_count }})</a>
+                            </div>
+                        </span>
+                        <p>
+                            All proposed and on-going ecosystems projects.
+                        </p>
+                        <br/>
+                        <p>
+                            <select class="quickjump"></select>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 l4">
+                <div class="card dashboard-card big-card hoverable">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">layers</i>
+                                <a href="{% url 'ecosystems:gislayer-list' %}">Layers ({{ spatial_layers_count }})</a>
+                            </div>
+                        </span>
+                        <p>
+                            Ecosystems GIS Layers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 l4">
+                <div class="card dashboard-card  hoverable">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">insert_drive_file</i>
+                                <a href="{% url 'ecosystems:secureasset-list' %}">Browse Files ({{ documents_count }})</a>
+                            </div>
+                        </span>
+                        <p>
+                            View a list of all uploaded ecosystems files.<br/>
+                            Sort, filter, and add new files.<br/>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 l4">
+                <div class="card dashboard-card  hoverable">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">pageview</i>
+                                <a href="{% url 'ecosystems:secureasset-list' %}">Document Search</a>
+                            </div>
+                        </span>
+                        <p>
+                            Search through uploaded ecosystems files ({{ documents_count }}).<br/>
+                            Display text excerpts generated on demand.<br/>
+                            Filter by file type.<br/>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 l4">
+                <div class="card dashboard-card  hoverable">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">spa</i>
+                                <a href="{% url 'ecosystems:planttag-list' %}">Plants</a>
+                            </div>
+                        </span>
+                        <p>
+                            There {{ plants_count|pluralize:" is,are" }} {{ plants_count }} plant{{ plants_count|pluralize }} catalogued in Ecosystems.<br/>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 l4">
+                <div class="card dashboard-card  hoverable">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">pets</i>
+                                <a href="{% url 'ecosystems:animaltag-list' %}">Animals</a>
+                            </div>
+                        </span>
+                        <p>
+                            There {{ animals_count|pluralize:" is,are" }} {{ animals_count }} animal{{ animals_count|pluralize }} catalogued in Ecosystems.<br/>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% if perms.communication.harvest_mail_account %}
+            <div class="col s12 m6 l4">
+                <div class="card dashboard-card  hoverable">
+                    <div class="card-content">
+                    <span class="card-title">
+                        <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">contact_mail</i>
+                            Communications
+                        </div>
+                    </span>
+                    <br/>
+                    <div>
+                        <span data-task-trigger-url="{% url 'celery-apply' task_name='communication.tasks.harvest_mail' %}">Harvest mail</span>
+                        <span class="secondary-content">
+                            <a href="#"
+                               class="tooltipped-harvest task-trigger"
+                               data-task-trigger-url="{% url 'celery-apply' task_name='communication.tasks.harvest_mail' %}"
+                               data-task-parent-status-url="{% url 'communication:mailharvest-run-status-all' %}"
+                               data-task-status-url-mask="{% url 'celery-task_status' task_id='placeholder' %}"
+                               data-task-revoke-url-mask="{% url 'celery-task_revoke' task_id='placeholder' %}"
+                               data-tooltip="Run mail harvest"
+                               data-position="left">
+                                <i class="material-icons start-icon">send</i>
+                                <i class="material-icons running-icon">directions_run</i>
+                            </a>
+                            <a href="#"
+                               class="tooltipped-harvest task-killer red-text"
+                               data-tooltip="Stop task"
+                               data-position="top">
+                                <i class="material-icons">close</i>
+                            </a>
+                        </span>
+                    </div>
+                    <br/>
+                    <div class="divider"></div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ block.super }}
+    <script src="{% static 'bower_components/select2/dist/js/select2.min.js' %}"></script>
+    <script src="{% static 'js/quick_jump.js' %}"></script>
+    <script src="{% static 'js/task-mon.js' %}"></script>
+    <script>
+        $(document).ready(function(e){
+            prepare_quickjump({
+                filter_field: "id",
+                jump_url_property: 'url',
+                query_url: "{% url 'ecosystems:api:project-list' %}?",
+                formatResult: formatQuickJumpResult,
+                formatResultSelection: formatQuickJumpResultSelection
+            });
+            $('.select2.select2-container').css({
+                'width': '100%',
+            });
+        });
+
+        function formatQuickJumpResult(result) {
+            if (result.loading) {
+                return result.text;
+            }
+            else {
+                //var markup = "<div>" + result.cedar_project_code + "<a href='" + result.url + "'>" + result.cedar_project_name + "</a></div>";
+                var markup = "<div>" + result.cedar_project_code + "</div>";
+                return markup;
+            }
+        }
+        function formatQuickJumpResultSelection(result_selection) {
+            return result_selection.cedar_project_code || result_selection.text;
+        }
+    </script>
+{% endblock javascripts %}

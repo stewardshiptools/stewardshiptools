@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load geoinfo %}
+
+{# Note: {{ block.super }} must appear in the {% block content %} tag for the following to work. #}
+{# Note: uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Misc. Spatial Layers{% endblock %}
+{% block second_bar_secondary_title %}<span class="layer-list-count">{{ object_list.count }}</span> Layer{{ object_list|pluralize }} {% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'geoinfo.add_gislayer' }}"
+       href="{% url 'geoinfo:layer-create' %}">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">add_circle</i>
+            &nbsp;Misc. Layer
+        </div>
+    </a>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="row">
+        <div id="layer-list" class="col s12"></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% geoinfo_layer_list 'layer-list' ajax_url=ajax_url %}
+{% endblock %}

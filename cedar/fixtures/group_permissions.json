@@ -1,0 +1,1957 @@
+{
+	"CRM": [
+		{
+			"model": "alternatename",
+			"codename": "add_alternatename",
+			"app_label": "crm"
+		},
+		{
+			"model": "alternatename",
+			"codename": "change_alternatename",
+			"app_label": "crm"
+		},
+		{
+			"model": "alternatename",
+			"codename": "delete_alternatename",
+			"app_label": "crm"
+		},
+		{
+			"model": "organization",
+			"codename": "add_organization",
+			"app_label": "crm"
+		},
+		{
+			"model": "organization",
+			"codename": "change_organization",
+			"app_label": "crm"
+		},
+		{
+			"model": "organization",
+			"codename": "delete_organization",
+			"app_label": "crm"
+		},
+		{
+			"model": "person",
+			"codename": "add_person",
+			"app_label": "crm"
+		},
+		{
+			"model": "person",
+			"codename": "change_person",
+			"app_label": "crm"
+		},
+		{
+			"model": "person",
+			"codename": "delete_person",
+			"app_label": "crm"
+		},
+		{
+			"model": "role",
+			"codename": "add_role",
+			"app_label": "crm"
+		},
+		{
+			"model": "role",
+			"codename": "change_role",
+			"app_label": "crm"
+		},
+		{
+			"model": "role",
+			"codename": "delete_role",
+			"app_label": "crm"
+		}
+	],
+	"Communication": [
+		{
+			"model": "communication",
+			"codename": "add_communication",
+			"app_label": "communication"
+		},
+		{
+			"model": "communication",
+			"codename": "change_communication",
+			"app_label": "communication"
+		},
+		{
+			"model": "communication",
+			"codename": "delete_communication",
+			"app_label": "communication"
+		},
+		{
+			"model": "communicationasset",
+			"codename": "add_communicationasset",
+			"app_label": "communication"
+		},
+		{
+			"model": "communicationasset",
+			"codename": "change_communicationasset",
+			"app_label": "communication"
+		},
+		{
+			"model": "communicationasset",
+			"codename": "delete_communicationasset",
+			"app_label": "communication"
+		},
+		{
+			"model": "communicationfilerelation",
+			"codename": "add_communicationfilerelation",
+			"app_label": "communication"
+		},
+		{
+			"model": "communicationfilerelation",
+			"codename": "change_communicationfilerelation",
+			"app_label": "communication"
+		},
+		{
+			"model": "communicationfilerelation",
+			"codename": "delete_communicationfilerelation",
+			"app_label": "communication"
+		},
+		{
+			"model": "communicationrelation",
+			"codename": "add_communicationrelation",
+			"app_label": "communication"
+		},
+		{
+			"model": "communicationrelation",
+			"codename": "change_communicationrelation",
+			"app_label": "communication"
+		},
+		{
+			"model": "communicationrelation",
+			"codename": "delete_communicationrelation",
+			"app_label": "communication"
+		},
+		{
+			"model": "fax",
+			"codename": "add_fax",
+			"app_label": "communication"
+		},
+		{
+			"model": "fax",
+			"codename": "change_fax",
+			"app_label": "communication"
+		},
+		{
+			"model": "fax",
+			"codename": "delete_fax",
+			"app_label": "communication"
+		},
+		{
+			"model": "gmailcredential",
+			"codename": "add_gmailcredential",
+			"app_label": "communication"
+		},
+		{
+			"model": "gmailcredential",
+			"codename": "change_gmailcredential",
+			"app_label": "communication"
+		},
+		{
+			"model": "gmailcredential",
+			"codename": "delete_gmailcredential",
+			"app_label": "communication"
+		},
+		{
+			"model": "harvestcodeprefix",
+			"codename": "add_harvestcodeprefix",
+			"app_label": "communication"
+		},
+		{
+			"model": "harvestcodeprefix",
+			"codename": "change_harvestcodeprefix",
+			"app_label": "communication"
+		},
+		{
+			"model": "harvestcodeprefix",
+			"codename": "delete_harvestcodeprefix",
+			"app_label": "communication"
+		},
+		{
+			"model": "harvesthistory",
+			"codename": "add_harvesthistory",
+			"app_label": "communication"
+		},
+		{
+			"model": "harvesthistory",
+			"codename": "change_harvesthistory",
+			"app_label": "communication"
+		},
+		{
+			"model": "harvesthistory",
+			"codename": "delete_harvesthistory",
+			"app_label": "communication"
+		},
+		{
+			"model": "harvestmessagerelation",
+			"codename": "add_harvestmessagerelation",
+			"app_label": "communication"
+		},
+		{
+			"model": "harvestmessagerelation",
+			"codename": "change_harvestmessagerelation",
+			"app_label": "communication"
+		},
+		{
+			"model": "harvestmessagerelation",
+			"codename": "delete_harvestmessagerelation",
+			"app_label": "communication"
+		},
+		{
+			"model": "letter",
+			"codename": "add_letter",
+			"app_label": "communication"
+		},
+		{
+			"model": "letter",
+			"codename": "change_letter",
+			"app_label": "communication"
+		},
+		{
+			"model": "letter",
+			"codename": "delete_letter",
+			"app_label": "communication"
+		},
+		{
+			"model": "mailaccount",
+			"codename": "add_mailaccount",
+			"app_label": "communication"
+		},
+		{
+			"model": "mailaccount",
+			"codename": "change_mailaccount",
+			"app_label": "communication"
+		},
+		{
+			"model": "mailaccount",
+			"codename": "delete_mailaccount",
+			"app_label": "communication"
+		},
+		{
+			"model": "mailaccount",
+			"codename": "harvest_mail_account",
+			"app_label": "communication"
+		},
+		{
+			"model": "mailbox",
+			"codename": "add_mailbox",
+			"app_label": "communication"
+		},
+		{
+			"model": "mailbox",
+			"codename": "change_mailbox",
+			"app_label": "communication"
+		},
+		{
+			"model": "mailbox",
+			"codename": "delete_mailbox",
+			"app_label": "communication"
+		},
+		{
+			"model": "mailbox",
+			"codename": "harvest_mailbox",
+			"app_label": "communication"
+		},
+		{
+			"model": "message",
+			"codename": "add_message",
+			"app_label": "communication"
+		},
+		{
+			"model": "message",
+			"codename": "change_message",
+			"app_label": "communication"
+		},
+		{
+			"model": "message",
+			"codename": "delete_message",
+			"app_label": "communication"
+		},
+		{
+			"model": "messageattachment",
+			"codename": "add_messageattachment",
+			"app_label": "communication"
+		},
+		{
+			"model": "messageattachment",
+			"codename": "change_messageattachment",
+			"app_label": "communication"
+		},
+		{
+			"model": "messageattachment",
+			"codename": "delete_messageattachment",
+			"app_label": "communication"
+		},
+		{
+			"model": "phonecall",
+			"codename": "add_phonecall",
+			"app_label": "communication"
+		},
+		{
+			"model": "phonecall",
+			"codename": "change_phonecall",
+			"app_label": "communication"
+		},
+		{
+			"model": "phonecall",
+			"codename": "delete_phonecall",
+			"app_label": "communication"
+		}
+	],
+	"Development": [
+		{
+			"model": "secureasset",
+			"codename": "view_secureasset",
+			"app_label": "assets"
+		},
+		{
+			"model": "consultationstage",
+			"codename": "add_consultationstage",
+			"app_label": "development"
+		},
+		{
+			"model": "consultationstage",
+			"codename": "change_consultationstage",
+			"app_label": "development"
+		},
+		{
+			"model": "consultationstage",
+			"codename": "delete_consultationstage",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentaction",
+			"codename": "add_developmentaction",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentaction",
+			"codename": "change_developmentaction",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentaction",
+			"codename": "delete_developmentaction",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentasset",
+			"codename": "add_developmentasset",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentasset",
+			"codename": "change_developmentasset",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentasset",
+			"codename": "delete_developmentasset",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentgislayer",
+			"codename": "add_developmentgislayer",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentgislayer",
+			"codename": "change_developmentgislayer",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentgislayer",
+			"codename": "delete_developmentgislayer",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentproject",
+			"codename": "add_developmentproject",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentproject",
+			"codename": "change_developmentproject",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentproject",
+			"codename": "delete_developmentproject",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentproject",
+			"codename": "view_developmentproject",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentprojectaction",
+			"codename": "add_developmentprojectaction",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentprojectaction",
+			"codename": "change_developmentprojectaction",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentprojectaction",
+			"codename": "delete_developmentprojectaction",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentprojectasset",
+			"codename": "add_developmentprojectasset",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentprojectasset",
+			"codename": "change_developmentprojectasset",
+			"app_label": "development"
+		},
+		{
+			"model": "developmentprojectasset",
+			"codename": "delete_developmentprojectasset",
+			"app_label": "development"
+		},
+		{
+			"model": "fileno",
+			"codename": "add_fileno",
+			"app_label": "development"
+		},
+		{
+			"model": "fileno",
+			"codename": "change_fileno",
+			"app_label": "development"
+		},
+		{
+			"model": "fileno",
+			"codename": "delete_fileno",
+			"app_label": "development"
+		},
+		{
+			"model": "filingcode",
+			"codename": "add_filingcode",
+			"app_label": "development"
+		},
+		{
+			"model": "filingcode",
+			"codename": "change_filingcode",
+			"app_label": "development"
+		},
+		{
+			"model": "filingcode",
+			"codename": "delete_filingcode",
+			"app_label": "development"
+		},
+		{
+			"model": "tag",
+			"codename": "add_tag",
+			"app_label": "tags"
+		},
+		{
+			"model": "tag",
+			"codename": "change_tag",
+			"app_label": "tags"
+		},
+		{
+			"model": "tag",
+			"codename": "delete_tag",
+			"app_label": "tags"
+		},
+		{
+			"model": "taggeditem",
+			"codename": "add_taggeditem",
+			"app_label": "tags"
+		},
+		{
+			"model": "taggeditem",
+			"codename": "change_taggeditem",
+			"app_label": "tags"
+		},
+		{
+			"model": "taggeditem",
+			"codename": "delete_taggeditem",
+			"app_label": "tags"
+		}
+	],
+	"Geoinfo": [
+		{
+			"model": "gisfeature",
+			"codename": "add_gisfeature",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gisfeature",
+			"codename": "change_gisfeature",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gisfeature",
+			"codename": "delete_gisfeature",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gisfeatureline",
+			"codename": "add_gisfeatureline",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gisfeatureline",
+			"codename": "change_gisfeatureline",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gisfeatureline",
+			"codename": "delete_gisfeatureline",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gisfeaturepoint",
+			"codename": "add_gisfeaturepoint",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gisfeaturepoint",
+			"codename": "change_gisfeaturepoint",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gisfeaturepoint",
+			"codename": "delete_gisfeaturepoint",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gisfeaturepolygon",
+			"codename": "add_gisfeaturepolygon",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gisfeaturepolygon",
+			"codename": "change_gisfeaturepolygon",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gisfeaturepolygon",
+			"codename": "delete_gisfeaturepolygon",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gislayer",
+			"codename": "add_gislayer",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gislayer",
+			"codename": "change_gislayer",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "gislayer",
+			"codename": "delete_gislayer",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "spatialreport",
+			"codename": "add_spatialreport",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "spatialreport",
+			"codename": "change_spatialreport",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "spatialreport",
+			"codename": "delete_spatialreport",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "spatialreportitem",
+			"codename": "add_spatialreportitem",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "spatialreportitem",
+			"codename": "change_spatialreportitem",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "spatialreportitem",
+			"codename": "delete_spatialreportitem",
+			"app_label": "geoinfo"
+		},
+		{
+			"model": "leafletoverlaygeoinfolayer",
+			"codename": "add_leafletoverlaygeoinfolayer",
+			"app_label": "maps"
+		},
+		{
+			"model": "leafletoverlaygeoinfolayer",
+			"codename": "change_leafletoverlaygeoinfolayer",
+			"app_label": "maps"
+		},
+		{
+			"model": "leafletoverlaygeoinfolayer",
+			"codename": "delete_leafletoverlaygeoinfolayer",
+			"app_label": "maps"
+		}
+	],
+	"restricted_SER": [],
+	"Ecosystems": [
+		{
+			"model": "secureasset",
+			"codename": "view_secureasset",
+			"app_label": "assets"
+		},
+		{
+			"model": "animaltag",
+			"codename": "add_animaltag",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "animaltag",
+			"codename": "change_animaltag",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "animaltag",
+			"codename": "delete_animaltag",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "animaltaggeditem",
+			"codename": "add_animaltaggeditem",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "animaltaggeditem",
+			"codename": "change_animaltaggeditem",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "animaltaggeditem",
+			"codename": "delete_animaltaggeditem",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "ecosystemsasset",
+			"codename": "add_ecosystemsasset",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "ecosystemsasset",
+			"codename": "change_ecosystemsasset",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "ecosystemsasset",
+			"codename": "delete_ecosystemsasset",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "ecosystemsgislayer",
+			"codename": "add_ecosystemsgislayer",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "ecosystemsgislayer",
+			"codename": "change_ecosystemsgislayer",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "ecosystemsgislayer",
+			"codename": "delete_ecosystemsgislayer",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "ecosystemsproject",
+			"codename": "add_ecosystemsproject",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "ecosystemsproject",
+			"codename": "change_ecosystemsproject",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "ecosystemsproject",
+			"codename": "delete_ecosystemsproject",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "ecosystemsproject",
+			"codename": "view_ecosystemsproject",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "ecosystemsprojectasset",
+			"codename": "add_ecosystemsprojectasset",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "ecosystemsprojectasset",
+			"codename": "change_ecosystemsprojectasset",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "ecosystemsprojectasset",
+			"codename": "delete_ecosystemsprojectasset",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "filingcode",
+			"codename": "add_filingcode",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "filingcode",
+			"codename": "change_filingcode",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "filingcode",
+			"codename": "delete_filingcode",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "planttag",
+			"codename": "add_planttag",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "planttag",
+			"codename": "change_planttag",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "planttag",
+			"codename": "delete_planttag",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "planttaggeditem",
+			"codename": "add_planttaggeditem",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "planttaggeditem",
+			"codename": "change_planttaggeditem",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "planttaggeditem",
+			"codename": "delete_planttaggeditem",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "projecttag",
+			"codename": "add_projecttag",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "projecttag",
+			"codename": "change_projecttag",
+			"app_label": "ecosystems"
+		},
+		{
+			"model": "projecttag",
+			"codename": "delete_projecttag",
+			"app_label": "ecosystems"
+		}
+	],
+	"Assets": [
+		{
+			"model": "asset",
+			"codename": "add_asset",
+			"app_label": "assets"
+		},
+		{
+			"model": "asset",
+			"codename": "change_asset",
+			"app_label": "assets"
+		},
+		{
+			"model": "asset",
+			"codename": "delete_asset",
+			"app_label": "assets"
+		},
+		{
+			"model": "assettype",
+			"codename": "add_assettype",
+			"app_label": "assets"
+		},
+		{
+			"model": "assettype",
+			"codename": "change_assettype",
+			"app_label": "assets"
+		},
+		{
+			"model": "assettype",
+			"codename": "delete_assettype",
+			"app_label": "assets"
+		},
+		{
+			"model": "metadocumentasset",
+			"codename": "add_metadocumentasset",
+			"app_label": "assets"
+		},
+		{
+			"model": "metadocumentasset",
+			"codename": "change_metadocumentasset",
+			"app_label": "assets"
+		},
+		{
+			"model": "metadocumentasset",
+			"codename": "delete_metadocumentasset",
+			"app_label": "assets"
+		},
+		{
+			"model": "metadocumentsecureasset",
+			"codename": "add_metadocumentsecureasset",
+			"app_label": "assets"
+		},
+		{
+			"model": "metadocumentsecureasset",
+			"codename": "change_metadocumentsecureasset",
+			"app_label": "assets"
+		},
+		{
+			"model": "metadocumentsecureasset",
+			"codename": "delete_metadocumentsecureasset",
+			"app_label": "assets"
+		},
+		{
+			"model": "secureasset",
+			"codename": "add_secureasset",
+			"app_label": "assets"
+		},
+		{
+			"model": "secureasset",
+			"codename": "change_secureasset",
+			"app_label": "assets"
+		},
+		{
+			"model": "secureasset",
+			"codename": "delete_secureasset",
+			"app_label": "assets"
+		},
+		{
+			"model": "secureasset",
+			"codename": "view_secureasset",
+			"app_label": "assets"
+		}
+	],
+	"Heritage": [
+		{
+			"model": "secureasset",
+			"codename": "view_secureasset",
+			"app_label": "assets"
+		},
+		{
+			"model": "accuracy",
+			"codename": "add_accuracy",
+			"app_label": "heritage"
+		},
+		{
+			"model": "accuracy",
+			"codename": "change_accuracy",
+			"app_label": "heritage"
+		},
+		{
+			"model": "accuracy",
+			"codename": "delete_accuracy",
+			"app_label": "heritage"
+		},
+		{
+			"model": "alternateplacename",
+			"codename": "add_alternateplacename",
+			"app_label": "heritage"
+		},
+		{
+			"model": "alternateplacename",
+			"codename": "change_alternateplacename",
+			"app_label": "heritage"
+		},
+		{
+			"model": "alternateplacename",
+			"codename": "delete_alternateplacename",
+			"app_label": "heritage"
+		},
+		{
+			"model": "commonplacename",
+			"codename": "add_commonplacename",
+			"app_label": "heritage"
+		},
+		{
+			"model": "commonplacename",
+			"codename": "change_commonplacename",
+			"app_label": "heritage"
+		},
+		{
+			"model": "commonplacename",
+			"codename": "delete_commonplacename",
+			"app_label": "heritage"
+		},
+		{
+			"model": "dataentryid",
+			"codename": "add_dataentryid",
+			"app_label": "heritage"
+		},
+		{
+			"model": "dataentryid",
+			"codename": "change_dataentryid",
+			"app_label": "heritage"
+		},
+		{
+			"model": "dataentryid",
+			"codename": "delete_dataentryid",
+			"app_label": "heritage"
+		},
+		{
+			"model": "datasource",
+			"codename": "add_datasource",
+			"app_label": "heritage"
+		},
+		{
+			"model": "datasource",
+			"codename": "change_datasource",
+			"app_label": "heritage"
+		},
+		{
+			"model": "datasource",
+			"codename": "delete_datasource",
+			"app_label": "heritage"
+		},
+		{
+			"model": "ecologicalvalue",
+			"codename": "add_ecologicalvalue",
+			"app_label": "heritage"
+		},
+		{
+			"model": "ecologicalvalue",
+			"codename": "change_ecologicalvalue",
+			"app_label": "heritage"
+		},
+		{
+			"model": "ecologicalvalue",
+			"codename": "delete_ecologicalvalue",
+			"app_label": "heritage"
+		},
+		{
+			"model": "feature",
+			"codename": "add_feature",
+			"app_label": "heritage"
+		},
+		{
+			"model": "feature",
+			"codename": "change_feature",
+			"app_label": "heritage"
+		},
+		{
+			"model": "feature",
+			"codename": "delete_feature",
+			"app_label": "heritage"
+		},
+		{
+			"model": "featuregroup",
+			"codename": "add_featuregroup",
+			"app_label": "heritage"
+		},
+		{
+			"model": "featuregroup",
+			"codename": "change_featuregroup",
+			"app_label": "heritage"
+		},
+		{
+			"model": "featuregroup",
+			"codename": "delete_featuregroup",
+			"app_label": "heritage"
+		},
+		{
+			"model": "fishingmethod",
+			"codename": "add_fishingmethod",
+			"app_label": "heritage"
+		},
+		{
+			"model": "fishingmethod",
+			"codename": "change_fishingmethod",
+			"app_label": "heritage"
+		},
+		{
+			"model": "fishingmethod",
+			"codename": "delete_fishingmethod",
+			"app_label": "heritage"
+		},
+		{
+			"model": "gazetteernametaggedplace",
+			"codename": "add_gazetteernametaggedplace",
+			"app_label": "heritage"
+		},
+		{
+			"model": "gazetteernametaggedplace",
+			"codename": "change_gazetteernametaggedplace",
+			"app_label": "heritage"
+		},
+		{
+			"model": "gazetteernametaggedplace",
+			"codename": "delete_gazetteernametaggedplace",
+			"app_label": "heritage"
+		},
+		{
+			"model": "group",
+			"codename": "add_group",
+			"app_label": "heritage"
+		},
+		{
+			"model": "group",
+			"codename": "change_group",
+			"app_label": "heritage"
+		},
+		{
+			"model": "group",
+			"codename": "delete_group",
+			"app_label": "heritage"
+		},
+		{
+			"model": "harvestmethod",
+			"codename": "add_harvestmethod",
+			"app_label": "heritage"
+		},
+		{
+			"model": "harvestmethod",
+			"codename": "change_harvestmethod",
+			"app_label": "heritage"
+		},
+		{
+			"model": "harvestmethod",
+			"codename": "delete_harvestmethod",
+			"app_label": "heritage"
+		},
+		{
+			"model": "heritageasset",
+			"codename": "add_heritageasset",
+			"app_label": "heritage"
+		},
+		{
+			"model": "heritageasset",
+			"codename": "change_heritageasset",
+			"app_label": "heritage"
+		},
+		{
+			"model": "heritageasset",
+			"codename": "delete_heritageasset",
+			"app_label": "heritage"
+		},
+		{
+			"model": "heritagegislayer",
+			"codename": "add_heritagegislayer",
+			"app_label": "heritage"
+		},
+		{
+			"model": "heritagegislayer",
+			"codename": "change_heritagegislayer",
+			"app_label": "heritage"
+		},
+		{
+			"model": "heritagegislayer",
+			"codename": "delete_heritagegislayer",
+			"app_label": "heritage"
+		},
+		{
+			"model": "infotype",
+			"codename": "add_infotype",
+			"app_label": "heritage"
+		},
+		{
+			"model": "infotype",
+			"codename": "change_infotype",
+			"app_label": "heritage"
+		},
+		{
+			"model": "infotype",
+			"codename": "delete_infotype",
+			"app_label": "heritage"
+		},
+		{
+			"model": "interview",
+			"codename": "add_interview",
+			"app_label": "heritage"
+		},
+		{
+			"model": "interview",
+			"codename": "change_interview",
+			"app_label": "heritage"
+		},
+		{
+			"model": "interview",
+			"codename": "delete_interview",
+			"app_label": "heritage"
+		},
+		{
+			"model": "interview",
+			"codename": "view_interview",
+			"app_label": "heritage"
+		},
+		{
+			"model": "interview",
+			"codename": "view_sensitive_interview_data",
+			"app_label": "heritage"
+		},
+		{
+			"model": "interviewasset",
+			"codename": "add_interviewasset",
+			"app_label": "heritage"
+		},
+		{
+			"model": "interviewasset",
+			"codename": "change_interviewasset",
+			"app_label": "heritage"
+		},
+		{
+			"model": "interviewasset",
+			"codename": "delete_interviewasset",
+			"app_label": "heritage"
+		},
+		{
+			"model": "interviewerid",
+			"codename": "add_interviewerid",
+			"app_label": "heritage"
+		},
+		{
+			"model": "interviewerid",
+			"codename": "change_interviewerid",
+			"app_label": "heritage"
+		},
+		{
+			"model": "interviewerid",
+			"codename": "delete_interviewerid",
+			"app_label": "heritage"
+		},
+		{
+			"model": "layergroup",
+			"codename": "add_layergroup",
+			"app_label": "heritage"
+		},
+		{
+			"model": "layergroup",
+			"codename": "change_layergroup",
+			"app_label": "heritage"
+		},
+		{
+			"model": "layergroup",
+			"codename": "delete_layergroup",
+			"app_label": "heritage"
+		},
+		{
+			"model": "linguisticgroup",
+			"codename": "add_linguisticgroup",
+			"app_label": "heritage"
+		},
+		{
+			"model": "linguisticgroup",
+			"codename": "change_linguisticgroup",
+			"app_label": "heritage"
+		},
+		{
+			"model": "linguisticgroup",
+			"codename": "delete_linguisticgroup",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkculturalrecord",
+			"codename": "add_mtkculturalrecord",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkculturalrecord",
+			"codename": "change_mtkculturalrecord",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkculturalrecord",
+			"codename": "delete_mtkculturalrecord",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkculturalrecordline",
+			"codename": "add_mtkculturalrecordline",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkculturalrecordline",
+			"codename": "change_mtkculturalrecordline",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkculturalrecordline",
+			"codename": "delete_mtkculturalrecordline",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkculturalrecordpoint",
+			"codename": "add_mtkculturalrecordpoint",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkculturalrecordpoint",
+			"codename": "change_mtkculturalrecordpoint",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkculturalrecordpoint",
+			"codename": "delete_mtkculturalrecordpoint",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkculturalrecordpolygon",
+			"codename": "add_mtkculturalrecordpolygon",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkculturalrecordpolygon",
+			"codename": "change_mtkculturalrecordpolygon",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkculturalrecordpolygon",
+			"codename": "delete_mtkculturalrecordpolygon",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkrecord",
+			"codename": "add_mtkrecord",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkrecord",
+			"codename": "change_mtkrecord",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkrecord",
+			"codename": "delete_mtkrecord",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkspeciesrecord",
+			"codename": "add_mtkspeciesrecord",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkspeciesrecord",
+			"codename": "change_mtkspeciesrecord",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkspeciesrecord",
+			"codename": "delete_mtkspeciesrecord",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkspeciesrecordline",
+			"codename": "add_mtkspeciesrecordline",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkspeciesrecordline",
+			"codename": "change_mtkspeciesrecordline",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkspeciesrecordline",
+			"codename": "delete_mtkspeciesrecordline",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkspeciesrecordpoint",
+			"codename": "add_mtkspeciesrecordpoint",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkspeciesrecordpoint",
+			"codename": "change_mtkspeciesrecordpoint",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkspeciesrecordpoint",
+			"codename": "delete_mtkspeciesrecordpoint",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkspeciesrecordpolygon",
+			"codename": "add_mtkspeciesrecordpolygon",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkspeciesrecordpolygon",
+			"codename": "change_mtkspeciesrecordpolygon",
+			"app_label": "heritage"
+		},
+		{
+			"model": "mtkspeciesrecordpolygon",
+			"codename": "delete_mtkspeciesrecordpolygon",
+			"app_label": "heritage"
+		},
+		{
+			"model": "participantid",
+			"codename": "add_participantid",
+			"app_label": "heritage"
+		},
+		{
+			"model": "participantid",
+			"codename": "change_participantid",
+			"app_label": "heritage"
+		},
+		{
+			"model": "participantid",
+			"codename": "delete_participantid",
+			"app_label": "heritage"
+		},
+		{
+			"model": "place",
+			"codename": "add_place",
+			"app_label": "heritage"
+		},
+		{
+			"model": "place",
+			"codename": "change_place",
+			"app_label": "heritage"
+		},
+		{
+			"model": "place",
+			"codename": "delete_place",
+			"app_label": "heritage"
+		},
+		{
+			"model": "placetype",
+			"codename": "add_placetype",
+			"app_label": "heritage"
+		},
+		{
+			"model": "placetype",
+			"codename": "change_placetype",
+			"app_label": "heritage"
+		},
+		{
+			"model": "placetype",
+			"codename": "delete_placetype",
+			"app_label": "heritage"
+		},
+		{
+			"model": "project",
+			"codename": "add_project",
+			"app_label": "heritage"
+		},
+		{
+			"model": "project",
+			"codename": "change_project",
+			"app_label": "heritage"
+		},
+		{
+			"model": "project",
+			"codename": "delete_project",
+			"app_label": "heritage"
+		},
+		{
+			"model": "project",
+			"codename": "view_project",
+			"app_label": "heritage"
+		},
+		{
+			"model": "projectasset",
+			"codename": "add_projectasset",
+			"app_label": "heritage"
+		},
+		{
+			"model": "projectasset",
+			"codename": "change_projectasset",
+			"app_label": "heritage"
+		},
+		{
+			"model": "projectasset",
+			"codename": "delete_projectasset",
+			"app_label": "heritage"
+		},
+		{
+			"model": "record",
+			"codename": "add_record",
+			"app_label": "heritage"
+		},
+		{
+			"model": "record",
+			"codename": "change_record",
+			"app_label": "heritage"
+		},
+		{
+			"model": "record",
+			"codename": "delete_record",
+			"app_label": "heritage"
+		},
+		{
+			"model": "record",
+			"codename": "view_record_meta",
+			"app_label": "heritage"
+		},
+		{
+			"model": "recordsessionlink",
+			"codename": "add_recordsessionlink",
+			"app_label": "heritage"
+		},
+		{
+			"model": "recordsessionlink",
+			"codename": "change_recordsessionlink",
+			"app_label": "heritage"
+		},
+		{
+			"model": "recordsessionlink",
+			"codename": "delete_recordsessionlink",
+			"app_label": "heritage"
+		},
+		{
+			"model": "season",
+			"codename": "add_season",
+			"app_label": "heritage"
+		},
+		{
+			"model": "season",
+			"codename": "change_season",
+			"app_label": "heritage"
+		},
+		{
+			"model": "season",
+			"codename": "delete_season",
+			"app_label": "heritage"
+		},
+		{
+			"model": "session",
+			"codename": "add_session",
+			"app_label": "heritage"
+		},
+		{
+			"model": "session",
+			"codename": "change_session",
+			"app_label": "heritage"
+		},
+		{
+			"model": "session",
+			"codename": "delete_session",
+			"app_label": "heritage"
+		},
+		{
+			"model": "session",
+			"codename": "view_session",
+			"app_label": "heritage"
+		},
+		{
+			"model": "sessionasset",
+			"codename": "add_sessionasset",
+			"app_label": "heritage"
+		},
+		{
+			"model": "sessionasset",
+			"codename": "change_sessionasset",
+			"app_label": "heritage"
+		},
+		{
+			"model": "sessionasset",
+			"codename": "delete_sessionasset",
+			"app_label": "heritage"
+		},
+		{
+			"model": "shapetype",
+			"codename": "add_shapetype",
+			"app_label": "heritage"
+		},
+		{
+			"model": "shapetype",
+			"codename": "change_shapetype",
+			"app_label": "heritage"
+		},
+		{
+			"model": "shapetype",
+			"codename": "delete_shapetype",
+			"app_label": "heritage"
+		},
+		{
+			"model": "species",
+			"codename": "add_species",
+			"app_label": "heritage"
+		},
+		{
+			"model": "species",
+			"codename": "change_species",
+			"app_label": "heritage"
+		},
+		{
+			"model": "species",
+			"codename": "delete_species",
+			"app_label": "heritage"
+		},
+		{
+			"model": "speciesgroup",
+			"codename": "add_speciesgroup",
+			"app_label": "heritage"
+		},
+		{
+			"model": "speciesgroup",
+			"codename": "change_speciesgroup",
+			"app_label": "heritage"
+		},
+		{
+			"model": "speciesgroup",
+			"codename": "delete_speciesgroup",
+			"app_label": "heritage"
+		},
+		{
+			"model": "speciestheme",
+			"codename": "add_speciestheme",
+			"app_label": "heritage"
+		},
+		{
+			"model": "speciestheme",
+			"codename": "change_speciestheme",
+			"app_label": "heritage"
+		},
+		{
+			"model": "speciestheme",
+			"codename": "delete_speciestheme",
+			"app_label": "heritage"
+		},
+		{
+			"model": "temporaltrend",
+			"codename": "add_temporaltrend",
+			"app_label": "heritage"
+		},
+		{
+			"model": "temporaltrend",
+			"codename": "change_temporaltrend",
+			"app_label": "heritage"
+		},
+		{
+			"model": "temporaltrend",
+			"codename": "delete_temporaltrend",
+			"app_label": "heritage"
+		},
+		{
+			"model": "timeframe",
+			"codename": "add_timeframe",
+			"app_label": "heritage"
+		},
+		{
+			"model": "timeframe",
+			"codename": "change_timeframe",
+			"app_label": "heritage"
+		},
+		{
+			"model": "timeframe",
+			"codename": "delete_timeframe",
+			"app_label": "heritage"
+		},
+		{
+			"model": "travelmode",
+			"codename": "add_travelmode",
+			"app_label": "heritage"
+		},
+		{
+			"model": "travelmode",
+			"codename": "change_travelmode",
+			"app_label": "heritage"
+		},
+		{
+			"model": "travelmode",
+			"codename": "delete_travelmode",
+			"app_label": "heritage"
+		},
+		{
+			"model": "use",
+			"codename": "add_use",
+			"app_label": "heritage"
+		},
+		{
+			"model": "use",
+			"codename": "change_use",
+			"app_label": "heritage"
+		},
+		{
+			"model": "use",
+			"codename": "delete_use",
+			"app_label": "heritage"
+		},
+		{
+			"model": "casebrief",
+			"codename": "add_casebrief",
+			"app_label": "library"
+		},
+		{
+			"model": "casebrief",
+			"codename": "change_casebrief",
+			"app_label": "library"
+		},
+		{
+			"model": "casebrief",
+			"codename": "delete_casebrief",
+			"app_label": "library"
+		},
+		{
+			"model": "casebriefrelatedobjects",
+			"codename": "add_casebriefrelatedobjects",
+			"app_label": "library"
+		},
+		{
+			"model": "casebriefrelatedobjects",
+			"codename": "change_casebriefrelatedobjects",
+			"app_label": "library"
+		},
+		{
+			"model": "casebriefrelatedobjects",
+			"codename": "delete_casebriefrelatedobjects",
+			"app_label": "library"
+		},
+		{
+			"model": "casebrieftag",
+			"codename": "add_casebrieftag",
+			"app_label": "library"
+		},
+		{
+			"model": "casebrieftag",
+			"codename": "change_casebrieftag",
+			"app_label": "library"
+		},
+		{
+			"model": "casebrieftag",
+			"codename": "delete_casebrieftag",
+			"app_label": "library"
+		},
+		{
+			"model": "casebrieftaggeditem",
+			"codename": "add_casebrieftaggeditem",
+			"app_label": "library"
+		},
+		{
+			"model": "casebrieftaggeditem",
+			"codename": "change_casebrieftaggeditem",
+			"app_label": "library"
+		},
+		{
+			"model": "casebrieftaggeditem",
+			"codename": "delete_casebrieftaggeditem",
+			"app_label": "library"
+		},
+		{
+			"model": "collectiontag",
+			"codename": "add_collectiontag",
+			"app_label": "library"
+		},
+		{
+			"model": "collectiontag",
+			"codename": "change_collectiontag",
+			"app_label": "library"
+		},
+		{
+			"model": "collectiontag",
+			"codename": "delete_collectiontag",
+			"app_label": "library"
+		},
+		{
+			"model": "collectiontaggeditem",
+			"codename": "add_collectiontaggeditem",
+			"app_label": "library"
+		},
+		{
+			"model": "collectiontaggeditem",
+			"codename": "change_collectiontaggeditem",
+			"app_label": "library"
+		},
+		{
+			"model": "collectiontaggeditem",
+			"codename": "delete_collectiontaggeditem",
+			"app_label": "library"
+		},
+		{
+			"model": "confidentiality",
+			"codename": "add_confidentiality",
+			"app_label": "library"
+		},
+		{
+			"model": "confidentiality",
+			"codename": "change_confidentiality",
+			"app_label": "library"
+		},
+		{
+			"model": "confidentiality",
+			"codename": "delete_confidentiality",
+			"app_label": "library"
+		},
+		{
+			"model": "dublincore",
+			"codename": "add_dublincore",
+			"app_label": "library"
+		},
+		{
+			"model": "dublincore",
+			"codename": "change_dublincore",
+			"app_label": "library"
+		},
+		{
+			"model": "dublincore",
+			"codename": "delete_dublincore",
+			"app_label": "library"
+		},
+		{
+			"model": "holdings",
+			"codename": "add_holdings",
+			"app_label": "library"
+		},
+		{
+			"model": "holdings",
+			"codename": "change_holdings",
+			"app_label": "library"
+		},
+		{
+			"model": "holdings",
+			"codename": "delete_holdings",
+			"app_label": "library"
+		},
+		{
+			"model": "item",
+			"codename": "add_item",
+			"app_label": "library"
+		},
+		{
+			"model": "item",
+			"codename": "change_item",
+			"app_label": "library"
+		},
+		{
+			"model": "item",
+			"codename": "delete_item",
+			"app_label": "library"
+		},
+		{
+			"model": "itemassetrelation",
+			"codename": "add_itemassetrelation",
+			"app_label": "library"
+		},
+		{
+			"model": "itemassetrelation",
+			"codename": "change_itemassetrelation",
+			"app_label": "library"
+		},
+		{
+			"model": "itemassetrelation",
+			"codename": "delete_itemassetrelation",
+			"app_label": "library"
+		},
+		{
+			"model": "itemrelatedobjects",
+			"codename": "add_itemrelatedobjects",
+			"app_label": "library"
+		},
+		{
+			"model": "itemrelatedobjects",
+			"codename": "change_itemrelatedobjects",
+			"app_label": "library"
+		},
+		{
+			"model": "itemrelatedobjects",
+			"codename": "delete_itemrelatedobjects",
+			"app_label": "library"
+		},
+		{
+			"model": "itemtype",
+			"codename": "add_itemtype",
+			"app_label": "library"
+		},
+		{
+			"model": "itemtype",
+			"codename": "change_itemtype",
+			"app_label": "library"
+		},
+		{
+			"model": "itemtype",
+			"codename": "delete_itemtype",
+			"app_label": "library"
+		},
+		{
+			"model": "mupcategory",
+			"codename": "add_mupcategory",
+			"app_label": "library"
+		},
+		{
+			"model": "mupcategory",
+			"codename": "change_mupcategory",
+			"app_label": "library"
+		},
+		{
+			"model": "mupcategory",
+			"codename": "delete_mupcategory",
+			"app_label": "library"
+		},
+		{
+			"model": "personmentionedtag",
+			"codename": "add_personmentionedtag",
+			"app_label": "library"
+		},
+		{
+			"model": "personmentionedtag",
+			"codename": "change_personmentionedtag",
+			"app_label": "library"
+		},
+		{
+			"model": "personmentionedtag",
+			"codename": "delete_personmentionedtag",
+			"app_label": "library"
+		},
+		{
+			"model": "personmentionedtaggeditem",
+			"codename": "add_personmentionedtaggeditem",
+			"app_label": "library"
+		},
+		{
+			"model": "personmentionedtaggeditem",
+			"codename": "change_personmentionedtaggeditem",
+			"app_label": "library"
+		},
+		{
+			"model": "personmentionedtaggeditem",
+			"codename": "delete_personmentionedtaggeditem",
+			"app_label": "library"
+		},
+		{
+			"model": "researchernotes",
+			"codename": "add_researchernotes",
+			"app_label": "library"
+		},
+		{
+			"model": "researchernotes",
+			"codename": "change_researchernotes",
+			"app_label": "library"
+		},
+		{
+			"model": "researchernotes",
+			"codename": "delete_researchernotes",
+			"app_label": "library"
+		},
+		{
+			"model": "review",
+			"codename": "add_review",
+			"app_label": "library"
+		},
+		{
+			"model": "review",
+			"codename": "change_review",
+			"app_label": "library"
+		},
+		{
+			"model": "review",
+			"codename": "delete_review",
+			"app_label": "library"
+		},
+		{
+			"model": "synthesis",
+			"codename": "add_synthesis",
+			"app_label": "library"
+		},
+		{
+			"model": "synthesis",
+			"codename": "change_synthesis",
+			"app_label": "library"
+		},
+		{
+			"model": "synthesis",
+			"codename": "delete_synthesis",
+			"app_label": "library"
+		},
+		{
+			"model": "synthesiscategory",
+			"codename": "add_synthesiscategory",
+			"app_label": "library"
+		},
+		{
+			"model": "synthesiscategory",
+			"codename": "change_synthesiscategory",
+			"app_label": "library"
+		},
+		{
+			"model": "synthesiscategory",
+			"codename": "delete_synthesiscategory",
+			"app_label": "library"
+		},
+		{
+			"model": "synthesisitem",
+			"codename": "add_synthesisitem",
+			"app_label": "library"
+		},
+		{
+			"model": "synthesisitem",
+			"codename": "change_synthesisitem",
+			"app_label": "library"
+		},
+		{
+			"model": "synthesisitem",
+			"codename": "delete_synthesisitem",
+			"app_label": "library"
+		},
+		{
+			"model": "synthesisrelatedobjects",
+			"codename": "add_synthesisrelatedobjects",
+			"app_label": "library"
+		},
+		{
+			"model": "synthesisrelatedobjects",
+			"codename": "change_synthesisrelatedobjects",
+			"app_label": "library"
+		},
+		{
+			"model": "synthesisrelatedobjects",
+			"codename": "delete_synthesisrelatedobjects",
+			"app_label": "library"
+		},
+		{
+			"model": "useandoccupancycategory",
+			"codename": "add_useandoccupancycategory",
+			"app_label": "library"
+		},
+		{
+			"model": "useandoccupancycategory",
+			"codename": "change_useandoccupancycategory",
+			"app_label": "library"
+		},
+		{
+			"model": "useandoccupancycategory",
+			"codename": "delete_useandoccupancycategory",
+			"app_label": "library"
+		},
+		{
+			"model": "tag",
+			"codename": "add_tag",
+			"app_label": "tags"
+		},
+		{
+			"model": "tag",
+			"codename": "change_tag",
+			"app_label": "tags"
+		},
+		{
+			"model": "tag",
+			"codename": "delete_tag",
+			"app_label": "tags"
+		},
+		{
+			"model": "taggeditem",
+			"codename": "add_taggeditem",
+			"app_label": "tags"
+		},
+		{
+			"model": "taggeditem",
+			"codename": "change_taggeditem",
+			"app_label": "tags"
+		},
+		{
+			"model": "taggeditem",
+			"codename": "delete_taggeditem",
+			"app_label": "tags"
+		}
+	]
+}

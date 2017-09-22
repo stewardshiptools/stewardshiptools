@@ -1,0 +1,31 @@
+{% comment %}
+    This template is used as a xml file upload widget on the New development project page.
+{% endcomment %}
+
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load cedar_settings %}
+
+<div class="from-xml-section col s12 m6 offset-m5 card" style="display: none;">
+    <i class="material-icons from-xml-trigger right grey-text text-darken-5" style="padding-top:5px;cursor: pointer;">cancel</i>
+    <div class="" style="display:block;">
+        <form action="{% url 'development:project-create-xml' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class='form-errors' style="display:none;">
+                {{ form.errors }}
+            </div>
+           <div class="row tight-row">
+                {{ form.template_document|materializecss:"s12" }}
+                <input class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1 right" type="submit" value="Upload"/>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.from-xml-trigger').click(function (e) {
+            $('.from-xml-section').slideToggle();
+        });
+    });
+</script>

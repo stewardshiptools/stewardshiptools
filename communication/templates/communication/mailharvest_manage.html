@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load cedar_extras %}
+{% load staticfiles %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link href="{% static 'css/communication.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/task-mon.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Mail Harvest Management{% endblock %}
+{% block second_bar_secondary_title %}{% endblock %}
+{% block second_bar_secondary_content_right %} {% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="background-image">
+        <div class="row">
+            <div class="col s12">
+                <ul class="collection with-header">
+                    <li class="collection-header">
+                        <h5>Mail Accounts</h5>
+                    </li>
+                {% for ma in mail_accounts %}
+                    <li class="collection-item">
+                        <div>
+                            <span data-task-trigger-url="{% url 'celery-apply' task_name='communication.tasks.harvest_mail_account' %}?mail_account_id={{ ma.id }}">
+                                {{ ma }} (id {{ ma.id }})</span>
+                            <span class="secondary-content">
+                                <a href="#"
+                                   class="tooltipped-harvest task-trigger"
+                                   data-task-trigger-url="{% url 'celery-apply' task_name='communication.tasks.harvest_mail_account' %}?mail_account_id={{ ma.id }}"
+                                   data-task-parent-status-url="{% url 'communication:mailharvest-run-status' mail_account_id=ma.id %}"
+                                   data-task-status-url-mask="{% url 'celery-task_status' task_id='placeholder' %}"
+                                   data-task-revoke-url-mask="{% url 'celery-task_revoke' task_id='placeholder' %}"
+                                   data-tooltip="Harvest this account"
+                                   data-position="left">
+                                    <i class="material-icons start-icon">send</i>
+                                    <i class="material-icons running-icon">directions_run</i>
+                                </a>
+                                <a href="#"
+                                   class="tooltipped-harvest task-killer red-text"
+                                   data-tooltip="Stop task"
+                                   data-position="top">
+                                    <i class="material-icons">close</i>
+                                </a>
+                            </span>
+                        </div>
+                    </li>
+                {% endfor %}
+                    <li class="collection-item">
+                        <div>
+                            <span data-task-trigger-url="{% url 'celery-apply' task_name='communication.tasks.harvest_mail' %}">Harvest All Accounts</span>
+                            <span class="secondary-content">
+                                <a href="#"
+                                   class="tooltipped-harvest task-trigger"
+                                   data-task-trigger-url="{% url 'celery-apply' task_name='communication.tasks.harvest_mail' %}"
+                                   data-task-parent-status-url="{% url 'communication:mailharvest-run-status-all'%}"
+                                   data-task-status-url-mask="{% url 'celery-task_status' task_id='placeholder' %}"
+                                   data-task-revoke-url-mask="{% url 'celery-task_revoke' task_id='placeholder' %}"
+                                   data-tooltip="Run mail harvest"
+                                   data-position="left">
+                                    <i class="material-icons start-icon">send</i>
+                                    <i class="material-icons running-icon">directions_run</i>
+                                </a>
+                                <a href="#"
+                                   class="tooltipped-harvest task-killer red-text"
+                                   data-tooltip="Stop task"
+                                   data-position="top">
+                                    <i class="material-icons">close</i>
+                                </a>
+                            </span>
+                        </div>
+                    </li>
+                    <li class="collection-item grey lighten-3">
+                        <div>
+                            <strong class="">Authorize new gmail account</strong>
+                            <span class="secondary-content">
+                                <a href="{% url 'communication:initiate_gmail_auth' %}"
+                                   class="tooltipped-harvest"
+                                   data-tooltip="Add new gmail account"
+                                   data-position="left"
+                                ><i class="material-icons">add_circle</i></a>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <ul class="collection with-header">
+                    <li class="collection-header">
+                        <h5>Logs</h5>
+                    </li>
+                    <li class="collection-item">
+                        <div>
+                            {{ logfile_name }}
+                            <span class="secondary-content">
+                                <a href="{{ logfile_download_link }}"
+                                   class="tooltipped-harvest"
+                                   data-tooltip="Download log file"
+                                   data-position="left"
+                                ><i class="material-icons">file_download</i></a>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% comment %}
+        <div class="row">
+            <div class="col s12">
+                <ul class="collection with-header">
+                    <li class="collection-header">
+                        <h5>Task Control</h5>
+                    </li>
+                    <li class="collection-item">
+                        <div>
+                            <i class="material-icons orange-text" style="font-size:14px;">warning</i>
+                            Discard all waiting celery tasks. This is very dangerous.
+                            <span class="secondary-content">
+                                <a href="{{ logfile_download_link }}"
+                                   class="tooltipped-harvest red-text"
+                                   data-tooltip="Kill all tasks"
+                                   data-position="left"
+                                ><i class="material-icons">close</i></a>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% endcomment %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+    <script src="{% static 'js/task-mon.js' %}"></script>
+
+    <script>
+        $(document).ready(function (evt) {
+            $('.tooltipped-harvest').tooltip();
+        });
+
+    </script>
+{% endblock %}
+

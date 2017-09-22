@@ -1,0 +1,33 @@
+<ul class="collapsible" data-collapsible="accordion">
+    <li>
+        <div class="collapsible-header"><i class="material-icons">info_outline</i>About Spatial Reports</div>
+        <div class="collapsible-body"><p>
+
+            <strong>What are Spatial Reports?</strong> <br/>
+            A Spatial Report is a proximity query between two or more spatial layers. Another way to think of this is:<br/><br/>
+
+            "Given a location <b>HERE</b>, <b>WHAT</b> is near?"<br/><br/>
+
+            <strong>Terminology</strong> <br/>
+            <i class="tiny material-icons">label</i><strong>Report On Layer(s)</strong> - The layer, or layers, that
+            spatially bounds the query. This is the <b>HERE</b> in the query. We're only interested in things that are near
+            this <i>target</i>. The Report On Layer(s) has a default distance cap. If Report Against Layers do not
+            have a distance cap set, this default is used.<br/>
+            <i class="tiny material-icons">label</i><strong>Report Against Layer(s)</strong> - The layer or layers
+            containing potential <i>hits</i>: features that are proximal to the Report On Layer features. This is the
+            <b>WHAT</b> in the query.<br/>
+            <i class="tiny material-icons">label</i><strong>Distance cap</strong> - The distance up to which the
+            query is run. This helps to restrict spurious queries for huge areas. If features in the layers are 5.1 km
+            (and further) from each other, but the Distance Caps are all 5 km, then the Report will show no results.<br/>
+            <br/>
+            <strong>Use Examples</strong> <br/>
+            <i class="tiny material-icons">label</i>What sensitive streams and known fish observations (Report
+            Against Layers) are within 500m of a particular Development Project footprint (Report On Layer)<br/>
+            <i class="tiny material-icons">label</i>Determine what cultural and/or species records (Report Against
+            Layers) are within or near a proposed marine plan polygon (Report On Layers)<br/>
+            <i class="tiny material-icons">label</i>“What polygons in the marine plan layer (Report Against Layer)
+            and the sensitive streams (lines) layer (Report Against Layer) overlap or are near Project #2 (Report
+            On Layer)? And, if they are near, how near?”<br/>
+        </div>
+    </li>
+</ul>

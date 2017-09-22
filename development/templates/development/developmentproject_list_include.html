@@ -1,0 +1,26 @@
+{% load staticfiles %}
+
+<script type="text/javascript">
+    var developmentproject_list_attach_id = "{{ attach_id|escapejs }}";
+    var developmentproject_list_ajax_url = "{{ ajax_url|escapejs }}";
+    var developmentproject_list_show_pager = "{{ pager|escapejs }}";
+    var developmentproject_list_show_search = "{{ search|escapejs }}";
+    var developmentproject_list_show_set_page_size = "{{ set_page_size|escapejs }}";
+    var developmentproject_list_default_page_size = "{{ default_page_size|escapejs }}";
+    var developmentproject_list_show_set_sort = "{{ set_sort|escapejs }}";
+    var developmentproject_list_default_sort = "{{ default_sort|escapejs }}";
+    var developmentproject_list_show_reset = "{{ show_reset|escapejs }}";
+    var developmentproject_list_show_filters = "{{ show_filters|escapejs }}";
+    var consultation_stage_options = {{ stage_options|safe }};
+    var filing_code_options = {{ filing_code_options|safe }};
+    var people_options = {{ people_options|safe }};
+    var org_options = {{ org_options|safe }};
+    var tags_options = {{ tags_options|safe }};
+</script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/cedar-react-list.css' %}">
+<script type="text/javascript" src="{% static 'bower_components/jquery-typewatch/jquery.typewatch.js' %}"></script>
+<link href="{% static 'bower_components/select2/dist/css/select2.min.css' %}" rel="stylesheet"/>
+<link href="{% static 'css/materialize_select2.css' %}" rel="stylesheet"/>
+<script src="{% static 'bower_components/select2/dist/js/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'build/development/js/project_list.js' %}"></script>
+<script type="text/javascript" src="{% static 'build/cedar/js/cedar_list.js' %}"></script>

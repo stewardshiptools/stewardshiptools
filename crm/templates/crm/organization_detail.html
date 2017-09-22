@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load html_filters %}
+{% load crm %}
+
+{# Note: {{ block.super }} must appear in the {% block content %} tag for the following to work. #}
+{# Note: uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}{{ object.name }}{% endblock %}
+{% block second_bar_secondary_title %}{% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'crm.change_organization' }}"
+       href="{% url 'crm:organization-update'  object.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">edit</i>
+            &nbsp;Edit
+        </div>
+    </a>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <section>
+        <div class="row">
+            <div class="col s12 m4 l4">
+
+                <div class="row">
+                    <h5>Contact Info</h5>
+                    <div class="grey-text text-lighten">
+                        Email: <a href="mailto:http:{{ object.email }}">{{ object.email }}</a>
+                    </div>
+                    <div class="grey-text text-lighten">
+                        Phone: {{ object.phone|default_if_none:'' }}
+                    </div>
+                    <div class="grey-text text-lighten">
+                        Fax: {{ object.fax|default_if_none:'' }}
+                    </div>
+                    <div class="grey-text text-lighten">
+
+                        {% if object.website %}
+                            <a href="{{ object.website }}">Website</a>
+                        {% else %}
+                            Website:
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <h5>Address</h5>
+                    <div class="col s6 m3 l3 grey-text text-lighten">
+                        Mailing address:
+                    </div>
+                    <div class="col s6 m9 l9 grey-text text-lighten">
+                        {{ object.mailing_address|strip_html_wrap }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s6 m3 l3 grey-text text-lighten">
+                        Office address:
+                    </div>
+                    <div class="col s6 m9 l9 grey-text text-lighten">
+                        {{ object.office_address|strip_html_wrap }}
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m8 l8 thin-border-left-grey">
+                <div class="section info-panel-height-max">
+                    <div class="row">
+                        <div class="col s12">
+                            <h5> People:</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s10">
+                            <div id="person_list" class="row"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+    <!-- Area below can be used for more data... -->
+    <div class="row">
+        <div class="col l6 m12 s12">
+            <div class="row">
+                <h5>Notes:</h5>
+            </div>
+            <div class="row">
+                <div class="col s6 m9 l9 grey-text text-lighten">
+                    {{ object.notes|strip_html_wrap }}
+                </div>
+            </div>
+        </div>
+        <div class="col l6 m12 s12"></div>
+    </div>
+
+    <div class="row">
+        <div class="col l6 m12 s12"></div>
+        <div class="col l6 m12 s12"></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+    <script>
+        console.log("person_ajax_url:", "{{ person_info_ajax_url|escapejs }}");
+    </script>
+    {% react %}
+    {% react_dom %}
+    {% crm_person_list 'person_list' person_info_ajax_url pager=0 search=0 %}
+
+    <script>
+        current_nav_url = '{% url 'crm:organization-list' %}';
+    </script>
+{% endblock %}

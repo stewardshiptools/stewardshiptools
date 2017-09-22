@@ -1,0 +1,64 @@
+{% load html_filters %}
+{% load threadedcomments_tags %}
+{% load staticfiles %}
+{% load discussion %}
+{% load crm %}
+<link href="{% static 'css/comments.css' %}" rel='stylesheet'/>
+{#<link href="{% static 'css/communication.css' %}" rel="stylesheet"/>#}
+{#    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>#}
+
+<div class="comments_length teal-text">
+    <p><strong>{{ comment_list|length }} Comment{{ comment_list|pluralize }}</strong></p>
+</div>
+
+<div class="comments">
+    {% for comment in comment_list|fill_tree|annotate_tree %}
+        {% if comment.open %}
+            <ul class="comment_ul collection">
+        {% else %}
+            </li>
+        {% endif %}
+        <li class="comment_li collection-item" id="c{{ comment.id }}">{# c## is used by the absolute URL of the Comment model, so keep that as it is. #}
+            <img class="circle left" src="{{ comment.user.person|crm_get_avatar_url }}">
+            <div class="comment">
+                <div class="comment_info">
+                    <div class="comment_user">
+                        {% if comment.user.person %}
+                            <a href="{{ comment.user.person.get_absolute_url }}">
+                                {{ comment.user.first_name }} {{ comment.user.last_name }}
+                            </a>
+                        {% else %}
+                            {{ comment.user.first_name }} {{ comment.user.last_name }}
+                        {% endif %}
+                    </div>
+                    <div class="comment_data">
+                        {{ comment.submit_date|date:"d M Y, H:i" }}
+                    </div>
+                    <a data-comment-id="{{ comment.id }}" class="right comment_reply_link waves-effect waves-dark btn-flat white grey-text text-darken-1">
+                        <i class="material-icons">reply</i>
+                    </a>
+                </div>
+                <div class="comment_text grey-text text-darken-2">
+                    {{ comment.comment|strip_html_wrap }}
+                </div>
+                <div class="comment-reply" data-reply-comment-id="{{ comment.id }}" style="display:none;">
+                    {% render_cedar_comment_form object=object parent_id=comment.id%}
+                </div>
+            </div>
+            {% for close in comment.close %}
+                    </li>
+                </ul>
+            {% endfor %}
+
+    {% endfor %}
+    <script>
+        $(document).ready(function(e){
+            $('.comment_reply_link').click(function(e){
+                var reply_comment_id = $(this).attr('data-comment-id');
+                var reply_area = $("div.comment-reply[data-reply-comment-id='"+ reply_comment_id + "']");
+                $(reply_area).slideToggle();
+            }) ;
+{#            $("textarea[name='comment']").siblings().removeClass('active');#}
+         });
+    </script>
+</div>

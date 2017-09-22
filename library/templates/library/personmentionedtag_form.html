@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load cedar_extras %}
+{% load cedar_material_form %}
+{% load cedar_settings %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load crm %}
+
+{% block second_bar_page_title %}{% is_update_view "Update" "New" as title_text %} Person{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }}{% endblock %}
+{% block second_bar_secondary_content_right %}
+    {#    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'library.change_personmentionedtag' }}"#}
+    {#       href="{% url 'library:personmentionedtag-detail' object.id %}">#}
+    {#        <div class="valign-wrapper">#}
+    {#            <i class="material-icons">cancel</i>#}
+    {#            &nbsp;Cancel#}
+    {#        </div>#}
+    {#    </a>#}
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% if frm_item.errors %}
+            <div class="row yellow lighten-3 form-error-div">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+        <div class="row">
+            {% csrf_token %}
+            {#                    {{ form.errors }}#}
+            <div class="row tight-row">
+                {{ form.name|materializecss:"s12" }}
+            </div>
+            <div class="row tight-row">
+                {{ form.description|materializecss:"s12" }}
+            </div>
+        </div>
+    </form>
+
+{% endblock content %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function(e){
+            console.log("init stuff");
+            $('.toggler').click(function(evt){
+                var text = $(this).children('i').text();
+                var target_cls = "." + $(this).attr('data-toggle-target-class');
+
+                if (text == 'keyboard_arrow_right'){
+                    $(target_cls).slideDown();
+                    Materialize.showStaggeredList(target_cls + " ul");
+                    $(this).children('i').text('keyboard_arrow_down');
+                }
+                else{
+                    $(target_cls).slideUp();
+                    $(this).children('i').text('keyboard_arrow_right');
+                }
+            });
+        });
+    </script>
+
+{% endblock javascripts%}

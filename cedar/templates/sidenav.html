@@ -1,0 +1,67 @@
+{% load staticfiles %}
+{% load cedar_extras %}
+
+<nav class="blue darken-1" role="navigation">
+    <div class="nav-wrapper">
+        <div class="blue darken-1">
+            <a href="{% url 'home' %}" class="brand-logo hide-on-large-only" >
+                <div class="valign-wrapper">
+                    <img src="{% static 'css/cedarbox_icon_wht.png' %}" id="cedarbox-icon-white">&nbsp;&nbsp;<strong>CedarBox</strong>
+                </div>
+            </a>
+            <div class="hide-on-large-only">{% user_menu user_menu_id="med_small_screen" %}</div>
+            <a id="sidenav-collapse-btn" href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="side-nav fixed blue darken-1 grey-text text-lighten-2 " id="mobile-nav">
+                <li>
+                    <a href="{% url 'home' %}" class="hide-on-med-and-down">
+                        <div class="valign-wrapper">
+                            <img src="{% static 'css/cedarbox_icon_wht.png' %}" id="cedarbox-icon-white" />&nbsp;&nbsp;
+                            <span class="grey-text text-lighten-5">
+                                <h5>CedarBox</h5>
+                            </span>
+                        </div>
+                    </a>
+                </li>
+                <ul class="collapsible" data-collapsible="expandable">
+
+                    {% include 'crm/sidenav.html' %}
+                    {% include 'heritage/sidenav.html' %}
+                    {% include 'development/sidenav.html' %}
+                    {% include 'ecosystems/sidenav.html' %}
+                    {% include 'geoinfo/sidenav.html' %}
+                </ul>
+                {% if not user.is_authenticated %}
+                    <li><a class="grey-text text-lighten-2" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="row hide-on-med-and-down">
+            <div class="col s10 offset-s2 m6 offset-m6 l4 offset-l8">
+                {% user_menu user_menu_id="large_screen" %}
+            </div>
+        </div>
+    </div>
+
+</nav>
+
+
+{% block nav-js %}
+<script>
+    {% comment %}
+        Override this url in a template if you are accessing a url that doesn't
+        map well to a nav link (eg Person Details should map to "People"
+
+        UPDATE:
+            while some templates still override this url in template javascript,
+            it is preferable to start using the NavMixin class and setting
+            the nav url in the class itself.
+
+    {% endcomment %}
+    {%  if not nav_url %}
+        var current_nav_url = '{{ request.path|safe }}';
+    {% else %}
+        var current_nav_url = '{{ nav_url|safe }}';
+    {% endif %}
+</script>
+    <script type="text/javascript" src="{% static 'js/sidenav.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Delete Ecosystems Location{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }} {% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2"
+       href="{{ view.get_cancel_url }}">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">cancel</i>
+            &nbsp;Cancel
+        </div>
+    </a>
+{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="section">
+        <div class="row">
+            <div class="col s12">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <p>Are you sure you want to delete <strong>{{ object }}</strong> along with its {{ object.gisfeature_set.count }}
+                        feature{{ object.gisfeature_set.count|pluralize }}?</p>
+                    <input class="waves-effect waves-light btn grey lighten-4 red-text text-darken-1" type="submit" value="Confirm delete"/>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        {% if object.project %}
+            var current_nav_url = '{% url "ecosystems:project-list" %}';
+        {% else %}
+            var current_nav_url = '{% url "ecosystems:gislayer-list" %}';
+        {% endif %}
+    </script>
+
+{% endblock %}

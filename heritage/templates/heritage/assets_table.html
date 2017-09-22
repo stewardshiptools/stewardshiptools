@@ -1,0 +1,11 @@
+{% load staticfiles %}
+
+<div id="{{ table_id }}"></div>
+<script type="text/javascript">
+
+    var table_id = "{{ table_id|escapejs }}";
+    var ajax_url = "{{ ajax_url|escapejs }}";
+    console.log("build table id:", table_id, " ajax url:", ajax_url);
+
+</script>
+<script type="text/babel" src="{% static 'heritage/js/assets_table.js' %}"></script>

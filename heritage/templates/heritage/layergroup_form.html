@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Dataset
+{% endblock %}
+{% block second_bar_secondary_title %}{{ view.report.name }}
+   {{ layergroup }}
+{% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    {% is_update_view "Update" "New" as button_text %}
+
+    <div class="section">
+        <div class="row">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    {{ form.name|materializecss:"s12" }}
+                </div>
+                <div class="row">
+                    {#                    {{ form.data|materializecss }}#}
+                    <div class="col s12">
+                        <label>Data</label>
+                        {{ form.data }}
+                    </div>
+                </div>
+                {{ form.interview.as_hidden }}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+     <script>
+        var current_nav_url = '{% url "heritage:interviews" %}';
+    </script>
+
+{% endblock %}

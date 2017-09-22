@@ -1,0 +1,44 @@
+{% extends 'search/results/search_result_base.html' %}
+{% load cedar_extras %}
+
+{% block result %}
+    {{ block.super }}
+
+    {% get_dict_val object_list_subtexts result.pk as result_subtexts %}
+
+    <td class="tight-table-row">
+        <div class="row tight-row">
+            <div class="col s12 m8 l8" style="padding: 0 0.05rem;">
+                <div class="valign-wrapper">
+                    <i class="material-icons start-icon grey-text">assignment_turned_in</i>
+                    &nbsp;<strong><span class="teal-text text-darken-5">Case Brief:</span></strong>
+                    <a class="tooltipped" data-tooltip="View" href="{% url 'library:casebrief-detail' result.object.id %}">
+                        &nbsp;{{ result.object.story_title }}
+                    </a>
+                </div>
+                <div class="col s12">
+                    <div class="result-text">
+                        <span class="teal-text text-darken-5">Issues:</span>
+                        &nbsp;{{ result.object.issues | truncatechars:100 | linebreaksbr}}
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m4 l4" style="padding: 0 0.05rem;">
+                <a href="#!" class="btn-flat waves-effect tight-button"
+                   onclick="showSubtexts('#subtext-list-{{ result.pk }}');">Show/Hide
+                    Excerpt{{ result_subtexts|pluralize }} ({{ result_subtexts|length }})</a>
+            </div>
+        </div>
+        <div class="row tight-row">
+
+            <ul id='subtext-list-{{ result.pk }}' class="collection" style="display:none">
+                {% for subtext in result_subtexts %}
+                    <li class="collection-item" style="opacity:0;">
+                        {{ subtext|replace_highlight_tags:"highlighted"|safe|linebreaks }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </td>
+
+{% endblock result %}

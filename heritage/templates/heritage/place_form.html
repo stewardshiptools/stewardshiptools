@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+
+{% load leaflet_tags %}
+{% load cedar_extras %}
+{% load cedar_material_form %}
+{% load cedar_settings %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load crm %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    {% leaflet_css plugins="forms,fullscreen" %}
+
+    <style>
+        #id_geometry-map {
+            height: 600px;
+        }
+    </style>
+{% endblock %}
+
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Named Place{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }}{% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    {# This is to be used by the name forms to check if this is an update view #}
+    {% is_update_view 1 0 as update_view %}
+
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if form.errors %}
+            <div class="row yellow lighten-3 form-error-div">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+        <div style="display:none;">
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col s12 m6 l8">
+                <div class="row">
+                    {{ form.name | materializecss:"s12 m12 l9" }}
+                    {{ form.add_to_community_map | materializecss:"s12 m12 l3" }}
+                    <div class="col s12">
+                        <span style="width: 100%;">
+                        {{ form.place_types | materialselect2 }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col s12">
+                    <ul class="collapsible" data-collapsible="expandable">
+                        <li>
+                            <div class="collapsible-header grey-text grey lighten-4 active">
+                                <i class="material-icons">subject</i> Notes
+                            </div>
+                            <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                                <div class="row">
+                                    {{ form.notes|materializecss }}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col s12">
+                    <ul class="collapsible" data-collapsible="expandable">
+                        <li>
+                            <div class="collapsible-header grey-text grey lighten-4 active">
+                                <i class="material-icons">map</i> Location
+                            </div>
+                            <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                                {{ form.geometry }}
+                                {% for error in form.geometry.errors %}
+                                    <span class="help-block orange-text {{ form.error_css_class }}">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col s12 m6 l4">
+                <div class="row">
+                    <div class="col s12">
+                        <ul class="collapsible" data-collapsible="expandable">
+                            {{ alternate_name_formset.management_form }}
+                            <li>
+                                <div class="collapsible-header grey-text grey lighten-4 active">
+                                    <i class="material-icons">label</i> Alternate name(s)
+                                </div>
+                                <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                                    {% for name_form in alternate_name_formset.forms %}
+                                        <div class="row alternate-place-name alternate-name-{{ forloop.counter0 }}">
+                                            {% if not forloop.first %}
+                                                <div class="divider"></div>
+                                            {% endif %}
+
+                                            {% if update_view %}
+                                                {{ name_form.name|materializecss:"s8" }}
+                                                {{ name_form.DELETE|materializecss:"s4" }}
+                                            {% else %}
+                                                {{ name_form.name|materializecss }}
+                                            {% endif %}
+
+                                            {% for hidden in name_form.hidden_fields %}
+                                                {{ hidden }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endfor %}
+                                    <div class="row">
+                                        <a id="alternate_name_add_another"
+                                           style="margin-right: 1rem;"
+                                           class="right waves-effect waves-light btn grey lighten-4 grey-text text-darken-1 waves-input-wrapper">
+                                            <i class="material-icons left">add</i>Add another
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col s12">
+                        <ul class="collapsible" data-collapsible="expandable">
+                            {{ common_name_formset.management_form }}
+                            <li>
+                                <div class="collapsible-header grey-text grey lighten-4 active">
+                                    <i class="material-icons">label</i> common name(s)
+                                </div>
+                                <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                                    {% for name_form in common_name_formset.forms %}
+                                        <div class="row common-place-name common-name-{{ forloop.counter0 }}">
+                                            {% if not forloop.first %}
+                                                <div class="divider"></div>
+                                            {% endif %}
+
+                                            {% if update_view %}
+                                                {{ name_form.name|materializecss:"s8" }}
+                                                {{ name_form.DELETE|materializecss:"s4" }}
+                                            {% else %}
+                                                {{ name_form.name|materializecss }}
+                                            {% endif %}
+
+                                            {% for hidden in name_form.hidden_fields %}
+                                                {{ hidden }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endfor %}
+                                    <div class="row">
+                                        <a id="common_name_add_another"
+                                           style="margin-right: 1rem;"
+                                           class="right waves-effect waves-light btn grey lighten-4 grey-text text-darken-1 waves-input-wrapper">
+                                            <i class="material-icons left">add</i>Add another
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col s12">
+                        <ul class="collapsible" data-collapsible="expandable">
+                            <li>
+                                <div class="collapsible-header grey-text grey lighten-4 active">
+                                    <i class="material-icons">label</i> Gazetteer Name(s)
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <label for="{{ form.label_for_id }}">Gazetteer Name(s)</label>
+                                            {{ form.gazetteer_names }}
+                                            {% for error in form.gazetteer_names.errors %}
+                                                <p class="help-block orange-text">{{ error }}</p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div id="alternate_name_empty_form" style="display: none;">
+        <div class="row alternate-place-name name-__prefix__" style="display: none;">
+            <div class="divider"></div>
+
+            {% if update_view %}
+                {{ alternate_name_formset.empty_form.name | materializecss:"s8" }}
+                {{ alternate_name_formset.empty_form.DELETE|materializecss:"s4" }}
+            {% else %}
+                {{ alternate_name_formset.empty_form.name | materializecss }}
+            {% endif %}
+
+            {% for hidden in alternate_name_formset.empty_form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+        </div>
+    </div>
+    <div id="common_name_empty_form" style="display: none;">
+        <div class="row common-place-name name-__prefix__" style="display: none;">
+            <div class="divider"></div>
+
+            {% if update_view %}
+                {{ common_name_formset.empty_form.name | materializecss:"s8" }}
+                {{ common_name_formset.empty_form.DELETE|materializecss:"s4" }}
+            {% else %}
+                {{ common_name_formset.empty_form.name | materializecss }}
+            {% endif %}
+
+            {% for hidden in common_name_formset.empty_form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block javascripts %}
+    {% leaflet_js plugins="forms,fullscreen" %}
+
+    <script>
+        $(document).ready(function () {
+            // Code to add another alternate name field when add another is clicked...
+            $('#alternate_name_add_another').click(function (e) {
+                var form_idx = $('#id_alternateplacename_set-TOTAL_FORMS').val();
+
+                var empty_html = $('#alternate_name_empty_form').html().replace(/__prefix__/g, parseInt(form_idx));
+                var last_form_group = $('form .alternate-place-name').last();
+                last_form_group.after(empty_html);
+
+                // Manually sync up the management_form data so django can properly parse the formset output.
+                $('#id_alternateplacename_set-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+
+                $('.alternate-place-name.name-' + form_idx).slideDown();
+            });
+
+            // Code to add another common name field when add another is clicked...
+            $('#common_name_add_another').click(function (e) {
+                var form_idx = $('#id_commonplacename_set-TOTAL_FORMS').val();
+
+                var empty_html = $('#common_name_empty_form').html().replace(/__prefix__/g, parseInt(form_idx));
+                var last_form_group = $('form .common-place-name').last();
+                last_form_group.after(empty_html);
+
+                // Manually sync up the management_form data so django can properly parse the formset output.
+                $('#id_commonplacename_set-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+
+                $('.common-place-name.name-' + form_idx).slideDown();
+            });
+        });
+    </script>
+    <script>
+        $(window).on('map:init', function (e) {
+            let detail = e.originalEvent ?
+                e.originalEvent.detail : e.detail;
+
+            // create a fullscreen button and add it to the map
+            L.control.fullscreen({
+                position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, defaut topleft
+                title: 'Fullscreen !', // change the title of the button, default Full Screen
+                titleCancel: 'Exit fullscreen mode', // change the title of the button when fullscreen is on, default Exit Full Screen
+            }).addTo(detail.map);
+        });
+    </script>
+{% endblock javascripts %}

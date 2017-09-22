@@ -1,0 +1,10 @@
+{% load staticfiles %}
+
+<script type="text/javascript">
+    var heritage_feature_list_attach_id = "{{ attach_id|escapejs }}";
+    var heritage_feature_list_ajax_url = "{{ ajax_url|escapejs }}";
+    var heritage_feature_list_show_pager = {{ pager|escapejs }};
+    var heritage_feature_list_show_search = {{ search|escapejs }};
+</script>
+<script type="text/javascript" src="{% static 'build/geoinfo/js/feature_list_component.js' %}"></script>
+<script type="text/javascript" src="{% static 'build/heritage/js/feature_list.js' %}"></script>

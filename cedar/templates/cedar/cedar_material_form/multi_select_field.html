@@ -1,0 +1,22 @@
+{% load cedar_material_form %}
+{% load cedar_extras %}
+
+
+{#  THis is mostly just a backup of a working multiple select I had going on before. Could be of #}
+{#  use if we want to go back. This needs little work before it will work in a modularlized way.#}
+
+
+<label class="control-label
+        {{ classes.label }}{% if form.cedar_assessor.field.required %}{{ form.required_css_class }}{% endif %}">{{ form.cedar_assessor.label }}</label>
+<select multiple placeholder="Select company contact" name="{{ form.cedar_assessor.name }}"
+        id="{{ form.cedar_assessor.auto_id }}">
+    <option style='display: none;' value="" disabled></option>
+    {% for choice in form.cedar_assessor.field.choices %}
+        <option {{ choice|is_choice_selected:form.cedar_assessor.value }} value="{{ choice.0 }}">{{ choice.1 }} </option>
+    {% endfor %}
+</select>
+{% if form.cedar_assessor.help_text %}
+    <p class="help-block">
+        {{ form.cedar_assessor.help_text|safe }}
+    </p>
+{% endif %}

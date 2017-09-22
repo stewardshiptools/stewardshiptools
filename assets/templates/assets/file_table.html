@@ -1,0 +1,11 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/library.css' %}"/>
+<script type="text/javascript">
+
+    var table_id = "{{ table_id|escapejs }}";
+    var secure_asset_list_ajax_url = "{{ secure_asset_list_ajax_url|escapejs }}";
+    var extra_query = "{{ ajax_url_extra_query|escapejs}}"; // This should always be appended to the end of the query url.
+
+</script>
+<script type="text/javascript" src="{% static 'bower_components/jquery-typewatch/jquery.typewatch.js' %}"></script>
+<script type="text/javascript" src="{% static 'build/assets/js/secureasset_table.js' %}"></script>

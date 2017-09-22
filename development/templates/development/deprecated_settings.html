@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load crm %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link href="{% static 'bower_components/select2/dist/js/select2.min.js' %}" rel="stylesheet"/>
+    <link href="{% static 'css/materialize_select2.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Settings{% endblock %}
+{% block second_bar_secondary_title %}{% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="section">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col s12 m6 l4 help-block">
+                    <p>Select a prefix to use for Development Project codes and for mailharvesting.  This will be used
+                    to create the code that gets put in emails to mark them for harvesting and attaching to
+                    development project.  To manage your prefixes or if no codes appear to choose from, go to
+                        <a href="{% url "admin:communication_harvestcodeprefix_changelist" %}">
+                            the harvestcode admin page
+                        </a>.</p>
+                </div>
+                {{ form.project_code_prefix|materializecss:"s12 m6 l8" }}
+            </div>
+            <div class="divider"></div>
+            <div class="row"></div>
+            <div class="row">
+                <div class="col s12">
+                    <input class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1" type="submit" value="Save settings"/>
+                </div>
+            </div>
+            <div class="row"></div>
+        </form>
+
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    <script src="{% static 'bower_components/select2/dist/js/select2.min.js' %}"></script>
+    <script>
+        var current_nav_url = '{% url 'development:settings' %}';
+
+        $(document).ready(function () {
+
+            //Set up non-multi-selects with normal materialize select:
+            $('select:not([multiple])').not("#file_number_empty_form select").each(function () {
+                $(this).material_select();
+            });
+        });
+
+    </script>
+
+
+{% endblock %}

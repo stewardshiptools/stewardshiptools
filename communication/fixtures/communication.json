@@ -1,0 +1,186 @@
+[
+	{
+		"pk": 171,
+		"model": "communication.communication",
+		"fields": {
+			"comm_type_oid": 4,
+			"comm_type_ct": 125,
+			"from_contacts": [],
+			"to_contacts": [],
+			"date": "2016-08-19T22:02:54.328Z",
+			"subject": "misc phone call from Mom"
+		}
+	},
+	{
+		"pk": 172,
+		"model": "communication.communication",
+		"fields": {
+			"comm_type_oid": 3,
+			"comm_type_ct": 127,
+			"from_contacts": [],
+			"to_contacts": [],
+			"date": "2016-08-19T22:02:56.355Z",
+			"subject": "Random Spam Fax"
+		}
+	},
+	{
+		"pk": 62,
+		"model": "communication.communicationrelation",
+		"fields": {
+			"related_object_ct": 63,
+			"comm": 171,
+			"related_object_oid": 141
+		}
+	},
+	{
+		"pk": 63,
+		"model": "communication.communicationrelation",
+		"fields": {
+			"related_object_ct": 63,
+			"comm": 172,
+			"related_object_oid": 141
+		}
+	},
+	{
+		"pk": 2,
+		"model": "communication.mailaccount",
+		"fields": {
+			"username": "django@example.com",
+			"protocol": "imap",
+			"server_address": "mail.example.com",
+			"email_address": "django@example.com",
+			"password": "c^5a2!y!",
+			"ssl": false
+		}
+	},
+	{
+		"pk": 11,
+		"model": "communication.mailbox",
+		"fields": {
+			"active": true,
+			"incoming": false,
+			"folder_name": "INBOX.Sent",
+			"mail_account": 2
+		}
+	},
+	{
+		"pk": 12,
+		"model": "communication.mailbox",
+		"fields": {
+			"active": false,
+			"incoming": true,
+			"folder_name": "INBOX.old-messages",
+			"mail_account": 2
+		}
+	},
+	{
+		"pk": 13,
+		"model": "communication.mailbox",
+		"fields": {
+			"active": false,
+			"incoming": true,
+			"folder_name": "INBOX.Trash",
+			"mail_account": 2
+		}
+	},
+	{
+		"pk": 14,
+		"model": "communication.mailbox",
+		"fields": {
+			"active": false,
+			"incoming": true,
+			"folder_name": "INBOX.Drafts",
+			"mail_account": 2
+		}
+	},
+	{
+		"pk": 15,
+		"model": "communication.mailbox",
+		"fields": {
+			"active": true,
+			"incoming": true,
+			"folder_name": "INBOX.Testquote",
+			"mail_account": 2
+		}
+	},
+	{
+		"pk": 16,
+		"model": "communication.mailbox",
+		"fields": {
+			"active": true,
+			"incoming": true,
+			"folder_name": "INBOX.Spam",
+			"mail_account": 2
+		}
+	},
+	{
+		"pk": 18,
+		"model": "communication.mailbox",
+		"fields": {
+			"active": true,
+			"incoming": true,
+			"folder_name": "INBOX.django_folder.django_subfolder",
+			"mail_account": 2
+		}
+	},
+	{
+		"pk": 19,
+		"model": "communication.mailbox",
+		"fields": {
+			"active": true,
+			"incoming": true,
+			"folder_name": "INBOX",
+			"mail_account": 2
+		}
+	},
+	{
+		"pk": 20,
+		"model": "communication.mailbox",
+		"fields": {
+			"active": true,
+			"incoming": true,
+			"folder_name": "INBOX.django_folder",
+			"mail_account": 2
+		}
+	},
+	{
+		"pk": 1,
+		"model": "communication.harvestcodeprefix",
+		"fields": {
+			"active": true,
+			"mailboxes": [
+				15,
+				16,
+				18,
+				19,
+				20,
+				11,
+				12,
+				13,
+				14
+			],
+			"prefix": "#HEYWUDDUP-",
+			"content_type": 63
+		}
+	},
+	{
+		"pk": 4,
+		"model": "communication.phonecall",
+		"fields": {
+			"to_number": "(604) 222-2222",
+			"notes": null,
+			"duration": null,
+			"from_number": "(604) 222-2222"
+		}
+	},
+	{
+		"pk": 3,
+		"model": "communication.fax",
+		"fields": {
+			"document": null,
+			"to_number": "(778) 555-1234",
+			"notes": null,
+			"from_number": "(778) 222-1230"
+		}
+	}
+]

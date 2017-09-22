@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load thumbnail %}
+
+{# Note: {{ block.super }} must appear in the {% block content %} tag for the following to work. #}
+{# Note: uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Heritage Projects{% endblock %}
+{% block second_bar_secondary_title %}{{ object_list.count }} Project{{ object_list|pluralize }}{% endblock %}
+{% block second_bar_secondary_content_right %}
+    {#            {{ "disabled" as can_add_project }}#}
+
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'heritage.add_project' }}"
+       href="{% url 'heritage:project-create' %}">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">add_circle</i>
+            &nbsp;Project
+        </div>
+    </a>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12">
+            <div id="content">
+                <div class="projectList">
+                    <div class="collection">
+                        {% for project in project_list %}
+                            <div class="col s12 m4 l3 heritage-project-dashboard-card-container">
+                                <div class="heritage-project-dashboard-card big-card card white hoverable">
+                                    <div class="card-image waves-effect waves-block waves-light">
+                                        {% if project.picture %}
+                                            <img src="{{ project.picture|thumbnail_url:'card' }}" alt="" class="activator" width="100"/>
+                                        {% else %}
+                                            <img src="{% static 'heritage/img/trees_700-500.jpg' %}" alt="" class="activator" width="100"/>
+                                        {% endif %}
+                                    </div>
+                                    <div class="card-content">
+                                        <span class="card-title activator">
+                                            <span class="col s10 activator">{{ project.name }}</span>
+                                            <i class="material-icons right col s2">more_vert</i>
+                                        </span>
+                                        <br/>
+                                    </div>
+                                    <div class="card-action">
+                                        <a href="{% url 'heritage:project-detail' pk=project.id %}">View Details</a>
+                                    </div>
+                                    <div class="card-reveal">
+                                        <span class="card-title grey-text text-darken-4">{{ project.name }}<i class="material-icons right">close</i></span>
+                                        <strong>Participants:</strong> {{ project.participant_count }}<br/>
+                                        <strong>Interviews:</strong> {{ project.interview_set.count }}<br/>
+                                        <strong>Documents:</strong> {{ project.document_count }}<br/>
+
+                                        {% if project.start_date %}
+                                            <strong>Start date:</strong> {{ project.start_date }}<br/>
+                                        {% endif %}
+                                        {% if project.end_date %}
+                                            <strong>End date:</strong> {{ project.end_date }}<br/>
+                                        {% endif %}
+
+                                        {% if project.location %}
+                                            <strong>Location: </strong> {{ project.location }}<br/>
+                                        {% endif %}
+
+                                        {% if project.background %}
+                                            <p><strong>Description: </strong></p>
+                                            <p class="overflow-ellipsis">
+                                                {{ project.background|truncatechars:200|linebreaksbr }}
+                                            </p>
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script type="text/javascript" >
+        var ajax_url = "{{ ajax_url }}";
+    </script>
+{% endblock content %}
+
+{% block javascripts %}
+    <!-- todo Comment out the babel cdn line for production -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script> -->
+
+    <script type="text/javascript" src="{% static 'lib/jquery-quickfit/jquery.quickfit.js' %}"></script>
+    <script>
+        $('div.heritage-project-dashboard-card').find('span.card-title').find('span').quickfit({min: 10, max: 20});
+        $( window ).resize(function(e) {
+            $('div.heritage-project-dashboard-card').find('span.card-title').find('span').quickfit({min: 10, max: 20});
+        });
+    </script>
+{% endblock %}

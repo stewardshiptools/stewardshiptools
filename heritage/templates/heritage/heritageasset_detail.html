@@ -1,0 +1,8 @@
+{% extends 'assets/genericasset_detail.html' %}
+
+{% block javascripts %}
+    {{ block.super }}
+    <script>
+        var current_nav_url = '{% url 'heritage:secureasset-dashboard' %}';
+    </script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="row">
+            <div class="progress">
+                <div class="indeterminate"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            {% block detail-content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

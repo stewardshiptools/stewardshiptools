@@ -1,0 +1,53 @@
+{% load static %}
+
+<ul>
+    <li>
+	  <div class="collapsible-header"><i class="material-icons">list</i>Spatial Report Page Instructions</div>
+      <div class="collapsible-body"><p></div>
+    </li>
+</ul>
+
+<strong>Notes</strong> 
+<br/>
+<i class="material-icons">code</i>The Report query script starts as soon as the page loads. Note the moving band of colour at the top of the page. This means that the query is actively comparing the Report On and the Report Against layers' features.<br/>
+<i class="material-icons">code</i>Calculating proximity hits and distances is an intensive task for the server, especially if the layers are rich with features. <strong>Be patient.</strong><br/>
+<i class="material-icons">code</i>You can interupt the query at any time - it will not damage the database. Interupt the query script by changing one of the layers (items) or by clicking DISMISS on the bottom-left of the page.<br/>
+<br/>
+<strong>Explore the Report Page</strong> <br/>
+Each Report page has (1) a header, (2) a layers column on the left side, and (3) a main Results section on the right.
+<br/><br/>
+<strong>1. Header parts</strong>
+<ul class="collection">
+   <li class="collection-item">Report name</li>   
+   <li class="collection-item">Results statistic (number of overlapping or proximal features)</li>
+   <li class="collection-item">An <i class="material-icons">mode_edit</i>EDIT button - click to change the Report name.</li>
+   <li class="collection-item">A <i class="material-icons">delete</i>DELETE button - click to delete this Report.</li>
+   <li class="collection-item">A help button.</li>
+</ul>   
+</br>
+<strong>2. Layers Column parts</strong><br/>
+<ul class="collection">
+   <li class="collection-item">Report name</li>   
+   <li class="collection-item">Results statistic (number of overlapping or proximal features)</li>
+   <li class="collection-item">Report on layer (item) - <strong>Change</strong> the layer by clicking on the <i class="material-icons">mode_edit</i> pencil icon. You could, for example, change its distance cap.</li> 
+   <li class="collection-item">Report against layers (items) - <strong>Add</strong> another layer by clicking on the blue + button; <strong>Change</strong> a layer by clicking on the <i class="material-icons">mode_edit</i> pencil icon</li>;<strong>Remove</strong>  a layer from the lsit of Report on layers by clicking on the <i class="material-icons">delete</i> garbage can icon</li>.     
+</ul>
+<br/>
+<strong>3. Main Results Report parts</strong>
+<ul class="collection">
+   <li class="collection-item"><strong>LIST tab</strong> - provides a list of all 'hits'; Report aginst features that are intersecting and/or proximal to the Report on target layer's feature(s).</li>   
+   <li class="collection-item"><strong>MAP tab</strong> - shows a map of the Report on (taget layer features and any Report against layer features that meet the distance cap rule. The map usually loads faster as distance calculations do not have to be completed.</li>  
+</ul>
+<br/>
+
+<strong>3.b. How to use the Slippy Map</strong>
+<br/>Try these:
+<ul class="collection">
+   <li class="collection-item">Map feature(s) (red)- the Report on layer features. Click for feature info (pop-up).</li>
+   <li class="collection-item">Map feature(s) (blue) - the 'hits', the results, features that are proximal or overlapping. Click for feature info (pop-up). </li>
+   <li class="collection-item">Zoom - click the +/- buttons at the top-left of the map OR use your scroll wheel OR pin gesture on a tablet or touch screen</li>
+   <li class="collection-item">Pan - drag you cursor or finger/stylus on a touch screen</li>
+   <li class="collection-item">Show in Full Screen - click <img src="{% static 'bower_components/leaflet.fullscreen/icon-fullscreen.png' %} "> to see the map expand to show in your full browser window</li>
+   <li class="collection-item">Base Map - Use the radio buttons in the Layer Legend, top-right of map, to choose a base map like Open Street Map (OSM) Mapquest or Mapquest Satellite </li>
+   <li class="collection-item">Overlay Layer(s) - turn on/off the overlay layers using the checkmark buttons below the Basemap layers. </li>
+</ul>

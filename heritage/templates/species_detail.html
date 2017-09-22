@@ -1,0 +1,35 @@
+{% extends 'detail.html' %}
+{% load thumbnail %}
+
+{% block title %}{{ object.description }}{% endblock %}
+
+{% block detail-content %}
+    <table id="species-detail-table">
+        <tbody>
+        <tr>
+            <td class="td-key"></td>
+            <td class="value"><h2>{{ object.description }}</h2></td>
+        </tr>
+        <tr>
+            <td class="td-key"><h4>Species group</h4>
+            </td>
+            <td class="td-value"><h4><a
+                    href="{% url 'heritage:species-groups' %}">{{ object.species_group.name }}</a></h4></td>
+        </tr>
+        <tr>
+            <td class="td-key"><h4>Name
+                equivalents</h4>
+            </td>
+            <td class="td-value"><h4>{{ object.name_equivalents }}</h4></td>
+        </tr>
+        <tr>
+            <td class="td-key"><h4>Other detail</h4></td>
+            <td class="td-value"><h4>{{ object.other_detail }}</td>
+        </tr>
+        <tr>
+            <td class="td-key"><h4>Photo</h4></td>
+            <td class="td-value"><img src="{{ object.photo|thumbnail_url:'detail' }}" alt="" /></td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

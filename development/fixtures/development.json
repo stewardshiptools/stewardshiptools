@@ -1,0 +1,66 @@
+[
+  {
+    "fields": {
+      "DEV_PROJECT_CODE_PREFIX": "DEVT-PRJ#"
+    },
+    "pk": 1,
+    "model": "development.setting"
+  },
+  {
+    "fields": {
+      "cedar_project_name": "Log Drop - Johnstone Inlet - WFP - 02032016",
+      "company_contact": [
+        7
+      ],
+      "govt_project_code": "091192031-2",
+      "consultation_stage": 2,
+      "tags": [
+        1,
+        2
+      ],
+      "government_contact": [
+        6,
+        7
+      ],
+      "cedar_assessor": [
+        3,
+        5,
+        6,
+        7,
+        8
+      ],
+      "cedar_project_code": "DEVT-PRJ#-1",
+      "initial_date": "2016-03-17"
+    },
+    "pk": 1,
+    "model": "development.developmentproject"
+  },
+  {
+    "fields": {
+      "tag": "Forestry"
+    },
+    "pk": 1,
+    "model": "development.projecttag"
+  },
+  {
+    "fields": {
+      "tag": "Land resources"
+    },
+    "pk": 2,
+    "model": "development.projecttag"
+  },
+  {
+    "fields": {
+      "stage_name": "Initial"
+    },
+    "pk": 1,
+    "model": "development.consultationstage"
+  },
+  {
+    "fields": {
+      "stage_name": "Information being collected"
+    },
+    "pk": 2,
+    "model": "development.consultationstage"
+  }
+]

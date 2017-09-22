@@ -1,0 +1,19 @@
+{% comment %}
+This file is for loading js files needed for the map.  It is separated so that they need only be added in one place
+for both communitymap templates.
+{% endcomment %}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load leaflet_tags %}
+
+{% react %}
+{% react_dom %}
+{% leaflet_js %}
+<script>
+    window.LEAFLET_SETTINGS = {{ leaflet_settings|safe }};
+    window.LEAFLET_SETTINGS.isAppPage = {{ is_app_page|safe }};
+    window.LEAFLET_SETTINGS.place_ajax_url = "{{ place_ajax }}";
+</script>
+{#<script type="text/javascript" src="{% static 'build/communitymap/js/communitymap.js' %}"></script>#}
+<script type="text/javascript" src="{% static 'communitymap/js/communitymap.js' %}"></script>

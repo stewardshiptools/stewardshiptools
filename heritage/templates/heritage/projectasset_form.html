@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load crm %}
+
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Heritage Project File{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }} {% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="section">
+        <div class="row">
+            <div class="col s12">
+                <h5>Project file for {{ form.fields.project.initial }}</h5>
+            </div>
+        </div>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% include 'heritage/projectasset_form_fields.html' with form=form %}
+        </form>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    <script>
+        var current_nav_url = '{% url 'heritage:project-list' %}';
+    </script>
+{% endblock %}

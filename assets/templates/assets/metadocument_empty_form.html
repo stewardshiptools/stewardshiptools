@@ -1,0 +1,27 @@
+{#Requires the form context varible: "metadocument_formset"#}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+
+<div id="metadocument_formset_empty_form" style="display: none;">
+    <div class="metadocument-item item-__prefix__ grey lighten-4 col s12" style="display: none;">
+{#        {{ metadocument_formset.empty_form.contributor|materializecss:"s12 m6 l6" }}#}
+{#        {{ metadocument_formset.empty_form.coverage|materializecss:"s12 m6 l6" }}#}
+{#        {{ metadocument_formset.empty_form.creator|materializecss:"s12" }}#}
+
+        {%  for field in metadocument_formset.empty_form.fields %}
+            {{ field|materializecss:"s12" }}
+        {% endfor %}
+
+        {% for hidden in metadocument_formset.empty_form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+
+        {% is_update_view 1 0 as update_view %}
+        {% if update_view %}
+            <div class="row">
+                {{ metadocument_formset.empty_form.DELETE|materializecss }}
+            </div>
+        {% endif %}
+    </div>
+</div>

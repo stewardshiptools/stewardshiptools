@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+
+{% load leaflet_tags %}
+{% load cedar_extras %}
+{% load html_filters %}
+{% load cedar_settings %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load crm %}
+
+{% block second_bar_page_title %}
+    Named Place Details{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }}{% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="hide-on-print waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'heritage.change_place' }}"
+       href="{% url 'heritage:place-update' object.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">mode_edit</i>
+            &nbsp;Edit
+        </div>
+    </a>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    {% leaflet_css %}
+    <style>
+        #place-location-map {
+            height: 600px;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12 m6 l8">
+            <div class="row">
+                <div class="col s12">
+                    <ul class="collapsible" data-collapsible="expandable">
+                        <li>
+                            <div class="collapsible-header grey-text grey lighten-4 active">
+                                <i class="material-icons">subject</i> Notes
+                            </div>
+                            <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                                {% if object.notes %}
+                                    {{ object.notes|strip_html_wrap }}
+                                {% else %}
+                                    <p><em>There are no notes for this named place.</em></p>
+                                {% endif %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col s12">
+                    <ul class="collapsible" data-collapsible="expandable">
+                        <li>
+                            <div class="collapsible-header grey-text grey lighten-4 active">
+                                <i class="material-icons">list</i> Items that mention this place
+                            </div>
+                            <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                                <ul>
+                                    {% for review in object.item_reviews.all %}
+                                        <li><a href="{{ review.item.get_absolute_url }}">{{ review.item }} ({{ review.item.prefixed_id }})</a></li>
+                                    {% empty %}
+                                        <li><p><em>No items mention this place.</em></p></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m6 l4">
+            <div class="col s12">
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">map</i> Location
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <div id="place-location-map" style="height: 200px;">
+                                {% leaflet_map "place-location-map" creatediv=False %}
+                            </div>
+
+                            <div class="row"></div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <label>On community map:</label><span style="position: relative; top: 7px">{{ object.add_to_community_map|render_boolean }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col s12">
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">label_outline</i> Place type{{ object.place_types.all|pluralize }}
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <ul>
+                                {% for place_type in object.place_types.all %}
+                                    <li>{{ place_type }}</li>
+                                {% empty %}
+                                    <li><p><em>There are no place types for this place.</em></p></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col s12">
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">label</i> Other names(s)
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <dl>
+                                <dt><label>Alternate</label></dt>
+                                {% for name in object.alternateplacename_set.all %}
+                                    <dd>{{ name }}</dd>
+                                {% empty %}
+                                    <dd><em>There are no assigned alternate names for this place.</em></dd>
+                                {% endfor %}
+
+                                <dt><label>Common</label></dt>
+                                {% for name in object.commonplacename_set.all %}
+                                    <dd>{{ name }}</dd>
+                                {% empty %}
+                                    <dd><em>There are no assigned common names for this place.</em></dd>
+                                {% endfor %}
+
+                                <dt><label>Gazetteer</label></dt>
+                                {% for name in object.gazetteer_names.all %}
+                                    <dd>{{ name }}</dd>
+                                {% empty %}
+                                    <dd><em>There are no assigned gazetteer names for this place.</em></dd>
+                                {% endfor %}
+                            </dl>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block javascripts %}
+    {{ block.super }}
+    {% leaflet_js %}
+
+    <script>
+        $(window).on('map:init', function (e) {
+            let detail = e.originalEvent ?
+                e.originalEvent.detail : e.detail;
+
+            // create a fullscreen button and add it to the map
+            L.control.fullscreen({
+                position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, defaut topleft
+                title: 'Fullscreen !', // change the title of the button, default Full Screen
+                titleCancel: 'Exit fullscreen mode', // change the title of the button when fullscreen is on, default Exit Full Screen
+            }).addTo(detail.map);
+
+            {% comment %}
+            // Geometry is a required field so your error checker doesn't know what it's talking about.
+            $.ajax({
+                url: "{% url 'heritage:api:place-detail' object.id %}?as_geojson=1",
+                dataType: 'json',
+                success: function (data) {
+                    console.log("place results:", data);
+                    add_to_map(data);
+                },
+                error: function (xhr, status, err) {
+                    console.error(xhr, status, err.toString());
+                }
+            });
+            {% endcomment %}
+
+            var geojson_data = {{ object.geometry.geojson | safe }};
+            {#            geojson_data['properties'] = {'map_style':{{ object.place_types.first.map_style.circle_style.json | safe }}};#}
+            geojson_data['properties'] = {
+                'map_style':{{ object.map_style.json | default:'null' | safe }}
+            };
+            {#            var map_style = {{ object.place_types.first.map_style.circle_style.json | safe }};#}
+
+            add_to_map(geojson_data);
+
+            function add_to_map(data) {
+                /* note, is is all a big ugly hack due to drf gis serializer incorrectly serializing geometry collections*/
+                var map_style_helper = new MapStyleHelper();
+                var geojson = L.geoJSON(data, map_style_helper.options);
+                geojson.addTo(detail.map);
+
+
+                // Check if this is a point.  If yes, limit the zoom to something zoomed out so you can see
+                // where the point is...
+                // Keeping the data.geometries portion of this if statement in case geometry collections sneak back in.
+                if ((data.type && data.type === "Point") || (data.geometries && data.geometries.length === 1 && data.geometries[0].type === "Point")) {
+                    detail.map.flyToBounds(geojson.getBounds(), {
+                        maxZoom: 12
+                    });
+                } else {
+                    detail.map.flyToBounds(geojson.getBounds());
+                }
+            }
+        });
+    </script>
+{% endblock javascripts %}

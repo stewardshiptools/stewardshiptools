@@ -1,0 +1,53 @@
+{{ object.name }}
+{{ object.prefixed_id }}
+
+{% for file in object.files.all %}
+    {{ file.name }}
+{% endfor %}
+
+{{ object.dublin_core.contributor | default:""}}
+{{ object.dublin_core.coverage | default:"" }}
+{{ object.dublin_core.creator | default:"" }}
+    {#{{ object.dublin_core.date }}#}
+{{ object.dublin_core.description | default:"" }}
+{{ object.dublin_core.format | default:"" }}
+{{ object.dublin_core.identifier | default:"" }}
+{{ object.dublin_core.language | default:"" }}
+{{ object.dublin_core.publisher | default:"" }}
+{{ object.dublin_core.relation | default:"" }}
+{{ object.dublin_core.rights | default:"" }}
+{{ object.dublin_core.source | default:"" }}
+{{ object.dublin_core.subject | default:"" }}
+
+{{ object.holdings.item_type_comments | default:"" }}
+{{ object.holdings.source_type | default:"" }}
+{{ object.holdings.media_mode | default:"" }}
+{{ object.holdings.item_internal_location | default:"" }}
+{{ object.holdings.digital_file_name_path | default:"" }}
+{{ object.holdings.digital_file_name | default:"" }}
+    {#{{ object.holdings.digital_file_ocrd }}#}
+{{ object.holdings.digital_file_type_comments | default:"" }}
+
+{{ object.review.summary | default:"" }}
+{% for tag in object.review.people_mentioned.all %}
+    {{ tag.name }}
+{% endfor %}
+{% for tag in object.review.plants.all %}
+    {{ tag.name }}
+{% endfor %}
+{% for tag in object.review.animals.all %}
+    {{ tag.name }}
+{% endfor %}
+{{ object.review.mup_category.name | default:"" }}
+{{ object.review.use_occupancy_category.name | default:"" }}
+{{ object.review.full_text | default:"" }}
+
+{{ object.researcher_notes.spreadsheet_id | default:"" }}
+{{ object.researcher_notes.researcher_notes | default:"" }}
+{{ object.researcher_notes.actions_needed | default:"" }}
+{{ object.researcher_notes.search_location | default:"" }}
+{{ object.researcher_notes.search_terms | default:"" }}
+{{ object.researcher_notes.search_results | default:"" }}
+{{ object.researcher_notes.search_identifier | default:"" }}
+{{ object.researcher_notes.cross_reference | default:"" }}
+{{ object.researcher_notes.search_summary | default:"" }}

@@ -1,0 +1,39 @@
+{% extends "cedar/table_narrow.html" %}
+
+{% load staticfiles %}
+
+{# Note: {{ block.super }} must appear in the {% block content %} tag for the following to work. #}
+{# Note: uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Interviews{% endblock %}
+{% block second_bar_secondary_title %}
+    {{ object_list.count }} interview{{ object_list.count|pluralize }}. {{ session_count }} session{{ session_count|pluralize }}.
+{% endblock %}
+{% block second_bar_secondary_content_right %} {% endblock %}
+
+{% block content %}
+    {{ block.super }}
+{% endblock %}
+
+{% block table-head %}
+    <th></th>
+    <th>Project</th>
+    <th>Interviewer Initials</th>
+    <th>Participant Number</th>
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+    <script>
+        var interview_ajax_url = "{{ interview_ajax_url|escapejs }}";
+        var enable_pagination = false;
+    </script>
+    <script type="text/javascript" src="{% static 'bower_components/jquery-typewatch/jquery.typewatch.js' %}"></script>
+    <script src='{% static 'lib/DataTables/datatables.js' %}'></script>
+    <script src="{% static 'heritage/js/interviews.js' %}"></script>
+
+    <script>
+        current_nav_url = '{% url 'heritage:interviews' %}';
+    </script>
+
+{% endblock %}

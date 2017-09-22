@@ -1,0 +1,19 @@
+{% extends 'library/dashboard_cards/dashboard_card_base.html' %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load library %}
+
+{% block card %}
+    <div class="card dashboard-card  hoverable">
+        <div class="card-content">
+                <span class="card-title">
+                    <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">group_work</i>
+                        <a href="{% url 'library:synthesis-list' %}">Syntheses ({{ syntheses.count }})</a>
+                    </div>
+                </span>
+            <p>
+                Explore and manage all syntheses.
+            </p>
+        </div>
+    </div>
+{% endblock card %}

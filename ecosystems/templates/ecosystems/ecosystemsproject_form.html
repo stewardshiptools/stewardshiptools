@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load cedar_settings %}
+{% load crm %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link href="{% static 'bower_components/select2/dist/js/select2.min.js' %}" rel="stylesheet"/>
+    <link href="{% static 'css/materialize_select2.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Ecosystems Project{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }} {% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="section">
+        <form action="" method="POST" enctype="multipart/form-data">
+            <div class="row">
+
+                {# Ecosystems PROJECT FORM #}
+                <div class="col s12 m8 l8">
+                    {% csrf_token %}
+                    <div class='form-errors' style="display:none;">
+                        {{ form.errors }}
+                    </div>
+                    <div class="col s12">
+                        {{ form.cedar_project_name|materializecss:"s12" }}
+                    </div>
+                    <div class="col s12 m6 l6">
+                        {% if object %}
+                            <div class="input-field col s12">
+                                <input disabled value="{{ object.cedar_project_code }}" id="project_code" type="text" class="validate" />
+                                <label for="project_code">Cedar project code</label>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col s12 m6 l6">
+                        {{ form.start_date|materializecss:"s12" }}
+                    </div>
+                    <div class="col s12 m6 l6">
+                        {{ form.end_date|materializecss:"s12" }}
+                    </div>
+                    <div class="col s12 m6 l6">
+                        {{ form.status|materializecss:"s12" }}
+                    </div>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="col s12">
+                            {{ form.author|materialselect2 }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            {{ form.contacts|materialselect2 }}
+                        </div>
+                    </div>
+                    <div class="section">
+                        <ul class="collapsible" data-collapsible="accordion">
+                            <li>
+                                <div class="collapsible-header active grey-text grey lighten-4">
+                                    <i class="material-icons">subject</i> {{ form.description.label }}
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="row">
+                                        {{ form.description|materializecss }}
+                                    </div>
+                                </div>
+                            </li>
+                            {% for field in misc_textarea_fields %}
+                                {% get_dict_val form field as misc_text_field %}
+                                <li>
+                                    <div class="collapsible-header grey lighten-4">
+                                        <i class="material-icons">subject</i> {{ misc_text_field.label }}
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <div class="row">
+                                            {{ misc_text_field|materializecss }}
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+
+                </div>
+
+                <div class="col s12 m4 l4">
+                    <div class="row">
+                        <div class="col s12">
+                            {{ form.tags|materialselect2 }}
+                        </div>
+                    </div>
+                    <div>
+                        {{ form.filing_code|materializecss }}
+                    </div>
+                    <div class="divider"></div>
+                </div>
+            </div>
+            <div class="row"></div>
+            <div class="row">
+                <div class="col s12">
+                    {# I think using this tag instead of an IF may save some space:#}
+                    {% is_update_view "Update Project" "Create Project" as submit_value %}
+                    <input class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1" type="submit" value="{{ submit_value }}"/>
+                    {% if object %}
+                        <a class="right waves-effect waves-light btn grey lighten-5 red-text text-darken-1 {{ user|is_disabled:'ecosystems.delete_ecosystemsproject' }}"
+                           href="{% url 'ecosystems:project-delete' ecosystemsproject.pk %}">
+                            <div class="valign-wrapper">
+                                <i class="material-icons valign ">delete</i>
+                                &nbsp;Delete Project
+                            </div>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row"></div>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    <script src="{% static 'bower_components/select2/dist/js/select2.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize the datepicker.
+            $('.datepicker').pickadate(
+                    {
+                        selectYears: {{ 'cedar__default_datepicker_years'|get_setting }},
+                        selectMonths: true,
+                        format: 'yyyy-mm-dd',
+                        max: new Date() //limits max date to today.
+                    }
+            );
+        });
+
+    </script>
+
+
+{% endblock %}

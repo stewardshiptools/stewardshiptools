@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load cedar_extras %}
+{% load cedar_material_form %}
+{% load cedar_settings %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load crm %}
+{% load cedar_list %}
+
+{% block second_bar_page_title %}
+    Person Mentioned{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }}{% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'library.change_personmentionedtag' }}"
+       href="{% url 'library:personmentionedtag-update' object.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">mode_edit</i>
+            &nbsp;Edit
+        </div>
+    </a>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12 teal-text text-darken-5">
+            Name:
+            <span class="col s12 grey-text text-lighten">
+                {{ object.name }}
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 teal-text text-darken-5">
+            Description:
+            <span class="col s12 grey-text text-lighten">
+                {{ object.description | default_if_none:"Not specified" }}
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 teal-text text-darken-5">
+            <ul class="collapsible" data-collapsible="expandable">
+                <li>
+                    <div class="collapsible-header grey-text grey lighten-4 active">
+                        <i class="material-icons">list</i> Mentioned in the following records:
+                    </div>
+                    <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                        <ul>
+                            <div id="taggeditem-list">
+                                {% for thing in related_things.all %}
+                                    <p><a href="{{ thing.content_object.get_absolute_url }}">{{ thing.content_object }}</a></p>
+                                {% endfor %}
+                            </div>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    {{ block.super }}
+    <script>
+        $(document).ready(function (e) {
+            console.log("init stuff");
+            $('.toggler').click(function (evt) {
+                var text = $(this).children('i').text();
+                var target_cls = "." + $(this).attr('data-toggle-target-class');
+
+                if (text == 'keyboard_arrow_right') {
+                    $(target_cls).slideDown();
+                    Materialize.showStaggeredList(target_cls + " ul");
+                    $(this).children('i').text('keyboard_arrow_down');
+                }
+                else {
+                    $(target_cls).slideUp();
+                    $(this).children('i').text('keyboard_arrow_right');
+                }
+            });
+        });
+    </script>
+
+    {% cedar_list 'taggeditem-list' ajax_url=ajax_url filters=filters fields=fields sort_field_options=sort_options default_sort='-id' search=0 show_filters=0 %}
+{% endblock javascripts %}

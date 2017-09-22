@@ -1,0 +1,16 @@
+{% extends 'geoinfo/gisfeature_map_include.html' %}
+{% load staticfiles %}
+
+{% block javascript_vars %}
+    <script type="text/javascript">
+        var spatialreport_feature_map_attach_id = "{{ attach_id|escapejs }}";
+        var spatialreport_feature_map_settings = {{ map_settings|safe }};
+        var spatialreport_items = {{ ajax_urls|safe }};
+        var spatialreport_feature_map_show_search = "{{ search|escapejs }}";  {# Doesn't work yet #}
+    </script>
+{% endblock %}
+
+{#  Override this with your own map js if needed: #}
+{% block override_area_2 %}
+    <script type="text/javascript" src="{% static 'build/geoinfo/js/spatialreport_feature_map.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,57 @@
+<script type="text/javascript">
+    (function ($) {
+        var tags_as_string;
+
+        String.prototype.toProperCase = function () {
+            return this.replace(/\w\S*/g, function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            });
+        };
+
+        Array.prototype.toUnique = function() {
+            var dict = {},
+                arrayLength = this.length,
+                elem,
+                i,
+                key,
+                uniqueArray = [];
+            for (i = 0; i < arrayLength; i++) {
+                elem = this[i];
+                dict[elem] = elem;
+            }
+            for (key in dict) {
+                uniqueArray.push(key);
+            }
+            return uniqueArray;
+        };
+
+        $(document).ready(function (){
+            tags_as_string = $('#{{ result_id }}').val();
+
+            /* Be sure to instantiate it a single time */
+            if (typeof($("#as-selections-" + "{{ widget_id }}").get(0)) === 'undefined') {
+                $("#{{ widget_id }}").autoSuggest("{{ url }}", {
+                    asHtmlID: "{{ widget_id }}",
+                    startText: "{{ start_text }}",
+                    emptyText: "{{ empty_text }}",
+                    limitText: "{{ limit_text }}",
+                    preFill: tags_as_string,
+                    queryParam: 'q',
+                    retrieveLimit: {{ retrieve_limit }},
+                    minChars: 1,
+                    neverSubmit: true,
+                    extraParams: "{{ extra_params }}"
+                });
+            }
+
+            $('.as-selections').addClass('vTextField');
+            $('ul.as-selections li.as-original input').addClass('vTextField');
+
+            $('#{{ result_id }}').parents().find('form').submit(function (){
+                tags_as_string = $("#as-values-{{ widget_id }}").val();
+                $("#{{ widget_id }}").remove();
+                $("#{{ result_id }}").val(tags_as_string);
+            });
+        });
+    })(jQuery || django.jQuery);
+</script>

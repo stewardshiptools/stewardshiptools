@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{#  THIS PAGE HAS THREE BLOCK YOU CAN/SHOULD OVERRIDE: #}
+{#  title #}
+{#  subtitle #}
+{#  main area #}
+
+{#  This template should be used for 403, 404, login, logout, etc. #}
+
+{% block title %}{% endblock %}
+
+
+{% block stylesheets %} {# override regular cedar css #}
+    <style>
+        /* Override the padding for the nav side bar: */
+        header, main, footer {
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+    </style>
+{% endblock %}
+
+{% block nav %}{% endblock %} {# override the nav block #}
+{% block second_bar %}{% endblock %} {# override the bar block #}
+
+{% block content %}
+    <div class="splash-page-top-space">
+        <div id="background-image"></div>
+        <div id="login-title" class="row">
+            <div class="col hide-on-small-only m2 l3">&nbsp;</div>
+                <div class="col s12 m8 l6">
+                    <div class="card center blue darken-1 white-text text-lighten-5 home-center z-depth-3"
+                    style="padding-bottom: 10px;">
+                        <div style="padding-top: 10px;">
+                            <img src="{% static 'css/cedarbox_icon_wht.png' %}" id="cedarbox-icon-white" style="vertical-align:top;">&nbsp;&nbsp;<h4 style="display: inline;">CedarBox Apps</h4>
+                        </div>
+                        {% block subtitle %}    {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="grey-text text-darken-5">
+                <div class="col hide-on-small-only m2 l3">&nbsp;</div>
+                <div class="col s12 m8 l6">
+                    <div class="card">
+                        <div class="card-content z-depth-3">
+                            {% block main_area %}   {% endblock main_area %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col hide-on-small-only m2 l3">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

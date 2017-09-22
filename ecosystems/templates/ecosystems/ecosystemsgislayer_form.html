@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load cedar_settings %}
+{% load crm %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Ecosystems Location{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }} {% endblock %}
+{% block second_bar_secondary_content_right %} {% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12">
+            {% if form.fields.project.initial %}
+                <h5>Project footprint for {{ form.fields.project.initial }}</h5>
+            {% endif %}
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include 'ecosystems/ecosystemsgislayer_form_fields.html' with form=form %}
+                <div class="row"></div>
+                <div class="row">
+                    <div class="col s12">
+                        {# I think using this tag instead of an IF may save some space:#}
+                        {% is_update_view "Update layer" "Create layer" as submit_value %}
+                        <input class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1" type="submit" value="{{ submit_value }}"/>
+
+                        {% if object and not object.project %}
+                            <a class="right waves-effect waves-light btn grey lighten-5 red-text text-darken-1 {{ user|is_disabled:'geoinfo.delete_gislayer' }}"
+                               href="
+                            {% if object.get_delete_url %}
+                                {{ object.get_delete_url }}
+                            {% else %}
+                                {% url 'geoinfo:layer-delete'  gislayer.id %}
+                            {% endif %}">
+                                <div class="valign-wrapper">
+                                    <i class="material-icons valign ">delete</i>
+                                    &nbsp;Delete Layer
+                                </div>
+                            </a>&nbsp;&nbsp;
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row"></div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    <script>
+        {% if form.fields.project.initial %}
+            var current_nav_url = '{% url 'ecosystems:project-list' %}';
+        {% else %}
+            var current_nav_url = '{% url 'ecosystems:gislayer-list' %}';
+        {% endif %}
+
+        $(document).ready(function () {
+            $('.datepicker').pickadate(
+                {
+                    selectYears: {{ 'cedar__default_datepicker_years'|get_setting }},
+                    selectMonths: true,
+                    format: 'yyyy-mm-dd',
+                    max: new Date() //limits max date to today.
+                }
+            );
+        });
+
+    </script>
+{% endblock %}

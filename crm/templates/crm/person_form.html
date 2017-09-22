@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Person
+{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }} {% endblock %}
+{#{% block second_bar_secondary_content_right %}#}
+{#    {% url 'crm:person-list' as list_url %}#}
+{#    {% url 'crm:person-detail' person.id as detail_url %}#}
+{#    {% is_update_view detail_url list_url as cancel_url %}#}
+{#    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2"#}
+{#       href="{{ cancel_url }}">#}
+{#        <div class="valign-wrapper">#}
+{#            <i class="material-icons valign ">cancel</i>#}
+{#            &nbsp;Cancel#}
+{#        </div>#}
+{#    </a>#}
+{#    {% edit_submit_button 'form' %}#}
+{#    {% if object %}#}
+{#        <a class="waves-effect waves-light btn grey lighten-5 red-text text-darken-1 {{ user|is_disabled:'crm.delete_person' }}"#}
+{#           href="{% url 'crm:person-delete'  person.id %}">#}
+{#            <div class="valign-wrapper"><i class="material-icons valign ">delete</i></div>#}
+{#        </a>#}
+{#    {% endif %}#}
+
+{#{% endblock %}#}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="section">
+        <div class="row">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include 'crm/person_form_fields.html' with form=form %}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var submit_spinner = $('.preloader-wrapper');
+        var current_nav_url = '{% url "crm:person-list" %}';
+    </script>
+
+{% endblock %}

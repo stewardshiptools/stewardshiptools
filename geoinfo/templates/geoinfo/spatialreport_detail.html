@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load leaflet_assets %}
+{% load geoinfo %}
+{% load spatialreports %}
+
+{% block stylesheets %}
+    {{ block.super }}
+
+    {% leaflet_assets_css %}
+{% endblock %}
+
+{# Note: {{ block.super }} must appear in the {% block content %} tag for the following to work. #}
+{# Note: uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}{{ spatialreport }}{% endblock %}
+{% block second_bar_secondary_title %}{% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2  {{ user|is_disabled:'geoinfo.change_spatialreport' }}"
+       href="{% url 'geoinfo:spatialreport-update'  spatialreport.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">edit</i>
+            &nbsp;Edit
+        </div>
+    </a>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+
+    <section>
+        <div class="row">
+            <div class="col s12 m4 l4">
+                <ul class="collection">
+                    <li class="collection-item green lighten-1">
+                        <span class="title" style="text-transform: uppercase;">
+                            REPORT ON LAYER{{ spatialreport.report_on.all|pluralize }}
+                        </span>
+                        <a class="secondary-content {{ user|is_disabled:'geoinfo.change_spatialreport' }} waves-grey lighten-5 grey-text text-darken-1 tooltipped-sr"
+                           href="{% url 'geoinfo:spatialreport-update'  spatialreport.id %}"
+                           data-tooltip="Edit spatial report">
+                            <i class="half-small material-icons">edit</i>
+                        </a>
+                    </li>
+
+                    {% if spatialreport.report_on.exists %}
+                        {% for layer in spatialreport.report_on.all %}
+                            {% get_model_subclass layer as report_layer %}
+                            <li class="collection-item grey lighten-5">
+                                <a href="{{ report_layer.get_absolute_url }}">
+                                    <strong>{{ layer.name }}</strong>
+                                    <p>{% geoinfo_layer_chips layer %}</p>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+
+                <ul class="collection">
+                    <li class="collection-item  amber lighten-2">
+                        <span class="title" style="text-transform: uppercase;">
+                            Report against layer{{ spatialreport.spatialreportitem_set.count|pluralize }}
+                        </span>
+                        <a class="secondary-content waves-grey lighten-5 grey-text text-darken-1 tooltipped-sr"
+                           href="{% url 'geoinfo:spatialreportitem-create' report_pk=spatialreport.id %}"
+                           data-tooltip="Add report item">
+                            <i class="half-small material-icons">add_circle</i>
+                        </a>
+                    </li>
+                    {% if object.spatialreportitem_set.all %}
+                        {% for item in object.spatialreportitem_set.all %}
+                            {% get_model_subclass item.layer as layer_sub %}
+                            <li class="collection-item grey lighten-5">
+                                <a class="secondary-content waves-grey lighten-5 grey-text text-darken-1 tooltipped-sr"
+                                   href="{% url 'geoinfo:spatialreportitem-delete' item.id %}"
+                                   data-tooltip="Delete report item">
+                                    <i class="material-icons">delete</i>
+                                </a>
+                                <a class="secondary-content waves-grey lighten-5 grey-text text-darken-1 tooltipped-sr"
+                                   href="{% url 'geoinfo:spatialreportitem-update' report_pk=spatialreport.id pk=item.id %}"
+                                   data-tooltip="Edit report item">
+                                    <i class="half-small material-icons">edit</i>
+                                </a>
+
+                                <a href="{{ layer_sub.get_absolute_url }}">
+                                    <div class="title"><strong>{{ item.layer.name }}</strong>
+                                        - Distance cap: {% distance_cap spatialreport item %}
+                                    </div>
+                                    <p>
+                                        {% geoinfo_layer_chips item.layer %}
+                                    </p>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+
+            </div>
+
+            <div class="col s12 m8 l8 thin-border-left-grey">
+                {% if spatialreport.report_on %}
+                    <h6 class="left-align" style="text-transform: uppercase;">
+                        <div class="valign-wrapper">
+                            <span id="reporting_status">Report Results:</span>
+                            &nbsp;
+                            <span class="spatialreport-result-count">0</span>
+                            &nbsp;&nbsp;&nbsp;
+                            <div id="little-spinner" class="preloader-wrapper smaller-spinner active" style="display:none;">
+                                <div class="spinner-layer spinner-yellow-only">
+                                    <div class="circle-clipper left">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span id="reporting_complete" class="green-text text-lighten-1" style="display: none">
+                                <i class="material-icons">done</i>
+                            </span>
+                        </div>
+                    </h6>
+                    <ul class="tabs hide-scroll-x">
+                        <li class="tab col s6"><a class="" href="#tab-map">Map</a></li>
+                        <li class="tab col s6"><a class="active" href="#tab-list">List</a></li>
+                    </ul>
+                    <div id="tab-map" class="info-panel-height-max">
+                        <div id="spatialreport-results-map"></div>
+                    </div>
+
+                    <div id="tab-list" class="info-panel-height-max">
+                        <div id="spatialreport-results-list"></div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+
+    <script>
+        var current_nav_url = '{% url "geoinfo:spatialreport-list" %}';
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $(".tooltipped-sr").tooltip();
+        });
+    </script>
+
+    {% react %}
+    {% react_dom %}
+
+    {% leaflet_assets_js %}
+    {% leaflet_load_main %}
+    {% leaflet_map_json 'map_default' as map_json %}
+    {% spatialreports_feature_map 'spatialreport-results-map' map_json report_ajax_urls %}
+
+    {% spatialreports_feature_list 'spatialreport-results-list' report_ajax_urls %}
+{% endblock %}

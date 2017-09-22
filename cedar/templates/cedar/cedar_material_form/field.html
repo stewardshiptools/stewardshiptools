@@ -1,0 +1,303 @@
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+
+{% if field|is_checkbox %}
+    {% if not field.is_hidden %}
+    <div class="input-field col {{ classes.label }}">
+    {% else %}
+    <div style="display: none;">
+    {% endif %}
+        <div class="{{ classes.single_value }}">
+            <div class="checkbox">
+                {% if field.auto_id %}
+                    {{ field }}
+                    <label for="{{ field.id_for_label }}"
+                           {% if field.field.required and form.required_css_class %}class="{{ form.required_css_class }}"{% endif %}>
+                        {{ field.label }}
+                    </label>
+                {% endif %}
+                {% for error in field.errors %}
+                    <span class="help-block orange-text {{ form.error_css_class }}">{{ error }}</span>
+                {% endfor %}
+
+                {% if field.help_text %}
+                    <p class="help-block help-text grey-text">
+                        {{ field.help_text|safe }}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% elif field|is_radio %}
+    {% if not field.is_hidden %}
+    <div class="col {{ classes.label }}">
+    {% else %}
+    <div style="display: none;">
+    {% endif %}
+
+        {% if field.auto_id %}
+            <label class="control-label {{ classes.label }}
+                    {% if field.field.required %}{{ form.required_css_class }}{% endif %}">{{ field.label }}</label>
+        {% endif %}
+        <div class="{{ classes.value }}">
+            {% for choice in field %}
+                <p>
+                    {{ choice.tag }}
+                    <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                </p>
+            {% endfor %}
+
+            {% for error in field.errors %}
+                <span class="help-block orange-text {{ form.error_css_class }}">{{ error }}</span>
+            {% endfor %}
+
+            {% if field.help_text %}
+                <p class="help-block  help-text">
+                    {{ field.help_text|safe }}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+{% elif field|is_date_input %}
+    {% if not field.is_hidden %}
+    <div class="input-field col {{ classes.label }}">
+    {% else %}
+    <div style="display: none;">
+    {% endif %}
+
+        <label for="{{ field.auto_id }}" class="active datepicker-label">
+            <i class="material-icons" style="vertical-align: middle;">date_range</i> {{ field.label }}
+        </label>
+        {# TODO Fix lamo hack that forces all date values to Y-m-d  #}
+        <input type="date"
+                {% if field.id %}
+               id="{{ field.id }}"
+                {% else %}
+               id="{{ field.auto_id }}"
+                {% endif %}
+               name="{{ field.html_name }}"
+               class="datepicker
+               {% if field.errors %}invalid {% endif %}"
+               value="{% if field.value %}{{ field.value|date:'Y-m-d' }}{% endif %}">
+
+        {% for error in field.errors %}
+            <span class="help-block orange-text {{ form.error_css_class }}">{{ error }}</span>
+        {% endfor %}
+
+        {% if field.help_text %}
+            <p class="help-block help-text grey-text">
+                {{ field.help_text|safe }}
+            </p>
+        {% endif %}
+    </div>
+{% elif field|is_time_input %}
+    {% if not field.is_hidden %}
+    <div class="input-field col {{ classes.label }}">
+    {% else %}
+    <div style="display: none;">
+    {% endif %}
+
+        <label for="{{ field.auto_id }}" class="active timepicker-label">
+            <i class="material-icons" style="vertical-align: middle;">access_time</i> {{ field.label }}
+        </label>
+        <input type="{{ field.field.widget.type }}"
+                {% if field.id %}
+               id="{{ field.id }}"
+                {% else %}
+               id="{{ field.auto_id }}"
+                {% endif %}
+               name="{{ field.html_name }}"
+               class="timepicker validate
+               {% if field.errors %}invalid {% endif %}"
+               value="{% if field.value %}{{ field.value }}{% endif %}">
+
+        {% for error in field.errors %}
+            <span class="help-block orange-text {{ form.error_css_class }}">{{ error }}</span>
+        {% endfor %}
+
+        {% if field.help_text %}
+            <p class="help-block help-text grey-text">
+                {{ field.help_text|safe }}
+            </p>
+        {% endif %}
+        <script src="{% static 'bower_components/materialize-clockpicker/dist/js/materialize.clockpicker.js' %}"></script>
+        <link href="{% static 'bower_components/materialize-clockpicker/dist/css/materialize.clockpicker.css' %}" rel="stylesheet"/>
+        <script>
+            /* Time Picker Sample Setup Code
+             * See https://github.com/chingyawhao/materialize-clockpicker
+             * See https://github.com/Dogfalo/materialize/issues/473
+             * */
+            $(document).ready(function () {
+                $('#{{ field.auto_id }}').pickatime({
+                    autoclose: false,
+                    twelvehour: true
+                });
+            });
+        </script>
+    </div>
+{% elif field|is_select %}
+    {% if not field.is_hidden %}
+    <div class="col {{ classes.label }}">
+    {% else %}
+    <div style="display: none;">
+    {% endif %}
+    {% if field|is_checkbox_select_multiple %}
+            {% if field.auto_id %}
+                <label class="control-label {{ classes.label }}
+                        {% if field.field.required %}{{ form.required_css_class }}{% endif %}">{{ field.label }}</label>
+            {% endif %}
+            <div class="{{ classes.value }}">
+                {% for choice in field %}
+                    <p>
+                        {{ choice.tag }}
+                        <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                    </p>
+                {% endfor %}
+
+                {% for error in field.errors %}
+                    <span class="help-block orange-text{{ form.error_css_class }}">{{ error }}</span>
+                {% endfor %}
+
+                {% if field.help_text %}
+                    <p class="help-block help-text grey-text">
+                        {{ field.help_text|safe }}
+                    </p>
+                {% endif %}
+            </div>
+
+        {% else %}
+            <div class="input-field">
+                {{ field }}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+                {#            {% for error in field.errors %}#}
+                {#                <span class="help-block {{ form.error_css_class }}">{{ error }}</span>#}
+                {#            {% endfor %}#}
+                {% for error in field.errors %}
+                    <p class="help-block orange-text {{ form.error_css_class }}">{{ error }}</p>
+                {% endfor %}
+                {% if field.help_text %}
+                    <p class="help-block help-text grey-text">
+                        {{ field.help_text|safe }}
+                    </p>
+                {% endif %}
+            </div>
+        {% endif %}
+        <script>
+        $(document).ready(function(){
+            {% if field|is_select_multiple and not field.field.required %}
+                $("select#{{ field.id_for_label }}").prepend('<option value="" disabled selected>Choose your option</option>');
+            {% endif %}
+
+            $("#{{ field.id_for_label }}").material_select();
+        });
+        </script>
+    </div>
+
+{% elif field|is_textarea %}
+    {% if not field.is_hidden %}
+    <div class="input-field col {{ classes.label }}">
+    {% else %}
+    <div style="display: none;">
+    {% endif %}
+{% if field.auto_id %}
+    <label class="{{ classes.label }} {% if field.field.required %}{{ form.required_css_class }}{% endif %}"
+           for="{{ field.auto_id }}" style="padding-bottom:0.5rem;">{{ field.label }}</label>
+{% endif %}
+{% random_string num_chars=4 as random_class %}
+        <textarea
+                id="{{ field.auto_id }}"
+                class="materialize-textarea {% if field.errors %}invalid {% endif %} {{ random_class }}"
+                name="{{ field.html_name }}"
+                placeholder=""
+                contenteditable="true">
+            {% if field.value %}{{ field.value }}{% endif %}</textarea>
+        {% for error in field.errors %}
+            <p class="help-block orange-text {{ form.error_css_class }}">{{ error }}</p>
+        {% endfor %}
+<script src="{% static 'lib/ckeditor/ckeditor.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        CKEDITOR.inline($("textarea#{{ field.auto_id }}.{{ random_class }}")[0]);
+    });
+</script>
+
+{% if field.help_text %}
+    <p class="help-block help-text grey-text">
+        {{ field.help_text|safe }}
+    </p>
+{% endif %}
+    </div>
+
+{% elif field|is_file %}
+    {% if not field.is_hidden %}
+    <div class="input-field col {{ classes.label }}">
+    {% else %}
+    <div style="display: none;">
+    {% endif %}
+        {#  TODO May need to work with file field auto-id here. Good to confirm other fields as well. #}
+        <div>
+            {% if field.auto_id %}
+                {% if field.label %}
+                <label class="{{ classes.label }} {% if field.field.required %}{{ form.required_css_class }}{% endif %}"
+                       for="{{ field.auto_id }}">{{ field.label }}</label><br/>
+                {% endif %}
+            {% endif %}
+
+            <div class="file-field input-field">
+                <div class="btn green lighten-4 grey-text text-darken-1">
+                    <span>File</span>
+                    <input type="file" id="{{ field.auto_id }}" name="{{ field.html_name }}">
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text" placeholder="" value="{{ field.value|default_if_none:"" }}">
+                </div>
+            </div>
+        </div>
+
+        {% for error in field.errors %}
+            <p class="help-block orange-text {{ form.error_css_class }}">{{ error }}</p>
+        {% endfor %}
+
+{% if field.help_text %}
+    <p class="help-block help-text grey-text">
+        {{ field.help_text|safe }}
+    </p>
+{% endif %}
+    </div>
+
+{% else %}
+    {% if not field.is_hidden %}
+    <div class="input-field col {{ classes.label }}">
+    {% else %}
+    <div style="display: none;">
+    {% endif %}
+
+        {{ field }}
+        {% if field.auto_id %}
+            <label class="{{ classes.label }} {% if field.field.required %}{{ form.required_css_class }}{% endif %}"
+                   for="{{ field.auto_id }}">{{ field.label }}</label>
+        {% endif %}
+
+        {% for error in field.errors %}
+            <p class="help-block orange-text {{ form.error_css_class }}">{{ error }}</p>
+        {% endfor %}
+
+        {% if field.help_text %}
+            <p class="help-block help-text grey-text">
+                {{ field.help_text|safe }}
+            </p>
+        {% endif %}
+    </div>
+
+{% endif %}
+
+<script>
+    $(document).ready(function () {
+        $('label[for="{{ field.auto_id }}"] ~p.help-block').expander({
+            slicePoint: 60,
+            expandEffect: 'show'
+        });
+    });
+</script>

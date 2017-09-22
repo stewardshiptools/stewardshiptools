@@ -1,0 +1,8 @@
+/* Overrides for non-fullscreen map with sidebar. */
+@media (min-width: 768px) {
+  .sidebar-left.collapsed ~ .leaflet-control-container .leaflet-left {
+    left: 50px; } }
+
+@media (min-width: 768px) {
+  .sidebar-right.collapsed ~ .leaflet-control-container .leaflet-right {
+    right: 50px; } }

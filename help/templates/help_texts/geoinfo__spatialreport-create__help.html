@@ -1,0 +1,31 @@
+<ul>
+    <li>
+	  <div class="collapsible-header"><i class="material-icons">list</i>Create Spatial Report Instructions</div>
+      <div class="collapsible-body"><p></div>
+    </li>
+</ul>
+
+This forms allows you to build a new Spatial Report. <br/><br/>
+Spatial Report generation is a two part process:
+Here are the parts:
+<ol class="collection">
+   <li class="collection-item">Create a basic report instance (this form).</li>   
+   <li class="collection-item">Add Report against layers (available on the Report page after you have created it).</li>  
+</ol>
+<br/>
+<strong>Here are the Report parts</strong>
+<ul class="collection">
+   <li class="collection-item"><strong>Name</strong> - provide a descriptive name</li>   
+   <li class="collection-item"><strong>Distance cap</strong> - what is the default distance cap for all the <i>Report against</i> layers? This can be overwritten later on a per-layer basis.</li>  
+   <li class="collection-item"><strong>Report on*</strong> layer - Which layer is the focal* layer. This can be left blank.</li>
+</ul>
+<br/>
+*The <i>Report on</i> or focal layer defines the feature(s) on which all other layers in the Sptial Report are compared. Think of it as "What's near this [Report on]?" 
+<br/><br/>
+<strong>Examples</strong>
+<ul class="collection">
+   <li class="collection-item"><strong>Pseudocode</strong> - What is near [Report on layer] in these layers [Report against 1; Report against 2]... out to a maximum distance of 500m?</li>   
+<ul class="collection">
+   <li class="collection-item"><strong>Sensitive stream report</strong> - Which sensitive streams [Report against layer, with 100s of line features] overlap or are within 200m of crown referral BC5553333 [Report on layer, generated in Development app]?</li>    
+</ul>
+<br/>

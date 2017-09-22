@@ -1,0 +1,29 @@
+
+/*div.comments > ul.collection,*/
+ul.comment_ul {
+    border-left: solid #b5b1ff 2px;
+}
+
+ul.comment_ul li.comment_li {
+    padding-right: 0;
+    padding-left: 7px;
+    margin: 0 0 0 0;
+    width: 100%;
+    border-left: solid #d5ffab 2px;
+
+}
+
+
+ul.comment_ul li.comment_li .circle {
+    width: 42px;
+    height: 42px;
+    overflow: hidden;
+    /* left: 15px; */
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+div.comment_data, div.comment_user {
+    display:inline-block;
+}

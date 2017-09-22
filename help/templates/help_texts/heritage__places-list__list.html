@@ -1,0 +1,40 @@
+{% load static %}
+A page listing all the Named <em>Places</em> currently in the database that you can filter and sort. The page has the following parts: Quick Filter, (right-side) Reset, Sort, Advanced Filters and Add New. You can also use the full <a href="/heritage/search">Heritage Search</a> page to find content, including excerpts of text near search results.
+<br/><br/>
+<strong>NOTE! The LIST and MAP tabs are <em>linked</em>.</strong> If the LIST shows only 25 Places, then the MAP will only show 25 Places. To see all Places on the MAP tab, select All from the 'Results per page', as explained below. 
+<br/><br/>
+<i class="material-icons">search</i><strong>Quick Filter</strong>  
+<br/>
+<img style="vertical-align:middle; border:2px solid #b71c1c; align: center" src="{% static 'help/quick_filter.png' %}" height=55 width=716 />
+<br/><br/><br/>
+Use the Quick Filter to quickly find a subset of Places. Quick Filter filters on:
+<ul class="collection">
+   <li class="collection-item">ID, with or without the prefix - e.g. try typing "CB-1" or "1"</li>
+   <li class="collection-item">Story Title, including part of a name - e.g. try typing "I" or "Island"</li>
+</ul>
+
+<i class="material-icons">restore</i><strong>Reset</strong>
+<br/>
+<img style="vertical-align:middle" src="{% static 'help/table_reset_filters.png' %}" height=59 width=173 />
+<br/><br/> 
+To reset the table, click the RESET FILTERS button, or delete all terms in the Quick Filter field and press [Enter] on your keyboard.
+<br/><br/>
+
+<i class="material-icons">sort</i><strong>Sort</strong> 
+<br/><br/>
+Change the number of result rows by changing the <em>Result per page</em> value. The default is 25 results/rows per page.
+<br/><br/>
+Sort the table by chosing a sort field (e.g. ID, Name) and then choose <em>ascending</em> or <em>descending</em>.  The default table sort is by ID, descending.
+<br/><br/>
+
+<i class="material-icons">filter_list</i><strong>Advanced Filters (right side of table)</strong> 
+<br/>Try filtering the table by selecting values for:
+<ul class="collection">
+   <li class="collection-item">Keywords</li>
+   <li class="collection-item">Tags<li>
+
+</ul>
+
+<strong>Add New</strong> <br/>
+Click the <i class="material-icons">add_circle</i> CASE BRIEF  button top-right to creating a new Case Brief.
+<br/><br/>

@@ -1,0 +1,32 @@
+<li>
+    <div class="collapsible-header">
+        <a class="side-nav-app-header" href="{% url 'development:dashboard' %}">
+            <i class="material-icons">assignment</i>Development
+        </a>
+        <i class="collapsible-header-dropdown right material-icons ">keyboard_arrow_down</i>
+    </div>
+    <div class="collapsible-body">
+        <ul>
+            <li>
+                <a class="blue-text text-darken-1" href="{% url 'development:project-list' %}">
+                    <i class="material-icons left">work</i>Projects
+                </a>
+            </li>
+            <li>
+                <a class="blue-text text-darken-1" href="{% url 'development:gislayer-list' %}">
+                    <i class="material-icons left">layers</i>Layers
+                </a>
+            </li>
+            <li>
+                <a class="blue-text text-darken-1" href="{% url 'development:secureasset-list' %}">
+                    <i class="material-icons left">insert_drive_file</i>Files
+                </a>
+            </li>
+{#            <li>#}
+{#                <a class="blue-text text-darken-1" href="{% url 'development:settings' %}">#}
+{#                    <i class="material-icons left">settings</i>Settings#}
+{#                </a>#}
+{#            </li>#}
+        </ul>
+    </div>
+</li>

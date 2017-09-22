@@ -1,0 +1,22 @@
+<li>
+    <div class="collapsible-header">
+        <a class="side-nav-app-header" href="{% url 'crm:person-list' %}">
+            <i class="material-icons">supervisor_account</i>Contacts
+        </a>
+        <i class="collapsible-header-dropdown right material-icons ">keyboard_arrow_down</i>
+    </div>
+    <div class="collapsible-body">
+        <ul>
+            <li>
+                <a class="blue-text text-darken-1" href="{% url 'crm:person-list' %}">
+                    <i class="material-icons left">supervisor_account</i>People
+                </a>
+            </li>
+            <li>
+                <a class="blue-text text-darken-1" href="{% url 'crm:organization-list' %}">
+                    <i class="material-icons left">business</i>Organizations
+                </a>
+            </li>
+        </ul>
+    </div>
+</li>

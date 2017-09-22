@@ -1,0 +1,13 @@
+{% load staticfiles %}
+
+<script type="text/javascript">
+    var geoinfo_layer_list_attach_id = "{{ attach_id|escapejs }}";
+    var geoinfo_layer_list_ajax_url = "{{ ajax_url|escapejs }}";
+    var geoinfo_layer_list_show_pager = "{{ pager|escapejs }}";
+    var geoinfo_layer_list_show_search = "{{ search|escapejs }}";
+    var geoinfo_layer_types = {{ layer_type_choices|safe }};
+    var geoinfo_layer_list_default_layer_type = "{{ default_layer_type|escapejs }}";
+</script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/cedar-react-list.css' %}">
+<script type="text/javascript" src="{% static 'bower_components/jquery-typewatch/jquery.typewatch.js' %}"></script>
+<script type="text/javascript" src="{% static 'build/geoinfo/js/layer_list.js' %}"></script>

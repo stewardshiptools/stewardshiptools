@@ -1,0 +1,19 @@
+{% extends 'library/dashboard_cards/dashboard_card_base.html' %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load library %}
+
+{% block card %}
+    <div class="card dashboard-card  hoverable">
+        <div class="card-content">
+                <span class="card-title">
+                    <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">grain</i>
+                        <a href="{% url 'library:collectiontag-list' %}">Collections ({{ collectiontags.count }})</a>
+                    </div>
+                </span>
+            <p>
+                Explore and manage all collections.
+            </p>
+        </div>
+    </div>
+{% endblock card %}

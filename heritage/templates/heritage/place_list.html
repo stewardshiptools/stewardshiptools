@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load cedar_list %}
+{% load leaflet_tags %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    {% leaflet_css %}
+    <style>
+        #place-map {
+            height: 800px;
+        }
+    </style>
+{% endblock %}
+
+{# Note: {{ block.super }} must appear in the {% block content %} tag for the following to work. #}
+{# Note: uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Named Places{% endblock %}
+{% block second_bar_secondary_title %}<span class="place-list-count">{{ object_list.count }}</span> Place{{ object_list|pluralize }} {% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'heritage.add_place' }}"
+       href="{% url 'heritage:place-create' %}">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">add_circle</i>
+            &nbsp;Place
+        </div>
+    </a>
+{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12">
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs hide-scroll-x">
+                        <li class="tab col s6"><a href="#place-list-tab">List</a></li>
+                        <li class="tab col s6"><a id="place-map-tab-button" href="#place-map-tab">Map</a></li>
+                    </ul>
+                </div>
+            </div>
+            {# Need to add the div manually.  The include tag is for adding the javascript. #}
+            <div class="row">
+                <div id="place-list-tab" class="col s12">
+                    <div id="place-list"></div>
+                </div>
+                <div id="place-map-tab" class="col s12">
+                    {% leaflet_map "place-map" %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+    {% leaflet_js %}
+    {% cedar_list 'place-list' ajax_url=ajax_url filters=filters fields=fields sort_field_options=sort_options default_sort='name' %}
+
+    <script>
+        $(window).on('map:init', function (e) {
+            let detail = e.originalEvent ?
+                e.originalEvent.detail : e.detail;
+
+            // create a fullscreen button and add it to the map
+            L.control.fullscreen({
+                position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, defaut topleft
+                title: 'Fullscreen !', // change the title of the button, default Full Screen
+                titleCancel: 'Exit fullscreen mode', // change the title of the button when fullscreen is on, default Exit Full Screen
+            }).addTo(detail.map);
+
+            let map_styler = new MapStyleHelper();
+
+            let geojson_layer = L.geoJSON(null, {});
+            geojson_layer.addTo(detail.map);
+
+            // Add the geojson layer to detail so we can access it from inside the update event.
+            detail.geojson_layer = geojson_layer;
+
+            // The list-updated event passes the react state as a parameter.
+            $( window ).on('place-list-updated', function(e, state) {
+                geojson_layer.clearLayers();
+
+                // Build a geojson object
+                $.each(state.data, function(idx, item) {
+                    const geometry = item.geometry;
+                    delete item.geometry;
+
+                    const geojson = {
+                        'type': 'Feature',
+                        'geometry': geometry,
+                        'properties': item
+                    };
+                    {#                    detail.geojson_layer.addData(geojson);#}
+                    detail.geojson_layer.addLayer(L.geoJSON(geojson, {
+                        pointToLayer: map_styler.pointToLayer,
+                        style: map_styler.style,
+                        onEachFeature: function (feature, layer) {
+                            let format_list = function (name, name_plural, items) {
+                                let output = '<dl>';
+                                let label = items.length === 1 ? name : name_plural;
+
+                                output += '<dt><label>' + label + '</label></dt>';
+
+                                output += items.map(function (item_name) {
+                                    return '<dd>' + item_name + '</dd>';
+                                }).join('');
+
+                                output += '</dl>';
+
+                                return output;
+                            };
+
+                            let popup = L.DomUtil.create('div', feature.properties.name + '-popup');
+
+                            let innerHTML = '<a href="' + feature.properties.url + '"><h7>' + feature.properties.name + '</h7></a>';
+
+                            if (feature.properties.alternate_names.length > 0) {
+                                innerHTML += format_list("Alternate name", "Alternate names", feature.properties.alternate_names);
+                            }
+
+                            if (feature.properties.common_names.length > 0) {
+                                innerHTML += format_list("Common name", "Common names", feature.properties.common_names);
+                            }
+
+                            if (feature.properties.gazetteer_names.length > 0) {
+                                innerHTML += format_list("Gazetteer name", "Gazetteer names", feature.properties.gazetteer_names);
+                            }
+
+
+                            popup.innerHTML = innerHTML;
+                            layer.bindPopup(popup);
+                        }
+                    }));
+                });
+            }.bind(detail));
+
+            $( window ).on("place-list-zoom-to-layer", function(e, detail) {
+                const layer_geojson =  detail.geojson_layer.toGeoJSON();
+
+                // Check if this is a point.  If yes, limit the zoom to something zoomed out so you can see
+                // where the point is...
+                if (layer_geojson.features.length === 1 && layer_geojson.features[0].geometry.geometries[0].type === "Point") {
+                    detail.map.flyToBounds(detail.geojson_layer.getBounds(), {
+                        maxZoom: 12
+                    });
+                } else {
+                    detail.map.flyToBounds(detail.geojson_layer.getBounds());
+                }
+            });
+
+            $("#place-map-tab-button").click(function(e) {
+                let invalidateMapSize = function () {
+                    detail.map.invalidateSize();
+                    $( window ).trigger("place-list-zoom-to-layer", detail);
+                };
+                window.setTimeout(invalidateMapSize, 200);
+            }.bind(detail));
+        });
+    </script>
+{% endblock %}

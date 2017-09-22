@@ -1,0 +1,599 @@
+{% extends 'base.html' %}
+{% load cedar_extras %}
+{% load security %}
+{% load html_filters %}
+{% load cedar_material_form %}
+{% load cedar_settings %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load crm %}
+{% load assets %}
+
+{% block second_bar_page_title %}
+    Item Details{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }} ({{ object.prefixed_id }}){% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="hide-on-print waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'library.change_item' }}"
+       href="{% url 'library:item-update' object.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">mode_edit</i>
+            &nbsp;Edit
+        </div>
+    </a>
+    <a class="hide-on-print waves-effect waves-light btn grey lighten-5 grey-text text-darken-2"
+       target="_blank"
+       href="{% url 'library:item-detail-print' object.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">print</i>
+            &nbsp;Report
+        </div>
+    </a>
+    <span class="show-on-print right grey-text text-lighten"><h6>PRINTED {% now "SHORT_DATE_FORMAT" %}</h6></span>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <style>
+        td, th {
+            padding: 0px 0px;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12 m7">
+            <ul class="collapsible" data-collapsible="expandable">
+                <li>
+                    <div class="collapsible-header grey-text grey lighten-4 active">
+                        <i class="material-icons">subject</i> Identification
+                    </div>
+                    <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                        <table class="cedar-horz-table">
+                            <tbody>
+                            <tr>
+                                <td class="th teal-text text-darken-5">Creator</td>
+                                <td class="td grey-text text-darken-1">{{ object.dublin_core.creator | default:"" | strip_html_wrap }}</td>
+                            </tr>
+                            <tr>
+                                <td class="th teal-text text-darken-5">Date Created</td>
+                                <td class="td grey-text text-darken-1"> {{ object.dublin_core.date | default:"" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="th teal-text text-darken-5">Type</td>
+                                <td class="td grey-text text-darken-1">{{ object.dublin_core.type | default:"" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="th teal-text text-darken-5">Subject</td>
+                                <td class="td grey-text text-darken-1">{{ object.dublin_core.subject | default:"" | strip_html_wrap }}</td>
+                            </tr>
+                            <tr>
+                                <td class="th teal-text text-darken-5">Description</td>
+                                <td class="td grey-text text-darken-1">{{ object.dublin_core.description | default:"" | strip_html_wrap }}</td>
+                            </tr>
+                            <tr>
+                                <td class="th teal-text text-darken-5">Coverage</td>
+                                <td class="td grey-text text-darken-1">{{ object.dublin_core.coverage | default:"" | strip_html_wrap }}</td>
+                            </tr>
+                            <tr>
+                                <td class="th teal-text text-darken-5">Rights</td>
+                                <td class="td grey-text text-darken-1">{{ object.dublin_core.rights | default:"" | strip_html_wrap }}</td>
+                            </tr>
+                            <tr>
+                                <td class="th teal-text text-darken-5">Identifiers</td>
+                                <td class="td grey-text text-darken-1">{{ object.dublin_core.identifier | default:"" | strip_html_wrap }}</td>
+                            </tr>
+                            <tr>
+                                <td class="th teal-text text-darken-5">External Identifier</td>
+                                <td class="td grey-text text-darken-1" style="word-wrap: break-word;">
+                                    <div class="break-long-anchors">
+                                        {{ object.dublin_core.external_identifier | default:"" | strip_html_wrap | urlize }}
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col s5 m5">
+            <ul class="collapsible" data-collapsible="expandable">
+                <li>
+                    <div class="collapsible-header grey-text grey lighten-4 active">
+                        <i class="material-icons">lock_outline</i> Confidentiality
+                    </div>
+                    <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                        <table class="cedar-horz-table">
+                            <tbody>
+                            <tr>
+                                <td class="th teal-text text-darken-5">Security level</td>
+                                <td class="td grey-text text-darken-1">
+                                    {{ object|security_level_or_default }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="th teal-text text-darken-5">Waiver Signed</td>
+                                <td class="td grey-text text-darken-1"> {{ object.confidentiality.release_signed | render_boolean }}</td>
+                            </tr>
+                            {% if object.confidentiality.comments %}
+                                <tr>
+                                    <td class="th teal-text text-darken-5">Comments</td>
+                                    <td class="td grey-text text-darken-1"> {{ object.confidentiality.comments | strip_html_wrap }}</td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col s7 m5">
+            <ul class="collapsible" data-collapsible="expandable">
+                <li>
+                    <div class="collapsible-header grey-text grey lighten-4 active">
+                        <i class="material-icons">info_outline</i> Admin
+                    </div>
+                    <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                        <table class="cedar-horz-table">
+                            <tbody>
+                            <tr>
+                                <td class="th teal-text text-darken-5">FN Identifier</td>
+                                <td class="td grey-text text-darken-1">{{ object.prefixed_id }}</td>
+
+                            </tr>
+                            <tr>
+                                <td class="th teal-text text-darken-5">Catalog Date</td>
+                                <td class="td grey-text text-darken-1"> {{ object.created.date }}</td>
+                            </tr>
+                            <tr>
+                                <td class="th teal-text text-darken-5">Cataloger</td>
+                                <td class="td grey-text text-darken-1">
+                                    {% if object.cataloger %}
+                                        <div class="chip grey lighten-4">
+                                            <img src="{{ object.cataloger|crm_get_avatar_url }}" alt="Cataloger Pic">
+                                            {{ object.cataloger|crm_get_person_text }}
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="th teal-text text-darken-5">Reviewer</td>
+                                <td class="td grey-text text-darken-1">
+                                    {% if object.reviewer %}
+                                        <div class="chip grey lighten-4">
+                                            <img src="{{ object.reviewer|crm_get_avatar_url }}" alt="Reviewer Pic">
+                                            {{ object.reviewer|crm_get_person_text }}
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <ul class="collapsible" data-collapsible="expandable">
+                <li>
+                    <div class="collapsible-header grey-text grey lighten-4 active">
+                        <i class="material-icons">shuffle</i> Relations
+                    </div>
+                    <div class="collapsible-body " style="padding:0.3rem;">
+                        <div class="row">
+                            <div class="col s12 m6">
+                                <table class="cedar-horz-table">
+                                    <tbody>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Collection{{ object.collections.all|pluralize }}</td>
+                                        <td class="td grey-text text-darken-1">
+                                            {% for collection in object.collections.all %}
+                                                <a class="btn btn-little rounded waves-effect waves-light grey lighten-5 grey-text text-darken-1"
+                                                   href="{% url 'library:collectiontag-detail' collection.id %}"> {{ collection }} </a>
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Related Item{{ object.related_items.all|pluralize }}</td>
+                                        <td class="td grey-text text-darken-1">
+                                            {% for rel_item in object.related_items.all %}
+                                                {#                                                    <a class="btn btn-little rounded waves-effect waves-light grey lighten-5 grey-text text-darken-1" href="{% url 'library:item-detail' rel_item.id %}"> {{ rel_item}} </a>#}
+                                                <div>
+                                                    <a href="{% url 'library:item-detail' rel_item.id %}"> {{ rel_item }} ({{ rel_item.prefixed_id }})
+                                                    </a>{% if not forloop.last %},{% endif %}
+                                                </div>
+
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Tags</td>
+                                        <td class="td grey-text text-darken-1">
+                                            {% for tag in object.tags.all %}
+                                                <div class="chip">
+                                                    <a href="{% url 'library:item-list' %}?tag={{ tag.id }}">{{ tag }}</a>
+                                                </div>
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col s12 m6">
+                                <div class="divider hide-on-med-and-up"></div>
+                                <table class="cedar-horz-table">
+                                    <tbody>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">People Mentioned</td>
+                                        <td class="td grey-text text-darken-1">
+                                            {% for tag in object.review.people_mentioned.all %}
+                                                <div class="chip pink lighten-5">
+                                                    <i class="material-icons">supervisor_account</i>
+                                                    <a href="{{ tag.get_absolute_url }}">{{ tag }}</a>
+                                                </div>
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Places Mentioned</td>
+                                        <td class="td grey-text text-darken-1">
+                                            {% for place in object.review.places_mentioned.all %}
+                                                <div class="chip blue lighten-5">
+                                                    <i class="material-icons">place</i>
+                                                    <a href="{{ place.get_absolute_url }}">{{ place }}</a>
+                                                </div>
+                                            {% empty %}
+                                                <p><em>No places mentioned in this item.</em></p>
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Animals Mentioned</td>
+                                        <td class="td grey-text text-darken-1">
+                                            {% for tag in object.review.animals.all %}
+                                                <div class="chip orange lighten-4">
+                                                    <i class="material-icons">pets</i>
+                                                    <a href="{{ tag.get_absolute_url }}">{{ tag }}</a>
+                                                </div>
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Plants Mentioned</td>
+                                        <td class="td grey-text text-darken-1">
+                                            {% for tag in object.review.plants.all %}
+                                                <div class="chip green lighten-4">
+                                                    <i class="material-icons">spa</i>
+                                                    <a href="{{ tag.get_absolute_url }}">{{ tag }}</a>
+                                                </div>
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col s12">
+                                <div class="divider"></div>
+                                <table class="cedar-horz-table">
+                                    <tbody>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Case Briefs that mention this item:</td>
+                                        <td class="td grey-text text-darken-1">
+                                            {% for casebrief in object.casebrief_set.all %}
+                                                <a href="{{ casebrief.get_absolute_url }}">{{ casebrief }} ({{ casebrief.prefixed_id }})</a><br/>
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                    {#                                    <tr>#}
+                                    {#                                        <td class="th teal-text text-darken-5">Places that mention this item:</td>#}
+                                    {#                                        <td class="td grey-text text-darken-1">#}
+                                    {#                                            {% for place in  object.place_set.all %}#}
+                                    {#                                                <div class="chip blue lighten-5">#}
+                                    {#                                                    <i class="material-icons">place</i>#}
+                                    {#                                                    <a href="{{ place.get_absolute_url }}">{{ place }}</a>#}
+                                    {#                                                </div>#}
+                                    {#                                            {% endfor %}#}
+                                    {#                                        </td>#}
+                                    {#                                    </tr>#}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header grey-text grey lighten-4 active">
+                        File{{ object.files.count | pluralize }} ({{ object.files.count }})<i class="material-icons">insert_drive_file</i>
+                    </div>
+                    <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                        <div class="row">
+                            <div class="col s12 ">
+                                <table class="highlight cedar-horz-table ">
+                                    <tbody>
+                                    <th class="teal-text text-darken-5" data-field="name">Filename</th>
+                                    <th class="teal-text text-darken-5" data-field="type">Modified</th>
+                                    <th class="teal-text text-darken-5" data-field="type">Size</th>
+                                    <th class="hide-on-print teal-text text-darken-5" data-field="manage">Manage</th>
+                                    {% for assetmodel in object.files.all %}
+                                        {% get_child_asset assetmodel as childassetmodel %}
+                                        <tr>
+                                            <td class="extra-tight-table-row"><a
+                                                    href="{{ childassetmodel.url }}">
+                                                {{ childassetmodel.name }}
+                                            </a></td>
+                                            <td class="extra-tight-table-row">{{ childassetmodel.modified }}</td>
+                                            <td class="extra-tight-table-row">{{ childassetmodel.file_size_str }}</td>
+                                            <td class="hide-on-print extra-tight-table-row">
+                                                <a class="waves-grey lighten-5 grey-text text-darken-1 tooltipped"
+                                                   href="{{ childassetmodel.serve_url }}"
+                                                   data-tooltip="View"
+                                                   data-position="top">
+                                                    <i class="material-icons">open_in_browser</i>
+                                                </a>
+                                                <a class="waves-grey lighten-5 grey-text text-darken-1 tooltipped"
+                                                   href="{{ childassetmodel.download_url }}"
+                                                   data-tooltip="Download"
+                                                   data-position="top">
+                                                    <i class="material-icons">file_download</i>
+                                                </a>
+                                                <a class="waves-grey lighten-5 grey-text text-darken-1 tooltipped"
+                                                   href="{{ childassetmodel.delete_url }}"
+                                                   data-tooltip="Delete File"
+                                                   data-position="top">
+                                                    <i class="material-icons">delete</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header grey-text grey lighten-4">
+                        <i class="material-icons">done_all</i> Review
+                    </div>
+                    <div class="collapsible-body" style="padding:0.3rem;">
+                        <div class="row">
+                            <div class="col s12 m6">
+                                <div class="divider hide-on-med-and-up"></div>
+                                <table class="cedar-horz-table">
+                                    <tbody>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">MUP Category</td>
+                                        <td class="td grey-text text-darken-1">
+                                            {% for mup in object.review.mup_category.all %}
+                                                <div class="chip grey lighten-4">
+                                                    {{ mup | default:"" }}&nbsp;
+                                                </div>
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col s12 m6">
+                                <div class="divider hide-on-med-and-up"></div>
+                                <table class="cedar-horz-table">
+                                    <tbody>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Use & Occupancy</td>
+                                        <td class="td grey-text text-darken-1">
+                                            {% for uoc in object.review.use_occupancy_category.all %}
+                                                <div class="chip grey lighten-4">
+                                                    {{ uoc | default:"" }}&nbsp;
+                                                </div>
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col s12">
+                                <div class="divider"></div>
+                                <table class="cedar-horz-table">
+                                    <tbody>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Summary</td>
+                                        <td class="td grey-text text-darken-1">
+                                            {{ object.review.summary | default:"" | strip_html_wrap }}
+                                        </td>
+                                    </tr>
+                                    {% if object.review.full_text %}
+                                        <tr>
+                                            <td class="th teal-text text-darken-5">Full Text</td>
+                                            <td class="td grey-text text-darken-1">
+                                                {{ object.review.full_text | default:"" | strip_html_wrap }}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header grey-text grey lighten-4">
+                        <i class="material-icons">storage</i> Holdings
+                    </div>
+                    <div class="collapsible-body" style="padding:0.3rem;">
+                        <div class="row">
+                            <div class="col s12 m6">
+                                <table class="cedar-horz-table">
+                                    <tbody>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Item Type Comments</td>
+                                        <td class="td grey-text text-darken-1">{{ object.holdings.item_type_comments | strip_html_wrap }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Source Type</td>
+                                        <td class="td grey-text text-darken-1">{{ object.holdings.source_type }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Media Mode</td>
+                                        <td class="td grey-text text-darken-1">{{ object.holdings.media_mode | linebreaks }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Dimensions</td>
+                                        <td class="td grey-text text-darken-1">{{ object.holdings.dimensions | linebreaks }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col s12 m6">
+                                <div class="divider hide-on-med-and-up"></div>
+                                <table class="cedar-horz-table">
+                                    <tbody>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Internal Location</td>
+                                        <td class="td grey-text text-darken-1">{{ object.holdings.item_internal_location | strip_html_wrap }}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Digital File Path</td>
+                                        <td class="td grey-text text-darken-1">{{ object.holdings.digital_file_name_path }}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Digital File Name</td>
+                                        <td class="td grey-text text-darken-1">{{ object.holdings.digital_file_name }}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Digial File Type Comments</td>
+                                        <td class="td grey-text text-darken-1">{{ object.holdings.digital_file_type_comments | strip_html_wrap }}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Digital File OCR'd</td>
+                                        <td class="td grey-text text-darken-1">{{ object.holdings.digital_file_ocrd | render_boolean }}</td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header grey-text grey lighten-4">
+                        <i class="material-icons">school</i> Researcher Notes
+                    </div>
+                    <div class="collapsible-body" style="padding:0.3rem;">
+                        <div class="row">
+                            <div class="col s12 m6">
+                                <table class="cedar-horz-table">
+                                    <tbody>
+                                    {% if object.researcher_notes.spreadsheet_id %}
+                                        <tr>
+                                            <td class="th teal-text text-darken-5">MIL Spreadsheet UID</td>
+                                            <td class="td grey-text text-darken-1">{{ object.researcher_notes.spreadsheet_id }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Researcher Notes</td>
+                                        <td class="td grey-text text-darken-1">{{ object.researcher_notes.researcher_notes | strip_html_wrap }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Actions Needed</td>
+                                        <td class="td grey-text text-darken-1">{{ object.researcher_notes.actions_needed | strip_html_wrap }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col s12 m6">
+                                <div class="divider hide-on-med-and-up"></div>
+                                <table class="cedar-horz-table">
+                                    <tbody>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Search Location</td>
+                                        <td class="td grey-text text-darken-1">{{ object.researcher_notes.search_location }}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Search Terms</td>
+                                        <td class="td grey-text text-darken-1">{{ object.researcher_notes.search_terms }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Search Results</td>
+                                        <td class="td grey-text text-darken-1">{{ object.researcher_notes.search_results }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Search Identifier</td>
+                                        <td class="td grey-text text-darken-1">{{ object.researcher_notes.search_identifier }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Cross reference</td>
+                                        <td class="td grey-text text-darken-1">{{ object.researcher_notes.cross_reference }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="th teal-text text-darken-5">Search Summary</td>
+                                        <td class="td grey-text text-darken-1">{{ object.researcher_notes.search_summary | strip_html_wrap }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function (e) {
+            console.log("init stuff");
+            $('.toggler').click(function (evt) {
+                var text = $(this).children('i').text();
+                var target_cls = "." + $(this).attr('data-toggle-target-class');
+
+                if (text == 'keyboard_arrow_right') {
+                    $(target_cls).slideDown();
+                    Materialize.showStaggeredList(target_cls + " ul");
+                    $(this).children('i').text('keyboard_arrow_down');
+                }
+                else {
+                    $(target_cls).slideUp();
+                    $(this).children('i').text('keyboard_arrow_right');
+                }
+            });
+
+            {% if is_print_view %}
+                togglePrintMode(true);
+            {% endif %}
+        });
+
+        function togglePrintMode(print_mode) {
+            if (print_mode) {
+                $('.hide-on-print').hide();
+                $('.show-on-print').show();
+                $('nav').hide();
+                $('header, main, footer').css('padding-left', '0');
+
+                // expand the collapsibles by triggering clicks - some may already be expanded so be clever.
+                $('ul.collapsible > li > div.collapsible-header').each(function () {
+                    if (!$(this).hasClass('active')) {
+                        $(this).trigger('click');
+                    }
+                });
+            }
+            else {
+                $('.hide-on-print').show();
+                $('.show-on-print').hide();
+                $('nav').show();
+                $('header, main, footer').css('padding-left', '260px');
+            }
+        }
+    </script>
+
+{% endblock javascripts %}

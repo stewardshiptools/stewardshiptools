@@ -1,0 +1,35 @@
+{% load static %}
+
+<ul>
+    <li>
+      <div class="collapsible-header"><i class="material-icons">list</i>Species Records Table and Map</div>
+      <div class="collapsible-body"><p></div>
+    </li>
+</ul>
+
+The Species Records table and map show all species site/story records collected in the Marine TEK interviews. 
+<br/><br/>
+<strong>Table Notes</strong> <br/>
+<ul class="collection">
+  <li class="collection-item">The table/map may be PRE-filtered by Interview, IF this table/map is found on an Interview Details page. If this table/map is on the main Species Records page, you will see ALL records.</li>
+  <li class="collection-item">The table and map are LINKED. As you filter the table, the map will automatically reload.</li>
+   <li class="collection-item"><strong>Results per page</strong> - change the number of records show in the table/map using this drop-down field. The limit is 1000 records per page.</li>
+   <li class="collection-item"><strong>Filter...</strong> - filter the table (and thus the map) by entering text strings. The following MTK fields have been indexed: ID, Use Description, Species Description, Time Frame Start Description, Time Frame End Description, Harvest Method Name, Fishing Method Description, Ecological Value Description, Species Theme Name, Temporal Trend Description', and Link Code.</li>   
+   <li class="collection-item"><strong>Map - Controls</strong> - Zoom, pan and expand the map using the </li>  
+</ul>
+<br/>
+<strong>Map Notes</strong> <br/>
+<ul class="collection">
+   <li class="collection-item">Zoom - click the +/- buttons at the top-left of the map OR use your scroll wheel OR pin gesture on a tablet or touch screen</li>
+   <li class="collection-item">Pan - drag you cursor or finger/stylus on a touch screen</li>
+   <li class="collection-item">Show in Full Screen - click <img src="{% static 'bower_components/leaflet.fullscreen/icon-fullscreen.png' %}"> to see the map expand to show in your full browser window</li>
+   <li class="collection-item">Base Map - Use the radio buttons in the Layer Legend, top-right of map, to choose a base map like Open Street Map (OSM) Mapquest or Mapquest Satellite </li>
+   <li class="collection-item">Overlay Layer(s) - turn on/off the overlay layers using the checkmark buttons below the Basemap layers. Overlay layers may have a Pencil button and a Garbage-can button: use these to edit or delete the overlay layer. </li>
+</ul>
+<br/>
+<strong>Examples</strong> <br/>
+<ul class="collection">
+  <li class="collection-item">Table - try changing the number of results from 10 (default) to 500.</li>
+  <li class="collection-item">Table - try entering “Seabird 1970” into the Filter field - six results are returned.</li>
+  <li class="collection-item">Try clicking on a feature (point, line or polygon) on the map. The pop-up will show you a name and a link to the specific record.</li>  
+</ul>

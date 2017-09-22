@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+{% load cedar_extras %}
+{% load cedar_material_form %}
+{% load cedar_settings %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load crm %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link href="{% static 'jquery-autosuggest/css/autoSuggest.css' %}" type="text/css" media="all" rel="stylesheet"/>
+    <link href="{% static 'css/autoSuggest_overrides.css' %}" type="text/css" media="all" rel="stylesheet"/>
+{% endblock %}
+
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Item {% endblock %}
+{% block second_bar_secondary_title %}{{ item.name }} {% if item %}({{ item.prefixed_id }}){% endif %}{% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <form action="" method="POST" enctype="multipart/form-data">
+        <div class="row" style="display:none;">
+            <div class="col s12">
+                {% csrf_token %}
+                {% if frm_item.errors %}
+                    <div class="row yellow lighten-3 form-error-div">
+                        {{ frm_item.errors }}
+                    </div>
+                {% endif %}
+                <div>
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    {{ frm_item.cataloger.as_hidden }}
+                    {{ frm_item.belongs_to.as_hidden }}
+                </div>
+
+                {% if frm_dublin_core.errors %}
+                    <div class="row yellow lighten-3 form-error-div">
+                        {{ frm_dublin_core.errors }}
+                    </div>
+                {% endif %}
+                {% if frm_relations.errors %}
+                    <div class="row yellow lighten-3 form-error-div">
+                        {{ frm_relations.errors }}
+                    </div>
+                {% endif %}
+                {% if frm_holdings.errors %}
+                    <div class="row yellow lighten-3 form-error-div">
+                        {{ frm_holdings.errors }}
+                    </div>
+                {% endif %}
+                {% if frm_review.errors %}
+                    <div class="row yellow lighten-3 form-error-div">
+                        {{ frm_review.errors }}
+                    </div>
+                {% endif %}
+                {% if frm_researcher_notes.errors %}
+                    <div class="row yellow lighten-3 form-error-div">
+                        {{ frm_researcher_notes.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m7">
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">subject</i> Identification
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <div class="row">
+                                {{ frm_item.name | materializecss }}
+                                {{ frm_dublin_core.creator | materializecss }}
+                                {{ frm_dublin_core.date | materializecss }}
+                                <div class="col" style="width:100%;padding-top:0.53rem;">
+                                    {{ frm_dublin_core.type | materialselect2 }}
+                                </div>
+                                {{ frm_dublin_core.subject | materializecss }}
+                                {{ frm_dublin_core.description | materializecss }}
+                                {{ frm_dublin_core.coverage | materializecss }}
+                                {{ frm_dublin_core.rights | materializecss }}
+                                {{ frm_dublin_core.identifier | materializecss }}
+                                {{ frm_dublin_core.external_identifier | materializecss }}
+
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col s5 m5">
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">lock_outline</i> Confidentiality
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    {{ frm_item.security_level | materializecss }}
+                                </div>
+                                <div class="col s12 m6">
+                                    {{ frm_confidentiality.release_signed | materializecss }}
+                                </div>
+                                <div class="col s12">
+                                    {{ frm_confidentiality.comments | materializecss }}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col s7 m5">
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">info_outline</i> Admin
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <div class="row">
+                                {% if object.cataloger %}
+                                    <div class="col">
+                                        <p>
+                                            <label for="cataloger-chip">Cataloger</label>
+                                        <div id="cataloger-chip" class="chip grey lighten-4">
+                                            <img src="{{ object.cataloger|crm_get_avatar_url }}" alt="Cataloger Pic">
+                                            {{ object.cataloger|crm_get_person_text }}
+                                        </div>
+                                        </p>
+                                    </div>
+                                {% endif %}
+                                <div class="col s12">
+                                    {{ frm_item.reviewer | materialselect2 }}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">shuffle</i> Relations
+                        </div>
+                        <div class="collapsible-body " style="padding:0.3rem;">
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    <div style="width: 100%;">
+                                        <label for="{{ frm_item.label_for_id }}">Collection(s)</label>
+                                        {{ frm_item.collections }}
+                                        {% for error in frm_item.collections.errors %}
+                                            <p class="help-block orange-text">{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                    <div style="width:100%;padding-top:0.53rem;">
+                                        {{ frm_item.related_items  | materialselect2 }}
+                                    </div>
+                                    <div style="width: 100%;">
+                                        <label for="{{ frm_item.label_for_id }}">Tag(s)</label>
+                                        {{ frm_item.tags }}
+                                        {% for error in frm_item.tags.errors %}
+                                            <p class="help-block orange-text">{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="col s12 m6">
+                                    <div class="" style="width: 100%;">
+                                        <label for="{{ frm_review.label_for_id }}">Places Mentioned</label>
+                                        {{ frm_review.places_mentioned }}
+                                        {% for error in frm_review.places_mentioned.errors %}
+                                            <p class="help-block orange-text">{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="" style="width: 100%;">
+                                        <label for="{{ frm_review.label_for_id }}">People Mentioned</label>
+                                        {{ frm_review.people_mentioned }}
+                                        {% for error in frm_review.people_mentioned.errors %}
+                                            <p class="help-block orange-text">{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="" style="width: 100%;">
+                                        <label for="{{ frm_review.label_for_id }}">Plant(s)</label>
+                                        {{ frm_review.plants }}
+                                        {% for error in frm_review.plants.errors %}
+                                            <p class="help-block orange-text">{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="" style="width: 100%;">
+                                        <label for="{{ frm_review.label_for_id }}">Animal(s)</label>
+                                        {{ frm_review.animals }}
+                                        {% for error in frm_review.animals.errors %}
+                                            <p class="help-block orange-text">{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            Files<i class="material-icons">insert_drive_file</i>
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <div class="row">
+                                <div class="col s12 ">
+                                    {{ frmset_assetmodel.management_form }}
+                                    {% for frm in frmset_assetmodel %}
+                                        <div class="item-assetmodel item-{{ forloop.counter0 }} col s12">
+                                            {% for hidden in frm.hidden_fields %}
+                                                {{ hidden }}
+                                            {% endfor %}
+                                            <div class="valign-wrapper">
+                                                <div class="valign" style="display:inline-block;width:100%">
+                                                    {{ frm.file | materializecss }}
+                                                </div>
+                                                <div class="valign" style="display:inline-block">
+                                                    {% if frmset_assetmodel.can_delete %}
+                                                        {{ frm.DELETE | materializecss }}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <a id="frm-assetmodel-add" class="waves-effect waves-light btn grey lighten-4 grey-text"
+                                       style="margin-left:23px;padding-right:0px;">
+                                        <i class="material-icons left">add</i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">done_all</i> Review
+                        </div>
+                        <div class="collapsible-body" style="padding:0.3rem;">
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    <div class="">
+                                        <div class="" style="width:100%">
+                                            {{ frm_review.mup_category | materialselect2 }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s12 m6">
+                                    <div class="divider hide-on-med-and-up"></div>
+                                    <div class="">
+                                        <div class="" style="width:100%">
+                                            {{ frm_review.use_occupancy_category | materialselect2 }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s12">
+                                    <br/>
+                                    <div class="divider" style="margin-bottom:0.75rem;"></div>
+                                    {{ frm_review.summary | materializecss }}
+                                    {#{{ frm_review.full_text | materializecss }}#}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">storage</i> Holdings
+                        </div>
+                        <div class="collapsible-body" style="padding:0.3rem;">
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    {{ frm_holdings.item_type_comments| materializecss }}
+                                    {{ frm_holdings.source_type | materializecss }}
+                                    {{ frm_holdings.media_mode | materializecss }}
+                                    {{ frm_holdings.dimensions | materializecss }}
+                                </div>
+                                <div class="col s12 m6">
+                                    {{ frm_holdings.item_internal_location | materializecss }}
+                                    {{ frm_holdings.digital_file_name_path | materializecss }}
+                                    {{ frm_holdings.digital_file_name | materializecss }}
+                                    {{ frm_holdings.digital_file_type_comments  | materializecss }}
+                                    {{ frm_holdings.digital_file_ocrd | materializecss }}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">school</i> Researcher Notes
+                        </div>
+                        <div class="collapsible-body" style="padding:0.3rem;">
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    {{ frm_researcher_notes.researcher_notes | materializecss }}
+                                    {{ frm_researcher_notes.actions_needed | materializecss }}
+                                </div>
+                                <div class="col s12 m6">
+                                    <div class="divider hide-on-med-and-up"></div>
+                                    {{ frm_researcher_notes.search_location | materializecss }}
+                                    {{ frm_researcher_notes.search_terms | materializecss }}
+                                    {{ frm_researcher_notes.search_results | materializecss }}
+                                    {{ frm_researcher_notes.search_identifier | materializecss }}
+                                    {{ frm_researcher_notes.cross_reference | materializecss }}
+                                    {{ frm_researcher_notes.search_summary | materializecss }}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+    <div id="frmset_assetmodel_px_empty_form" style="display: none;">
+        <div class="item-assetmodel item-__prefix__ col s12" style="display: none;">
+            {% for hidden in frmset_assetmodel.empty_form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            <div class="valign-wrapper">
+                <div class="valign" style="display:inline-block;width:100%">
+                    {{ frmset_assetmodel.empty_form.file | materializecss }}
+                </div>
+                <div class="valign" style="display:inline-block">
+                    {% if frmset_assetmodel.can_delete %}
+                        {{ frmset_assetmodel.empty_form.DELETE | materializecss }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{% static 'jquery-autosuggest/js/jquery.autoSuggest.minified.js' %}"></script>
+    <script>
+        $(document).ready(function (e) {
+            init_asset_forms();
+
+            // Initialize any datepickers.
+            $('.datepicker').pickadate(
+                {
+                    selectYears: {{ 'cedar__default_datepicker_years'|get_setting }},
+                    selectMonths: true,
+                    format: 'yyyy-mm-dd',
+                    max: new Date() //limits max date to today.
+                }
+            );
+
+        });
+
+        // Code to add another file number field when add another is clicked...
+        function init_asset_forms() {
+            $('#frm-assetmodel-add').click(function (e) {
+                add_asset_form();
+            });
+        }
+        function add_asset_form() {
+            var form_idx = $('#id_frmset_assetmodel_px-TOTAL_FORMS').val();
+            var empty_html = $('#frmset_assetmodel_px_empty_form').html().replace(/__prefix__/g, parseInt(form_idx));
+            var last_form_group = $('form .item-assetmodel').last();
+            last_form_group.after(empty_html);
+
+            // Manually sync up the management_form data so django can properly parse the formset output.
+            var new_index = parseInt(form_idx) + 1
+            $('#id_frmset_assetmodel_px-TOTAL_FORMS').val(new_index);
+
+            $('.item-assetmodel.item-' + form_idx).slideDown();
+
+            return new_index;
+        }
+    </script>
+
+
+{% endblock javascripts %}

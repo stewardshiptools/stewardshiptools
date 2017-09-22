@@ -1,0 +1,12 @@
+{# SEE: http://deathofagremmie.com/2013/09/21/haystack-search-quoting-issue/ #}
+{{ object.name }}
+{{ object.asset_type.type_of_asset }}
+{#{{ object.file }}#}
+
+{#{% for k, v in extracted.metadata.items %}#}
+{#    {% for val in v %}#}
+{#        {{ k }}: {{ val|safe }}#}
+{#    {% endfor %}#}
+{#{% endfor %}#}
+
+{{ extracted.contents|striptags|safe }}

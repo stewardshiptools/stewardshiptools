@@ -1,0 +1,35 @@
+{
+  "build": {
+    "js": "./cedar/static/build",
+    "materialize": "./cedar/static/lib/materialize-src/css"
+  },
+  "materialize": "./cedar/static/lib/materialize-src/sass/materialize.scss",
+  "jsx": ["./**/*.jsx", "!./cedar/static/bower_components/**", "!./cedar/static/lib/**"],
+  "browserify": [
+    "./cedar/static/js/cedar.jsx",
+    "./cedar/static/js/sidenav.jsx",
+    "./cedar/static/js/cedar_list.jsx",
+    "./crm/static/crm/js/person_list.jsx",
+    "./crm/static/crm/js/organization_list.jsx",
+    "./heritage/static/heritage/js/speciesobservations_table.jsx",
+    "./heritage/static/heritage/js/speciesobservations_map.jsx",
+    "./heritage/static/heritage/js/culturalobservations_table.jsx",
+    "./heritage/static/heritage/js/culturalobservations_map.jsx",
+    "./heritage/static/heritage/js/feature_list.jsx",
+    "./heritage/static/heritage/js/feature_map.jsx",
+    "./heritage/static/heritage/js/assets_table.js",
+    "./heritage/static/heritage/js/interviews.js",
+    "./development/static/development/js/development_project_feature_map.jsx",
+    "./development/static/development/js/project_list.jsx",
+    "./ecosystems/static/ecosystems/js/project_list.jsx",
+    "./geoinfo/static/geoinfo/js/layer_list.jsx",
+    "./geoinfo/static/geoinfo/js/spatialreport_list.jsx",
+    "./geoinfo/static/geoinfo/js/feature_list.jsx",
+    "./geoinfo/static/geoinfo/js/feature_list_component.jsx",
+    "./geoinfo/static/geoinfo/js/feature_map.jsx",
+    "./geoinfo/static/geoinfo/js/spatialreport_feature_list.jsx",
+    "./geoinfo/static/geoinfo/js/spatialreport_feature_map.jsx",
+    "./maps/static/maps/js/leaflet_main.jsx",
+    "./assets/static/assets/js/secureasset_table.jsx"
+  ]
+}

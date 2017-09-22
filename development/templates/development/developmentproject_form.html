@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load cedar_settings %}
+{% load crm %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link href="{% static 'jquery-autosuggest/css/autoSuggest.css' %}" type="text/css" media="all" rel="stylesheet"/>
+    <link href="{% static 'css/autoSuggest_overrides.css' %}" type="text/css" media="all" rel="stylesheet"/>
+{% endblock %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Development Project
+{% endblock %}
+{% block second_bar_secondary_title %}{{ object.cedar_project_name }}{% endblock %}
+{% block second_bar_secondary_content_right %}
+    {% is_update_view 1 0 as update_view %}
+    {% if not update_view %}
+        <a class="from-xml-trigger waves-effect waves-light btn grey lighten-5 grey-text text-darken-2"
+           href="#">
+            <div class="valign-wrapper">
+                <i class="material-icons valign ">file_upload</i>
+                &nbsp;From XML
+            </div>
+        </a>
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="row tight-row">
+        {% if xml_file_form %}
+            {% include 'development/ser_form_xml_file.html' with form=xml_file_form %}
+        {% endif %}
+    </div>
+    <div class="section">
+        <form action="" method="POST" enctype="multipart/form-data">
+            <div class="row">
+
+                {# DEVELOPMENT PROJECT FORM #}
+                <div class="col s12 m8 l8">
+                    {% csrf_token %}
+                    <div class='form-errors' style="display:none;">
+                        {{ form.errors }}
+                    </div>
+                    <div class="col s12">
+                        {{ form.cedar_project_name|materializecss }}
+                    </div>
+{#                    <div class="col s12 m6 l6">#}
+{#                        {% if object %}#}
+{#                            <div class="input-field col s12">#}
+{#                                <input disabled value="{{ object.cedar_project_code }}" id="project_code" type="text" class="validate"/>#}
+{#                                <label for="project_code">Cedar project code</label>#}
+{#                            </div>#}
+{#                        {% endif %}#}
+{#                    </div>#}
+                    <div class="col s6">
+                        {{ form.initial_date|materializecss:"s12" }}
+                    </div>
+                    <div class="col s6">
+                        {{ form.due_date|materializecss:"s12" }}
+                    </div>
+                    <div class="row"></div>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div style="width:100%;">
+                            {{ form.cedar_assessor|materialselect2 }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="width:100%;">
+                            {{ form.government_contact|materialselect2 }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m6 l6">
+                            <div style="width:100%;">
+                                {{ form.company_contact|materialselect2 }}
+                            </div>
+                        </div>
+                        <div class="col s12 m6 l6">
+                            <div style="width:100%;padding-top:21px;">
+                                {{ form.company|materialselect2 }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <ul class="collapsible" data-collapsible="accordion">
+                            <li>
+                                <div class="collapsible-header active grey-text grey lighten-4">
+                                    <i class="material-icons">subject</i> {{ form.description.label }}
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="row">
+                                        {{ form.description|materializecss }}
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="collapsible-header grey lighten-4">
+                                    <i class="material-icons">subject</i> {{ form.rationale.label }}
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="row">
+                                        {{ form.rationale|materializecss }}
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="collapsible-header grey lighten-4">
+                                    <i class="material-icons">subject</i> {{ form.location_description.label }}
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="row">
+                                        {{ form.location_description|materializecss }}
+                                    </div>
+                                </div>
+                            </li>
+                            {% for field in misc_textarea_fields %}
+                                {% get_dict_val form field as misc_text_field %}
+                                <li>
+                                    <div class="collapsible-header grey lighten-4">
+                                        <i class="material-icons">subject</i> {{ misc_text_field.label }}
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <div class="row">
+                                            {{ misc_text_field|materializecss }}
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col s12 m4 l4">
+                    <div class="row">
+                        {{ form.highlight|materializecss }}
+                    </div>
+                    <div class="row">
+                        <div style="width:100%;">
+                            <label for="{{ form.for_label_id }}">Tag(s)</label>
+                            {{ form.tags }}
+                            {% for error in form.tags.errors %}
+                                <p class="help-block orange-text">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="row"></div>
+                    <div class="row">
+                        {{ form.status|materializecss:"s12" }}
+                    </div>
+                    <div class="row">
+                        {{ form.consultation_stage|materializecss:"s12" }}
+                    </div>
+                    <div class="row">
+                        {{ form.final_decision|materializecss:"s12" }}
+                    </div>
+                    <div class="row">
+                        {{ form.primary_authorization|materializecss:"s12" }}
+                    </div>
+                    <div class="row">
+                        {{ form.filing_code|materializecss }}
+                    </div>
+                    {#                    <div class="divider"></div>#}
+                    <div class="thin-border-left-grey thin-border-bottom-grey thin-border-right-grey thin-border-top-grey">
+                        {{ file_number_formset.management_form }}
+                        <div class="row">
+                            {#                            <p class="col s12">File number(s)</p>#}
+
+                            {% for fileno_form in file_number_formset.forms %}
+                                <div class="development-project-file-number-item item-{{ forloop.counter0 }} col s12">
+                                    {{ fileno_form.file_number | materializecss:"s12 m6 l6" }}
+                                    {{ fileno_form.org_type | materializecss:"s12 m6 l6" }}
+                                    <div style="width:100%">
+                                        {{ fileno_form.organization | materialselect2 }}
+                                    </div>
+
+                                    {% for hidden in fileno_form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+
+                                    {% is_update_view 1 0 as update_view %}
+                                    {% if update_view %}
+                                        <div class="row">
+                                            {{ fileno_form.DELETE|materializecss }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <a id="file_number_add_another"
+                               class="right waves-effect waves-light btn grey lighten-4 grey-text text-darken-1 waves-input-wrapper">
+                                <i class="material-icons left">add</i>Add another
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form.geomark_url.as_hidden }}
+            {{ form.geomark_notes.as_hidden }}
+        </form>
+
+        <div id="file_number_empty_form" style="display: none;">
+            <div class="development-project-file-number-item item-__prefix__ col s12" style="display: none;">
+                {{ file_number_formset.empty_form.file_number | materializecss:"s12 m6 l6" }}
+                <div class="input-field col s6">
+                    {{ file_number_formset.empty_form.org_type }} {# init as materializeselect in the Add New onclick event #}
+                </div>
+                <div style="width:100%;">
+                    {{ file_number_formset.empty_form.organization }} {# init as select2 in the Add New onclick event #}
+                </div>
+
+                {% for hidden in file_number_formset.empty_form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+
+                {% is_update_view 1 0 as update_view %}
+                {% if update_view %}
+                    <div class="row">
+                        {{ file_number_formset.empty_form.DELETE|materializecss }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{% static 'jquery-autosuggest/js/jquery.autoSuggest.minified.js' %}"></script>
+    <script>
+        var current_nav_url = '{% url 'development:project-list' %}';
+
+        $(document).ready(function () {
+            // Initialize the datepicker.
+            $('.datepicker').pickadate(
+                {
+                    selectYears: {{ 'cedar__default_datepicker_years'|get_setting }},
+                    selectMonths: true,
+                    format: 'yyyy-mm-dd',
+{#                    max: new Date() //limits max date to today.#}{# remove this restriction so we can set dates way into the future #}
+                }
+            );
+
+            // Code to add another file number field when add another is clicked...
+            $('#file_number_add_another').click(function (e) {
+                var form_idx = $('#id_fileno_set-TOTAL_FORMS').val();
+
+                var empty_html = $('#file_number_empty_form').html().replace(/__prefix__/g, parseInt(form_idx));
+                var last_form_group = $('form .development-project-file-number-item').last();
+                last_form_group.after(empty_html);
+
+                // Manually sync up the management_form data so django can properly parse the formset output.
+                $('#id_fileno_set-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+
+                {#                $('.development-project-file-number-item.item-' + form_idx + ' select').material_select();#}
+
+                $('#id_fileno_set-' + form_idx + '-org_type').material_select();
+                $('#id_fileno_set-' + form_idx + '-organization').select2();
+
+                // Fix dumb select 2 style - could be made more efficient but it's really late.
+                $('.select2.select2-container').css({
+                    'width': 'inherit'
+                });
+
+                $('.development-project-file-number-item.item-' + form_idx).slideDown();
+            });
+        });
+
+    </script>
+
+
+{% endblock %}

@@ -1,0 +1,136 @@
+{% load html_filters %}
+
+{% if meta.contributor %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Contributor:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.contributor|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.coverage %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Coverage:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.coverage|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.creator %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Creator:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.creator|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.date %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Date:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{  meta.date }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.description %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Description:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.description|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.format %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Format:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.format|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.identifier %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Identifier:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.identifier|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.language %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Language:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.language|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.publisher %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Publisher:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.publisher|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.relation %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Relation:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.relation|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.rights %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Rights:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.rights|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.source %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Source:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.source|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.subject %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Subject:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.subject|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.title %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Title:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.title|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}
+
+{% if meta.type %}
+    <div class="col s12 teal-text text-darken-5">
+        <strong>Type:</strong>
+        <span class="col s12 grey-text text-lighten">
+            {{ meta.type|strip_html_wrap }}
+        </span>
+    </div>
+{% endif %}

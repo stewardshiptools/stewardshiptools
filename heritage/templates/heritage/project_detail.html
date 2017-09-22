@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{#{% extends "cedar/table_narrow.html" %}#}
+{% load thumbnail %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load html_filters %}
+{% load crm %}
+{% load communication %}
+{% load cedar_settings %}
+{% load threadedcomments_tags %}
+{% load discussion %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Project Details{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }} {% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'heritage.change_project' }}"
+       href="{% url 'heritage:project-update' pk=object.pk %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">edit</i>
+            &nbsp;Edit
+        </div>
+    </a>
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'heritage.add_projectasset' }}"
+       href="{% url 'heritage:project-secureasset-create' project_pk=object.pk %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">add_circle</i>
+            &nbsp;File
+        </div>
+    </a>
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'heritage.add_interview' }}"
+       href="{% url 'heritage:interview-create' %}?project_pk={{ project.pk }}">
+        <div class="valign-wrapper">
+            <i class="material-icons">add_circle</i>
+            &nbsp;Interview
+        </div>
+    </a>
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2"
+       target="_blank"
+       href="{% url 'heritage:project-detail-print' object.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">print</i>
+            &nbsp;Report
+        </div>
+    </a>
+    {% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="section">
+        <div class="row">
+            <div class="col s12 m3 l3 thin-border-right-grey">
+                {% if project.picture %}
+                    <div id="heritage-project-picture" class="section">
+                        <img class="materialboxed responsive-img" src="{{ project.picture|thumbnail_url:'detail' }}" alt="Heritage project picture"/>
+                    </div>
+                {% endif %}
+                <div class="">
+                    <h6>Project Code</h6>
+                    <p class=" grey-text">{{ object.phase_code|default_if_none:"Not specified" }}</p>
+                </div>
+                <div class="">
+                    <h6>Mail Harvest Code</h6>
+                    <p class=" grey-text">{{ object.cedar_project_code|default_if_none:"" }}</p>
+                </div>
+                <div class="">
+                    <h6>Project Location(s)</h6>
+                    <p class=" grey-text">{{ object.location }}</p>
+                </div>
+                <div class="section">
+                    <h6>Tags</h6>
+                    <div class="chip">
+                        Heritage
+                        {#                        <i class="material-icons">close</i>#}
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m9 l9">
+                <div>
+                    <div>
+                        <ul class="tabs hide-scroll-x">
+                            <li class="tab col s3">
+                                <a href="#tab-main"
+                                   class="active tooltipped-project-details"
+                                   data-tooltip="Details"
+                                   data-position="top">
+                                    <i class="material-icons" style="font-size:35px;">subject</i>
+                                </a>
+                            </li>
+                            <li class="tab col s3">
+                                <a href="#tab-people"
+                                   class="tooltipped-project-details"
+                                   data-tooltip="People"
+                                   data-position="top">
+                                    <i class="material-icons" style="font-size:35px;">people</i>
+                                </a>
+
+                            </li>
+                            <li class="tab col s3">
+                                <a href="#tab-interviews"
+                                   class="tooltipped-project-details"
+                                   data-tooltip="Interviews"
+                                   data-position="top">
+                                    <i class="material-icons" style="font-size:35px;">folder_shared</i>
+                                </a>
+                            </li>
+                            <li class="tab col s3">
+                                <a href="#tab-files"
+                                   class="tooltipped-project-details"
+                                   data-tooltip="Files"
+                                   data-position="top">
+                                    <i class="material-icons" style="font-size:35px;">attach_file</i>
+                                </a>
+                            </li>
+                            <li class="tab col s3">
+                                <a href="{{ 'communication__comm_items_panel_html_id'|get_setting }}"
+                                   class="tooltipped-project-details"
+                                   data-tooltip="Communications"
+                                   data-position="top">
+                                    <i class="material-icons" style="font-size:35px;">{{ 'communication__comm_items_panel_icon_text'|get_setting }}</i>
+                                </a>
+                            </li>
+                            <li class="tab col s3">
+                                <a href="{{ 'communication__disc_items_panel_html_id'|get_setting }}"
+                                   class="tooltipped-project-details"
+                                   data-tooltip="Discussion"
+                                   data-position="top">
+                                    <i class="material-icons" style="font-size:35px;">{{ 'communication__disc_items_panel_icon_text'|get_setting }}</i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="tab-main" class="info-panel-height-max">
+                        <div class="section">
+                            <p><h6>Dates</h6></p>
+                            <div class="col">From: <span class=" grey-text">{{ object.start_date| default:"Not specified" }}</span></div>
+                            <div class="col">To: <span class=" grey-text">{{ object.end_date | default:"Not specified" }}</span></div>
+                        </div>
+                        <div class="section">
+                            <p><h6>Background</h6></p>
+                            <div >
+                                <span class=" grey-text">{{ object.background|strip_html_wrap }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-people" class="info-panel-height-max">
+                        <div id="project_person_list" class="row"></div>
+                    </div>
+                    <div id="tab-interviews" class="info-panel-height-max">
+                        <div class="col s12 m3 m3">
+                            <div id="con-horz">  {# Vertically oriented table controls. #}
+                                <div id="search-box-input-field" class="input-field">
+                                    {# <i class="material-icons prefix">search</i>#}
+                                    <input id="search-box" type="text">
+                                    <label for="search-box">Filter...</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m9 l9">
+                            <table id="datatable" class="highlight">
+                                <thead>
+                                <tr>
+                                    {% block table-head %}
+                                        <th></th>
+                                        <th>Project</th>
+                                        <th>Interviewer Initials</th>
+                                        <th>Interview Number</th>
+                                    {% endblock %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="tab-files" class="col s12">
+                        <div id="assets-table">
+                            <table class="highlight">
+                                <thead>
+                                <tr>
+                                    <th data-field="name">Filename</th>
+                                    <th data-field="type">Date Modified</th>
+                                    <th data-field="type">Size</th>
+                                    <th data-field="manage">Manage</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for asset in assets_list %}
+                                    <tr>
+                                        <td class="tight-table-row"><a href="{% url 'heritage:project-secureasset-detail' pk=asset.pk project_pk=asset.project.pk %}">{{ asset.name }}</a></td>
+                                        <td class="tight-table-row">{{ asset.modified }}</td>
+                                        <td class="extra-tight-table-row">{{ asset.file_size_str }}</td>
+                                        <td class="tight-table-row">
+                                            <a href="{% url 'heritage:project-secureasset-delete' project_pk=object.pk pk=asset.pk %}"
+                                               class="waves-grey lighten-5 grey-text text-darken-1 tooltipped-secureasset-delete"
+                                               data-tooltip="Delete File" data-position="left">
+                                                <i class="material-icons" style="font-size: inherit;">delete</i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="{{ 'communication__comm_items_panel_html_id'|get_setting|slice:"1:" }}" class="col s12  info-panel-height-max">
+                        {% render_communication_tools related_object=object element_id='comms_panel' %}
+                    </div>
+                    <div id="{{ 'communication__disc_items_panel_html_id'|get_setting|slice:"1:" }}" class="col s12  info-panel-height-max">
+                        {% render_comment_list for object %}
+                        {% render_cedar_comment_form object=object %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" >
+
+    var project_info_ajax_url = "{{ project_info_ajax_url }}";
+    console.log("project: ", project_info_ajax_url);
+
+    </script>
+{% endblock content %}
+
+{% block javascripts %}
+    <!-- todo Comment out the babel cdn line for production -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script> -->
+
+    {% react %}
+    {% react_dom %}
+
+    {% crm_person_list 'project_person_list' person_info_ajax_url pager=0 search=0 %}
+
+    <script>
+        var interview_ajax_url = "{{ interview_ajax_url|escapejs }}";
+        var enable_pagination = false;
+
+        $(document).ready(function (evt) {
+            $('a.tooltipped-secureasset-delete').tooltip();
+            $('a.tooltipped-project-details').tooltip();
+        });
+    </script>
+
+    <script type="text/javascript" src="{% static 'bower_components/jquery-typewatch/jquery.typewatch.js' %}"></script>
+    <script src='{% static 'lib/DataTables/datatables.js' %}'></script>
+    <script src="{% static 'heritage/js/interviews.js' %}"></script>
+    <script>
+        var current_nav_url = '{% url 'heritage:project-list' %}';
+    </script>
+{% endblock %}

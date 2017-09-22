@@ -1,0 +1,76 @@
+<ul>
+    <li>
+	  <div class="collapsible-header"><i class="material-icons">list</i>New Spatial Layer Instructions</div>
+      <div class="collapsible-body"><p></div>
+    </li>
+</ul>
+
+<strong>Spatial location options</strong> 
+<br/>There are several ways to define a spatial location:
+<ul class="collection">
+   <li class="collection-item">File - upload a spatial file, e.g. ESRI Shapefile, Google KMZ</li>
+   <li class="collection-item">Draw on a map - draw poins, lines and/or polygons on an interactive map</li>
+   <li class="collection-item">WKT - enter "well-know text" format string. <a href="https://en.wikipedia.org/wiki/Well-known_text" target="_blank">More information @ <img width="20px" src="https://en.wikipedia.org/static/favicon/wikipedia.ico"></a>.</li>
+   <li class="collection-item">Custom - use a custom form</li>
+</ul>
+
+<br/><strong>General steps</strong>
+<ol class="collection">
+   <li class="collection-item">Add a <strong>descriptive</strong> name for the location layer you are creating. If you are adding more than one spatial location, add numbers to the layer names. Here are some examples: 
+   <ul class="collection">
+   <li class="collection-item">E.g. for a development project: "DP-00XX footprint 1 WKT" and "DP-00XX footprint 2 Shapefile". </li>
+   <li class="collection-item">E.g. for a general reporting layer: "Aggregate marine bird forage areas" or "Sport fishing boat reports 2016".</li>
+   </ul>
+   <li class="collection-item">Select a type (then follow specific steps listed below).</li>
+   <li class="collection-item">Adding notes is optional but strongly recommended. For example, you should add where, when and from who the data/file came from. </li>
+</ol>
+
+<br/>
+<strong>Instructions for using Shapefile</strong> 
+<br/>Follow these steps:
+<ol class="collection">
+   <li class="collection-item">Preparation: Shapefiles must be a zipped collection of all the individual Shapefile files. It is recommended that the name of the zip file be the same as the contained files. E.g. "project_polygon.zip" would include the following files: project_polygon.shp, and project_polygon.dbf and project_polygon.prj. Multi-part polygons are NOT allowed.</li>
+   <li class="collection-item">(Optional) Preparation: Use ArcGIS or QGIS to examine the dbf file and determine what attribute labels are available. Make note of these labels and think about the titles you would like for individual features in the map layer.</li>
+   <li class="collection-item">(Optional) Designate an automatically generated feature label, e.g. My layer feature %ID% %poly name%. Note that feature labels are not available from KMZ files.</li>
+   <li class="collection-item">Select File and add (a) Title and (b) Notes as instructed above above.</li>
+   <li class="collection-item">Click the FILE button and locate the zipped Shapefile on your local system.</li>
+   <li class="collection-item">Click CREATE PROJECT LOCATION or CREATE LAYER. The system will parse the Shapefile, creating (1st) a layer and then (2nd) ingesting all the contained features.</li>
+</ol>
+<br/>
+<strong>Instructions for using KMZ (zipped Google KML file)</strong> 
+<br/>Follow these steps:
+<ol class="collection">
+   <li class="collection-item">Preparation: Save/export your layer(s) in Google Earth as a KMZ. Warning: don't make this too complex! Also note that feature attributes are not always ingested from a KMZ.</li>
+   <li class="collection-item">Select File and add (a) Title and (b) Notes as instructed above above.</li>
+   <li class="collection-item">Click the FILE button and locate the GMZ file on your local system.</li>
+   <li class="collection-item">Click CREATE PROJECT LOCATION or CREATE LAYER. The system will parse the KMZ, creating (1st) a layer and then (2nd) ingesting all the contained features.</li>
+</ol>
+<br/>
+<strong>Instructions for using Draw on a map</strong> 
+<br/>Follow these steps:
+<ol class="collection">
+   <li class="collection-item">Select Draw on a map and add (a) Title and (b) Notes as instructed above above.</li>
+   <li class="collection-item">Zoom and <img src="http://www.cedarbox.ca/wp-content/uploads/2016/06/OL-hand.png"> pan the map to your desired location. Use the zoom buttons, and mouse-dragging.</li>
+   <li class="collection-item">Activate the pencil button to <strong>create</strong> one or more point features. Each <i>single-mouse-click</i> with the 
+<img src="http://www.cedarbox.ca/wp-content/uploads/2016/06/OL-edit-point.png"> pencil button activated will add a point feature.</li>
+   <li class="collection-item">Activate the <img src="http://www.cedarbox.ca/wp-content/uploads/2016/06/OL-edit-line.png"> line button to <strong>create</strong> one or more line features. Start a line with a <i>single-mouse-click</i> and add vertices (turns) with another <i>single-mouse-click</i>. End the line drawing with a <i>double-mouse-click</i>. 
+   <li class="collection-item">Multiple line features are allowed.</li>
+   <li class="collection-item">Activate the <img src="http://www.cedarbox.ca/wp-content/uploads/2016/06/OL-edit-poly.png"> polygon button to <strong>create</strong> one or more polygons. Start a polygon with a <i>single-mouse-click</i> and add vertices (turns) with another <i>single-mouse-click</i>. End the polygon drawing with a <i>double-mouse-click</i>.</li>
+   <li class="collection-item">It is a good habit to deactivate your tool by clicking the <img src="http://www.cedarbox.ca/wp-content/uploads/2016/06/OL-hand.png"> hand tool.</li>
+   <li class="collection-item"><strong>Edit</strong> your features by clicking on the <img src="http://www.cedarbox.ca/wp-content/uploads/2016/06/OL-four-way-arrows.png"> edit button. Point: select and move. Line: select, then move a vertice or add a vertice by dragging an intermediate vertice. Polygon: select and move any vertices, and/or create a new vertices by dragging an intermediate vertices.</li>
+   <li class="collection-item"><strong>Delete</strong> features using the <font color = "039be5">Delete all features</font> link below the map.</li>
+</ol>
+<br/>
+<strong>Instructions for WKT</strong> 
+<br/>Follow these steps:
+<ol class="collection">
+   <li class="collection-item">Select WKT and add (a) Title and (b) Notes as instructed above above.</li>
+   <li class="collection-item">Copy and paste the WKT text into the "Wkt" field.</li>
+   <li class="collection-item">Click CREATE PROJECT LOCATION or CREATE LAYER. The system will parse the WKT, creating (1st) a layer and then (2nd) ingesting all the contained features.</li>
+</ol>
+<br/>
+<strong>Instructions for Custom</strong> 
+<br/>Follow these steps:
+<ol class="collection">
+   <li class="collection-item">More information to be added here...</li>
+</ol>

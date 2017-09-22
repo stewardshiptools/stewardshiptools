@@ -1,0 +1,95 @@
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load cedar_settings %}
+
+{{ form.media }}
+
+<div class="row tight-row" style="display: none;">
+    {{ form.errors }}
+</div>
+
+<div class="row tight-row">
+        {{ form.name_first|materializecss:"s12 m4 l4" }}
+        {{ form.name_last|materializecss:"s12 m4 l4" }}
+        {{ form.name_suffix|materializecss:"s12 m2 l2" }}
+        {{ form.initials|materializecss:"s12 m2 l2" }}
+
+</div>
+
+<div class="row tight-row">
+    {{ form.email|materializecss:"s12" }}
+</div>
+
+<div class="row tight-row">
+    <div id="organizations" class="col s12">
+        {{ form.organizations|materialselect2 }}
+    </div>
+</div>
+
+<div class="row tight-row">
+    {{ form.indigenous_name|materializecss:"s12" }}
+</div>
+
+<div class="row tight-row">
+    {{ form.alternate_names|materializecss:"s12" }}
+</div>
+
+<div class="row tight-row">
+    {{ form.pic|materializecss:"s12" }}
+</div>
+
+<div class="row tight-row">
+    {{ form.date_of_birth|materializecss:"s12" }}
+</div>
+
+<div class="row tight-row">
+    {{ form.gender|materializecss:"s12" }}
+</div>
+
+<div class="row tight-row">
+    {{ form.mentor_name|materializecss:"s12 m6 l8" }}
+    {{ form.mentor_relationship|materializecss:"s12 m6 l4" }}
+</div>
+
+<div class="row tight-row">
+    {{ form.phone|materializecss:"s12 m6 l6" }}
+    {{ form.alt_phone|materializecss:"s12 m6 l6" }}
+</div>
+
+<div class="row tight-row">
+    {{ form.address|materializecss:"s12" }}
+</div>
+
+<div class="row tight-row">
+    <div id="roles" class="col s12">
+        {{ form.roles|materialselect2 }}
+    </div>
+</div>
+
+<div class="row tight-row">
+    {{ form.bio|materializecss:"s12" }}
+</div>
+
+<div class="row tight-row">
+    {{ form.notes|materializecss:"s12" }}
+</div>
+
+<div class="row tight-row">
+    {{ form.clan_family|materializecss:"s12" }}
+</div>
+
+
+<script>
+    $( document ).ready(function () {
+        // Initialize the datepicker.
+        $('.datepicker').pickadate(
+                {
+                    selectYears: {{ 'cedar__default_datepicker_years'|get_setting }},
+                    selectMonths: true,
+                    format: 'yyyy-mm-dd',
+                    max: new Date() //limits max date to today.
+                }
+        );
+    });
+</script>

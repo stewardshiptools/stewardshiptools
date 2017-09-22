@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{#{% extends "cedar/table_narrow.html" %}#}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load html_filters %}
+{% load crm %}
+{% load leaflet_assets %}
+{% load communication %}
+{% load cedar_settings %}
+
+
+{#{% block comm %}#}
+{#    {% get_communication_object object.communication as communication%}#}
+{#{% endblock %}#}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Email Message{% endblock %}
+{% block second_bar_secondary_title %}Subject: {{ communication.subject|strip_html_wrap }} {% endblock %}
+{% block second_bar_secondary_content_right %}
+    {# {% back_button extra='#tab-communication' %} #}
+    <a class="waves-effect waves-light btn grey lighten-5 red-text text-darken-1 {{ user|is_disabled:'communication.delete_communication' }}"
+       href="{% url 'communication:communication-delete' pk=communication.id %}">
+        <div class="valign-wrapper"><i class="material-icons valign ">delete</i></div>
+    </a>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    {% get_communication_object object.communication as communication%}
+
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12 m3 l3">
+            <div class="section">
+                {% for rel in communication_relations %}
+                    <a href="{{ rel.related_object.get_absolute_url }}{{ 'communication__comm_items_panel_html_id'|get_setting }}">{{ rel.related_object }}</a>&nbsp;
+                {% endfor  %}
+            </div>
+            <div class="section">
+                <strong>Mail Account: </strong><span class=" grey-text">{{ object.mailbox.mail_account.email_address }}</span><br/>
+                <strong>Mail Folder: </strong><span class=" grey-text">{{ object.mailbox.folder_name }}</span><br/>
+                {% if object.attachments.all %}
+                    <br/><strong>Attachment{{ object.attachments.all|pluralize }}</strong>
+                    <p>
+                        {% for attachment in object.attachments.all %}
+                            <a href="{{ attachment.asset.url }}">{{ attachment.asset.name }}</a>&nbsp;{{ attachment.asset.file_size_str }}<br/>
+                        {% endfor %}
+
+                    </p>
+                {% endif %}
+            </div>
+{#            <div class="section">#}
+{#                <p><strong>Related to the following database entit{{ communication.related_communication.all|pluralize:"y,ies" }}:</strong><br></p>#}
+{#                    {% for rel in communication.related_communication.all %}#}
+{#                        <a href="{{ rel.related_object.get_absolute_url }}">{{ rel.related_object }}</a><br>#}
+{#                    {% endfor  %}#}
+{#            </div>#}
+        </div>
+        <div class="col s12 m8 l8 thin-border-left-grey">
+            <div class="section">
+                <strong>Date Sent: </strong><span class=" grey-text">{{ communication.date }}</span><br/>
+                <strong>Sent By: </strong><span class="grey-text">{{ message.from_address|join:', ' }}</span><br/>
+                <strong>Sent To: </strong><span class="grey-text">{{ message.to_addresses|join:', ' }}</span><br/>
+                <strong>Subject: </strong><span class="grey-text">{{ communication.subject|strip_html_wrap }}</span>
+                <div class="divider"></div>
+            </div>
+            <div class="section">
+                {% if message.html %}
+                    <div class="grey-text email-message-body">{{ message.html|safe }}</div><br/>
+                {% else %}
+                    <div class="grey-text email-message-body">{{ message.text }}</div><br/>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript"></script>
+{% endblock content %}
+
+{% block javascripts %}
+    <script>
+{#        var current_nav_url = '{% url 'development:project-list' %}';#}
+
+        $(document).ready(function (evt) {});
+    </script>
+
+{% endblock %}

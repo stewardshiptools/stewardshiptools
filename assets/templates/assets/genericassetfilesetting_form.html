@@ -1,0 +1,21 @@
+{% extends 'assets/genericasset_form.html' %}
+{% load cedar_material_form %}
+
+
+{% block form_fields %}
+    <div class="row">
+        <div class="col s8">
+            {{ form.setting|materialselect2 }}
+        </div>
+    </div>
+    {{ block.super }}
+
+
+    <script>
+        $(document).ready(function(e){
+            {% if hide_meta_doc %}
+                $('div.meta-doc-form-area').css('display', 'none');
+            {% endif %}
+        });
+    </script>
+{% endblock form_fields %}

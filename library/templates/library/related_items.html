@@ -1,0 +1,6 @@
+{% if items %}
+    <span class="teal-text text-darken-5">Related Item{{ items | pluralize }}:</span>
+    {% for item in items %}
+        <a href="{% url 'library:item-detail' item.id %}">{{ item.name }}</a><br/>
+    {% endfor %}
+{% endif %}

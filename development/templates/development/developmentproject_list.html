@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load leaflet_assets %}
+{% load development %}
+
+{% block stylesheets %}
+    {% leaflet_assets_css %}
+{% endblock %}
+
+{# Note: {{ block.super }} must appear in the {% block content %} tag for the following to work. #}
+{# Note: uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Development Projects{% endblock %}
+{% block second_bar_secondary_title %}<span class="project-table-count">{{ object_list.count }}</span> Project{{ object_list|pluralize }} {% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="hide-on-print waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'development.add_developmentproject' }}"
+       href="{% url 'development:project-create' %}">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">add_circle</i>
+            &nbsp;Project
+        </div>
+    </a>
+    <a class="hide-on-print waves-effect waves-light btn grey lighten-5 grey-text text-darken-2"
+       target="_blank"
+       href="{% url 'development:project-list-print' object.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">print</i>
+            &nbsp;Report
+        </div>
+    </a>
+    <span class="show-on-print right grey-text text-lighten"><h6>PRINTED {% now "SHORT_DATE_FORMAT" %}</h6></span>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12">
+            {# Need to add the div manually.  The include tag is for adding the javascript. #}
+            <div id="project-table"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+    {% development_project_list 'project-table' ajax_url=ajax_url stage_options=consultation_stage_options filing_code_options=filing_code_options people_options=people_options org_options=organization_options tags_options=tags_options default_sort='-id' %}
+
+    <script>
+        $(document).ready(function (e) {
+            {% if is_print_view %}
+                togglePrintMode(true);
+            {% endif %}
+        });
+
+        function togglePrintMode(print_mode) {
+            if (print_mode) {
+                $('.hide-on-print, .help-icon-secondary-menu, .generic a, .filter-field, .pagination, div#project-table ul.filters').hide();
+                $('.show-on-print').show();
+                $('nav').hide();
+                $('header, main, footer').css('padding-left', '0');
+
+                // expand the collapsibles by triggering clicks - some may already be expanded so be clever.
+                $('ul.collapsible > li > div.collapsible-header').each(function () {
+                    if (!$(this).hasClass('active')) {
+                        $(this).trigger('click');
+                    }
+                });
+            }
+        }
+    </script>
+{% endblock %}

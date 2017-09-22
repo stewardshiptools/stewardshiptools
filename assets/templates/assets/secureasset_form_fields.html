@@ -1,0 +1,71 @@
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load assets %}
+
+{# secureasset_form_fields.html  has space #}
+{# for subclassed secureasset classes' templates to add form variables.#}
+
+{#override additional_form_fields_1#}
+{#and  additional_form_fields_2#}
+{#to add more from fields in subclassed templates.#}
+
+{#When included into a parent template, this form template requires#}
+{#submitting the "form" variable.#}
+
+{# this template should be included within <form> tags and doesn't include the submit button #}
+{#    so that sub-template extender can define that text as they see fit.#}
+
+{{ form.media }}
+
+{#<div class="row tight-row">#}
+{#    {{ form.errors }}#}
+{#</div>#}
+<div class="row">
+    <div class="col s12">
+        {{ form.file|materializecss }}
+    </div>
+</div>
+
+<div class="row"></div>
+
+{#  EG this is used by devt app to add the project name to the form #}
+{% block additional_form_fields_1 %} {% endblock %}
+
+
+<div class="row">
+    <div id="{{ form.auto_id }}-errors" style="display:none;">{{ form.errors }}</div>
+    <div style="display: none;">
+        {# we're done with asset type now. #}
+        <div class="col s12 m6 l6">
+            <div class="row">
+                <div class="col s12">
+                    {{ form.asset_type }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12">
+        {{ form.comment|materializecss }}
+    </div>
+</div>
+
+{% comment %}
+    Suppress the metadocument inline form if the meta document formset hasn't been provided.
+{% endcomment %}
+
+{% if metadocument_formset %}
+    <div class="row">
+        {% include_metadocument_inline_form %}
+    </div>
+{% endif %}
+
+<script>
+    $(document).ready(function(e){
+
+    });
+</script>
+
+{% block additional_form_fields_2 %} {% endblock %}
+
+

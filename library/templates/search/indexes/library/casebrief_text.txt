@@ -1,0 +1,8 @@
+{{ object.story_title | default:"" }}
+{{ object.prefixed_id }}
+
+{{ object.issues | default:"" }}
+{{ object.facts | default:"" }}
+{{ object.decision | default:"" }}
+{{ object.notes | default:"" }}
+{{ object.source_notes | default:"" }}

@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load html_filters %}
+{% load leaflet_assets %}
+{% load heritage %}
+
+{% block stylesheets %}
+    {% leaflet_assets_css %}
+    <link href="{% static 'css/griddle_style.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Species Record Details{% endblock %}
+{% block second_bar_secondary_title %}
+    {{ object.species }}
+    {% if object.gazetted_place_name %}
+        - {{ object.gazetted_place_name }}
+    {% endif %}
+{% endblock %}
+{% block second_bar_secondary_content_right %} {% endblock %}
+
+{#{% block title %}Cultural Observation Detail{{ object.description }}{% endblock %}#}
+
+{% block content %}
+    {{ block.super }}
+
+    {# List all this record's appearances in sessions/interviews grouped by session #}
+    {% with object.recordsessionlink_set.all as link_list %}
+        {% if link_list %}
+            <div class="row">
+                <div class="col s12">
+                    <h4>Appearances</h4>
+                    {% heritage_get_record_session_links link_list %}
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="row">
+        <div class="col s6">
+            <h4>MTK Species Observation Fields</h4>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Species</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.species |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Species Theme</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.species_theme |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Species Other Detail</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.species_other_detail |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Fishing Method</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.fishing_method |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Fishing Method Other Detail</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.fishing_method_other_detail |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Harvest Method</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.harvest_method |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Ecological Value</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.ecological_value |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Temporal Trend</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.temporal_trend |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Temporal Trend Comment</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.temporal_trend_comment |default_if_none:""|strip_html_wrap }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Ecological Observation Only</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.ecological_observation_only |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Gazetted Place Name</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.gazetted_place_name |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Local Place Name</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.local_place_name |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">First Nations Place Name</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.first_nations_place_name |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Linguistic Group</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.linguistic_group |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Seasons</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.seasons |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Use</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.use |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Use Other Detail</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.use_other_detail |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Time Frame Start</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.time_frame_start |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Time Frame End</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.time_frame_end |default_if_none:"" }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Time Frame Comments</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.time_frame_comments |default_if_none:""|strip_html_wrap }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Quotes</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.quotes |default_if_none:""|strip_html_wrap }}</div>
+            </div>
+            <div class="row tight-row">
+                <div class="col s6 grey-text text-darken-4">Comments 2</div>
+                <div class="col s6 grey-text text-darken-1">{{ object.comments_2 |default_if_none:""|strip_html_wrap }}</div>
+            </div>
+        </div>
+        <div class="col s6">
+            <div id="species-obs-map-container"></div>
+        </div>
+    </div>
+
+    {% if perms.heritage.view_record_meta %}
+        <div class="divider"></div>
+        <div class="row">
+            <h4>MTK Record Fields</h4>
+            <div class="col s6">
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Project</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.project |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Interviewer</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.interviewer |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Participant Id</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.participant_id |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Participant Secondary Id</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.participant_secondary_id |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Interview Number</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.interview_number |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Interview</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.interview |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Participant Community</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.participant_community |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Map Feature</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.map_feature |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Link Code</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.link_code |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Verification Required</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.verification_required |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Comments</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.comments |default_if_none:""|strip_html_wrap }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Data Entry Id</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.data_entry_id |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Shape Type</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.shape_type |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Base Map</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.base_map |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Scan</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.scan |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Data Source</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.data_source |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Info Type</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.info_type |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Accuracy</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.accuracy |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Related Documents</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.related_documents |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Notes For Map</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.notes_for_map |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">Checked By Kb</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.checked_by_kb |default_if_none:"" }}</div>
+                </div>
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">F34</div>
+                    <div class="col s6 grey-text text-darken-1">{{ object.f34 |default_if_none:"" }}</div>
+                </div>
+            </div>
+            <div class="col s6">
+                &nbsp;
+            </div>
+
+        </div>
+    {% endif %}
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {% react %}
+    {% react_dom %}
+    {% leaflet_assets_js %}
+    {% leaflet_load_main %}
+    {% leaflet_map_json 'map_default' as map_json %}
+    {% include 'heritage/speciesobservations_map.html' with attach_id='species-obs-map-container' map_id='species-obs-map' map_settings=map_json %}#}
+
+    <script>
+        var current_nav_url = '{% url "heritage:species-observations" %}';
+
+        var species_ajax_url = "{{ species_ajax_url }}";
+
+        var spinner = $('.progress');
+        spinner.css('visibility', 'visible');
+
+        $(document).ready(function () {
+            $.ajax({
+                url: species_ajax_url,
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    console.log("data", data);
+                    // Dump data into fake results object so the map.jsx knows
+                    // what to do with it:
+                    var results = [data]
+                    $(document).trigger('SpeciesObservationsUpdated', [results]);
+                    spinner.css('visibility', 'hidden');
+                }.bind(this),
+                error: function (xhr, status, err) {
+                    console.error(species_ajax_url, status, err.toString());
+                }.bind(this)
+            });
+        });
+    </script>
+{% endblock %}

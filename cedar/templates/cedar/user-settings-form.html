@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load cedar_material_form %}
+{% load cedar_settings %}
+{% load thumbnail %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}User Settings{% endblock %}
+{% block second_bar_secondary_title %}{{ user.first_name }} {{ user.last_name }}{% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2"
+       href="{% url 'change-password' %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">edit</i>
+            &nbsp;Change Password
+        </div>
+    </a>
+{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="section">
+        <div class="row">
+            <div class="col s12">
+                <form action="{% url "user-settings" %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ crm_person_formset.management_form }}
+                    {{ form.errors }}
+                    {{ form.media }}
+
+                    {#  THERE SHOULD ONLY BE ONE IN THE FORMSET: #}
+                    {#  NOTE THAT WE ARE MIXING auth.User and crm.Person - be careful. #}
+                    {% for crm_person_form in crm_person_formset %}
+                        {{ crm_person_form.id }}
+                        {{ crm_person_form.media }}
+                        {# auth.User form: #}
+                        <div class="row">
+                            {{ form.first_name|materializecss:"s12 m6 l6" }}
+                            {{ form.last_name|materializecss:"s12 m6 l6" }}
+                            {{ form.email|materializecss:"s12 m6 l6" }}
+
+                            {# crm.Person form: #}
+                            {{ crm_person_form.initials|materializecss:"s12 m6 l6" }}
+                            {{ crm_person_form.name_suffix|materializecss:"s12 m6 l6" }}
+                        </div>
+                        <div class="divider"></div>
+                        <div class="row">
+                            {{ crm_person_form.date_of_birth|materializecss:"s12 m6 l6" }}
+                        </div>
+                        <div class="divider"></div>
+                        <div class="row">
+                            {{ crm_person_form.indigenous_name|materializecss:"s12 m6 l6" }}
+                            {{ crm_person_form.clan_family|materializecss:"s12 m6 l6" }}
+                        </div>
+                        <div class="divider"></div>
+                        <div class="row">
+                            {{ crm_person_form.phone|materializecss:"s12 m6 l6" }}
+                            {{ crm_person_form.alt_phone|materializecss:"s12 m6 l6" }}
+                        </div>
+                        <div class="row">
+
+                            {{ crm_person_form.address|materializecss:"s12 m6 l6" }}
+                        </div>
+                        {# Todo BUG: bio field adds characters to start each time it's saved. #}
+                        {{ crm_person_form.bio|materializecss:"s12" }}
+                        {{ crm_person_form.pic|materializecss:"s6" }}
+                        <div class="col s6">
+                            {% if user.person.pic %}
+                                <img class="materialboxed responsive-img person-pic" src="{{ user.person.pic|thumbnail_url:'detail' }}">
+                            {% else %}
+                                <img class="materialboxed responsive-img" src="{% static 'crm/img/trees_small.jpg' %}">
+                            {% endif %}
+                        </div>
+
+                        {#                        {{ crm_person_form.notes|materializecss:"s12"  }}#}
+                    {% endfor %}
+                    <div class="row"></div>
+                    <input class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1" type="submit" value="Save"/>
+                    <div class="row"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        {#        var current_nav_url = '{% url 'heritage:project-list' %}';#}
+
+        $(document).ready(function () {
+            $('.datepicker').pickadate(
+                {
+                    selectYears: {{ 'cedar__default_datepicker_years'|get_setting }},
+                    selectMonths: true,
+                    format: 'yyyy-mm-dd',
+                    max: new Date() //limits max date to today.
+                }
+            );
+        });
+
+    </script>
+{% endblock %}
+

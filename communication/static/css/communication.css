@@ -1,0 +1,60 @@
+/*li.communication-item {*/
+/*border-bottom: 0px;*/
+/*}*/
+
+li.communication-item > p {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+li.communication-item {
+    transition: .25s;
+    transition-property: initial;
+    transition-duration: 0.25s;
+    transition-timing-function: initial;
+    transition-delay: initial;
+}
+
+li.communication-item:hover {
+    background-color: #f1f1f1;
+    /*background-color: #fcfcfc;*/
+}
+
+li.communication-item > a.secondary-content > i:hover,
+li.communication-item > p > a.subject-text:hover {
+    /*color: #ffe57f  !important;*/
+    color: #283593  !important;
+}
+
+li.communication-item > a.secondary-content > i:hover {
+    -o-transition: color 0.2s linear;
+    -moz-transition: color 0.2s linear;
+    -khtml-transition: color 0.2s linear;
+    -webkit-transition: color 0.2s linear;
+    -ms-transition: color 0.2s linear;
+    transition: color 0.2s linear;
+}
+
+.grow { transition: all .2s ease-in-out; }
+.grow:hover { transform: scale(1.5); }
+
+i.rotated {
+    /* I think these browser prefixes might not be needed */
+    -webkit-transform: rotate(180deg); /* Chrome, Safari 3.1+ */
+    -moz-transform: rotate(180deg); /* Firefox 3.5-15 */
+    -ms-transform: rotate(180deg); /* IE 9 */
+    -o-transform: rotate(180deg); /* Opera 10.50-12.00 */
+    transform: rotate(180deg); /* Firefox 16+, IE 10+, Opera 12.10+ */
+}
+
+/*div.communication-new-items-fab > ul {*/
+/*padding:inherit;*/
+/*}*/
+
+div.communication-new-items-fab > ul > li.comm-fab-item {
+    margin: 0px 10px 0 0;
+}
+
+div.email-message-body {
+    text-index: 40px
+}

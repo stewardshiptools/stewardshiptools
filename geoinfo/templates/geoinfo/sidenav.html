@@ -1,0 +1,23 @@
+<li>
+    <div class="collapsible-header">
+        <a class="side-nav-app-header" href="{% url 'geoinfo:dashboard' %}">
+            <i class="material-icons">public</i>Spatial Tools
+        </a>
+        <i class="collapsible-header-dropdown right material-icons ">keyboard_arrow_down</i>
+    </div>
+
+    <div class="collapsible-body">
+        <ul>
+            <li>
+                <a class="blue-text text-darken-1" href="{% url 'geoinfo:spatialreport-list' %}">
+                    <i class="material-icons left">my_location</i>Spatial Reports
+                </a>
+            </li>
+            <li>
+                <a class="blue-text text-darken-1" href="{% url 'geoinfo:layer-master-list' %}">
+                    <i class="material-icons left">layers</i>All Layers
+                </a>
+            </li>
+        </ul>
+    </div>
+</li>

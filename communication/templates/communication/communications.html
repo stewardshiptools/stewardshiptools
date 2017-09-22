@@ -1,0 +1,5 @@
+{% load communication %}
+{% if include_toolbar %}
+    {% render_communication_toolbar element_id=element_id related_object=related_object %}
+{% endif %}
+{% render_communication_items comms_list_id=element_id data=data %}

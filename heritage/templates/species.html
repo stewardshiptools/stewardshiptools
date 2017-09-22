@@ -1,0 +1,17 @@
+{% extends "cedar/table_narrow.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+    Species
+{% endblock %}
+
+{% block table-head %}
+    <th>Description</th>
+    <th>Species Group</th>
+{% endblock %}
+
+{% block javascripts %}
+    <script src='{% static 'lib/DataTables/datatables.js' %}'></script>
+    <script src="{% static 'js/species.js' %}"></script>
+{% endblock %}

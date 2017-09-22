@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load cedar_settings %}
+{% load crm %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Heritage Project{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }} {% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="section">
+        <div class="row">
+
+            <div class="col s12">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {#                    {{ form.errors }}#}
+                    {{ form.name|materializecss:"s12 m6 l6" }}
+                    {{ form.phase_code|materializecss:"s12 m6 l6" }}
+                    <div class="row"></div>
+                    <div class="row"></div>
+                    {{ form.start_date|materializecss:"s12 m6 l6" }}
+                    {{ form.end_date|materializecss:"s12 m6 l6" }}
+                    <div class="row"></div>
+                    {{ form.location|materializecss:"s12 m6 l6" }}
+                    {{ form.picture|materializecss:"s12 m6 l6" }}
+                    {{ form.background|materializecss:"s12" }}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    <script>
+        var current_nav_url = '{% url 'heritage:project-list' %}';
+
+        $(document).ready(function () {
+            let d = new Date();
+            d.setFullYear(d.getFullYear() + 3);
+
+            $('.datepicker').pickadate(
+                {
+                    selectYears: {{ 'cedar__default_datepicker_years'|get_setting }},
+                    selectMonths: true,
+                    format: 'yyyy-mm-dd',
+                    max: d //limits max date to today.
+                }
+            );
+        });
+
+    </script>
+{% endblock %}

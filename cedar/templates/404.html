@@ -1,0 +1,30 @@
+{% extends "special_page_base.html" %}
+{% load cedar_extras %}
+{% block title %}404 Not Found{% endblock %}
+
+
+{% block stylesheets %} {# override regular cedar css #}
+    <style>
+        /* Override the padding for the nav side bar: */
+        header, main, footer {
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+    </style>
+{% endblock %}
+
+{% block nav %}{% endblock %} {# override the nav block #}
+{% block second_bar %}{% endblock %} {# override the bar block #}
+
+{% block subtitle %}
+    <h5>404 Page Not Found</h5>
+{% endblock subtitle %}
+
+{% block main_area %}
+<div class="center-align">
+    <div class="yellow-text text-darken-4"><i class="medium material-icons">error</i></div>
+    <h6>Oops! The page you requested doesn't appear to exist.</h6>
+    <br/>
+    {% back_button %}
+</div>
+{% endblock %}

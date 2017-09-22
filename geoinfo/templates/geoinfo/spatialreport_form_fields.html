@@ -1,0 +1,35 @@
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+
+
+{# gislayer_form_fields.html  has space #}
+{# for subclassed GISLayer classes' templates to add form variables.#}
+
+{#override additional_form_fields_1#}
+{#and  additional_form_fields_2#}
+{#to add more from fields in subclassed templates.#}
+
+{#When included into a parent template, this form template requires#}
+{#submitting the "form" variable.#}
+
+{# this template should be included within <form> tags and doesn't include the submit button #}
+{#    so that sub-template extender can define that text as they see fit.#}
+
+<div id="report-name" class="row tight-row">
+    {{ form.name|materializecss:"s12" }}
+</div>
+<div class="row"></div>
+<div class="row">
+    <div id="distance-cap" class="">
+        {{ form.distance_cap|materializecss }}
+    </div>
+</div>
+<div class="row"></div>
+<div class="row">
+    <div id="report-on" class="col s12">
+        {{ form.report_on|materialselect2 }}
+    </div>
+</div>
+
+{% block additional_form_fields_2 %} {% endblock %}

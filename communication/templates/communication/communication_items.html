@@ -1,0 +1,43 @@
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load communication %}
+
+{# Had to name the communication object list "data" for the DRF api viewset response. #}
+<div id="{{ comms_list_id }}">
+    <ul class="collection">
+        {#        {% get_dict_val data 'results' as has_results %}#}
+        {% dict_has_key data 'results' as has_results %}
+        {% if has_results %}
+            {% for object in data.results %}
+                {{ object|render_communication_item }}
+            {% endfor %}
+
+            <div class="row center">
+                {% if data.previous %}
+                    <button data-url="{{ data.previous }}"
+                            class="btn-previous-page waves-effect waves-light btn grey lighten-4 grey-text text-darken-1">
+                        Previous <i class="material-icons right">navigate_before</i>
+                    </button>
+                {% endif %}
+
+                {% if data.next %}
+                    <button data-url="{{ data.next }}"
+                            class="btn-next-page waves-effect waves-light btn grey lighten-4 grey-text text-darken-1">
+                        Next <i class="material-icons right">navigate_next</i>
+                    </button>
+                {% endif %}
+            </div>
+
+        {% else %}
+            {% for object in data %}
+                {{ object|render_communication_item }}
+            {% endfor %}
+        {% endif %}
+
+    </ul>
+</div>
+<script type="text/javascript">
+
+
+</script>
+<link href="{% static 'css/communication.css' %}" rel="stylesheet"/>

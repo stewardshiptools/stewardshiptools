@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load library %}
+{% load cedar_material_form %}
+{% load cedar_settings %}
+
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Search{% endblock %}
+{% block second_bar_secondary_title %} {% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link href="{% static 'library/css/library.css' %}" rel="stylesheet"/>
+{% endblock stylesheets %}
+
+{% block content %}
+    {{ block.super }}
+
+    {#    {% get_setting_as 'assets__default_files_div_id' as files_tab_id %}#}
+
+    <div class="row">
+        <form id="form" method="post" action=".">
+            {% csrf_token %}
+            {{ form.errors }}
+            <div class="row">
+
+                {# Place facets fields... #}
+                {% if query %}
+                    <div class="col s12 m12 l3 push-l9">
+                        <div id="search-facets" class="col s12">
+                            <ul class="facets">
+                                <li>
+                                    <div class="collapsible-header active tooltipped"
+                                         data-position="left"
+                                         data-delay="50"
+                                         data-tooltip="Click Search to update results">
+                                        <i class="material-icons">filter_list</i> Filters
+                                    </div>
+                                    <div class="collapsible-body">
+                                        {% for facet in facet_fields %}
+                                            {% with form|get_facet_form_field:facet as facet_field %}
+                                                {% if facet_field %}
+                                                    {{ facet_field|materializecss }}
+                                                {% endif %}
+                                            {% endwith %}
+                                        {% endfor %}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {# Search form and results #}
+                <div class="col s12 {% if query %}m12 l9 pull-l3{% endif %}">
+
+                    {# Search form #}
+                    <div class="col s12">
+                        <div class="row">
+                            {{ form.q|materializecss }}
+                        </div>
+                        {# Process the multiple select manually. Use filter to figure out which are selected #}
+                        {# Problem is that materializecss blindly shows the first option if none are selected. lame  #}
+                        <div class="row">
+                            {{ form.number_of_excerpt_characters|materializecss }}
+                        </div>
+                        <div class="row">
+                            <div class="col s6 m3 l3">
+                                <input id="search_button" class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1" type="submit"
+                                       value="Search">
+                            </div>
+
+                            {% comment %}
+                            <div class="col s6 push-m2 push-l2 m3 l3">
+                                <a href="#!" class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1"
+                                   onclick="resetFilters('{{ form.asset_type.auto_id }}');">Clear filters</a>
+                            </div>
+                            {% endcomment %}
+                        </div>
+                    </div>
+                    {# End search form #}
+
+                    {# Search results #}
+                    <div class="col s12">
+                        {% if query %}
+                            {# <h3>Results</h3> #}
+                            <div class="col s12 m6">
+                                <h5>{{ page_obj.paginator.count }} result{{ page_obj.paginator.count|pluralize }} found.</h5>
+                            </div>
+                            <div class="col s12 m6">
+                                {% if page_obj.paginator.count > 0 %}
+                                    {#                                    <!-- Download Dropdown Trigger -->#}
+                                    {#                                    <a#}
+                                    {#                                            class='dropdown-button right waves-effect waves-light btn grey lighten-4 grey-text text-darken-1'#}
+                                    {#                                            href='#'#}
+                                    {#                                            data-activates='dropdown1'#}
+                                    {#                                            data-beloworigin='true'#}
+                                    {#                                    >Download Results</a>#}
+
+                                    {#                                    <!-- Dropdown Structure -->#}
+                                    {#                                    <ul id='dropdown1' class='dropdown-content'>#}
+                                    {#                                        <li>#}
+                                    {#                                            <a class="btn-flat grey-text text-darken-1" href="#!" onclick="do_download('page');">#}
+                                    {#                                                Current Page#}
+                                    {#                                            </a></li>#}
+                                    {#                                        <li class="divider"></li>#}
+                                    {#                                        <li>#}
+                                    {#                                            <a#}
+                                    {#                                                    class="btn-flat grey-text text-darken-1 tooltipped"#}
+                                    {#                                                    data-position="left"#}
+                                    {#                                                    data-delay="50"#}
+                                    {#                                                    data-tooltip="Caution: avoid using with large numbers of results."#}
+                                    {#                                                    href="#!"#}
+                                    {#                                                    onclick="do_download('all');">#}
+                                    {#                                                <div class="valign-wrapper">All Pages <i class="right material-icons valign">warning</i></div>#}
+                                    {#                                            </a></li>#}
+                                    {#                                    </ul>#}
+                                {% endif %}
+                            </div>
+                            <table class="striped">
+                                <tbody>
+                                {#  See haystack best practices for changing template includes #}
+                                {#  based on model type (ie content-type)  #}
+                                {#  http://django-haystack.readthedocs.org/en/v2.4.1/best_practices.html #}
+
+                                {% for result in page_obj.object_list %}
+                                    {{ result | render_search_result:object_list_subtexts }}
+                                {% empty %}
+                                    <tr>
+                                        <td>No results.</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="divider"></div>
+                            <div>&nbsp;</div>
+                            <div class="row center">
+
+                                {% if page_obj.has_previous or page_obj.has_next %}
+                                    {% if page_obj.has_previous %}
+                                        <button class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1"
+                                                onclick='setPaginator({{ page_obj.previous_page_number }});'>
+                                            Previous <i class="material-icons right">navigate_before</i>
+                                        </button>
+                                    {% else %}
+                                        <button class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1 disabled">
+                                            Previous <i class="material-icons right">navigate_before</i>
+                                        </button>
+                                    {% endif %}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {% if page_obj.has_next %}
+                                        <button class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1"
+                                                onclick='setPaginator({{ page_obj.next_page_number }});'>
+                                            Next <i class="material-icons right">navigate_next</i>
+                                        </button>
+                                    {% else %}
+                                        <button class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1 disabled">
+                                            Next <i class="material-icons right">navigate_next</i>
+                                        </button>
+                                    {% endif %}
+
+                                    <h6 class="grey-text text-lighten-1">Page {{ page_obj.number }} of {{ paginator.num_pages }}</h6>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    {# End search results #}
+
+                </div>
+            </div>
+            {{ form.page }}
+            {{ form.return_as_csv }}
+
+        </form>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        function showSubtexts(ul_id) {
+            $(ul_id).slideToggle();
+            Materialize.showStaggeredList(ul_id);
+        }
+
+        function resetFilters(select_id) {
+            //What I did here with the # contradicts what
+            // I did above with showSubtexts ul_id. lame.
+
+            $("#" + select_id).find('option:selected').removeAttr("selected");
+            $('select').material_select();
+        }
+
+        function setPaginator(page_number) {
+            console.log(page_number);
+            $('#' + '{{ form.page.auto_id }}').val(page_number);
+        }
+        function toggleDownload(val) {
+            //Should be either "False" or "True"
+            $('#' + '{{ form.return_as_csv.auto_id }}').val(val);
+            console.log($('#' + '{{ form.return_as_csv.auto_id }}'));
+        }
+
+        function do_download(option) {
+            toggleDownload(option);
+            $("#form").submit();
+
+            //We want to toggle the download value off again but
+            //it happens before the form submits if we don't use a timeout.
+            setTimeout(function () {
+                toggleDownload("no");
+            }, 300);
+        }
+        $(document).ready(function (evt) {
+            $('select').material_select();
+            $('.modal-trigger').leanModal();
+
+
+            // Due to setting the paginator as a form variable (and
+            // not just manually putting it in the url), we need to
+            // manually set it - either via Next/Prev clicks, OR
+            // if the form is submitted via Enter/Search Btn then
+            // it needs to be reset.
+
+            //Reset paginator to page 1 if form submitted via Enter/Search
+            $("#{{ form.q.auto_id }}").keydown(function (event) {
+                if (event.keyCode == 13) {   //trap Enter key.
+                    setPaginator(1);
+                }
+            });
+            $("#search_button").click(function () {
+                setPaginator(1);
+                toggleDownload("no");    //Make sure the download toggle is off.
+            });
+
+            const filters_node = $('ul.facets');
+            filters_node.collapsible();
+
+            if ($(window).width() <= 991) { // Not great.  This is the pixels for medium and down in materializecss
+                filters_node.find('li div.collapsible-header').first().removeClass('active');
+                filters_node.collapsible('close', 0)
+            } else {
+                filters_node.find('li div.collapsible-header').first().addClass('active');
+                filters_node.collapsible('open', 0)
+            }
+
+            $('div.tooltipped').tooltip();
+        })
+
+    </script>
+    {{ block.super }}
+{% endblock %}

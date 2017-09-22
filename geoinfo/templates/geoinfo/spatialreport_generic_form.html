@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}
+    Create Spatial Report
+{% endblock %}
+{% block second_bar_secondary_title %}{% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="section">
+        <div class="row">
+            <form action="" method="POST">
+                {% csrf_token %}
+
+                <div class="row tight-row">
+                    {{ form.name|materializecss:"s12" }}
+                </div>
+
+                <div class="row tight-row">
+                    {{ form.distance_cap|materializecss:"s12" }}
+                </div>
+
+                <div id="report-items" class="row tight-row">
+                    {{ form.layers|materialselect2 }}
+                </div>
+
+                {% block report_fields %}{% endblock %}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

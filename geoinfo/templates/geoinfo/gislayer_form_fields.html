@@ -1,0 +1,160 @@
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+
+{# gislayer_form_fields.html  has space #}
+{# for subclassed GISLayer classes' templates to add form variables.#}
+
+{#override additional_form_fields_1#}
+{#and  additional_form_fields_2#}
+{#to add more from fields in subclassed templates.#}
+
+{#When included into a parent template, this form template requires#}
+{#submitting the "form" variable.#}
+
+{# this template should be included within <form> tags and doesn't include the submit button #}
+{#    so that sub-template extender can define that text as they see fit.#}
+
+{{ form.media }}
+{#<div class="row tight-row">#}
+{#    {{ form.errors }}#}
+{#</div>#}
+<div class="row tight-row">
+    {{ form.name|materializecss:"s12" }}
+</div>
+<div class="row"></div>
+
+{#  EG this is used by devt app to add the project name to the form #}
+{% block additional_form_fields_1 %} {% endblock %}
+
+<div class="row">
+{#    <div class="input-field col s12">#}
+{#        <select name="{{ form.input_type.name }} " id="{{ form.input_type.auto_id }}">#}
+{#            {% for choice in form.input_type.field.choices %}#}
+{#                <option {{ choice|is_choice_selected:form.input_type.value }} value="{{ choice.0 }}">{{ choice.1 }}</option>#}
+{#            {% endfor %}#}
+{#        </select>#}
+{#        <label>{{ form.input_type.label }}</label>#}
+{#    </div>#}
+    {{ form.input_type | materializecss }}
+</div>
+<div class="row">
+    <div id="outer">
+        <div id="feature_titles_template" class="col s12" style="display: none; margin-bottom: 3rem;">
+            {{ form.feature_titles_template|materializecss }}
+        </div>
+
+        <div id="wkt" class="col s12" style="display:none;">
+            {{ form.wkt|materializecss }}
+        </div>
+        <div id="draw" class="col s12">
+            {{ form.draw|materializecss }}
+        </div>
+        <div id="file" class="col s12" style="display:none;">
+            {{ form.file|materializecss }}
+        </div>
+        <div id="geomark" class="col s12">
+            {{ form.geomark|materializecss }}
+        </div>
+        <div id="wfs" class="col s12">
+            {{ form.wfs_geojson|materializecss }}
+            {{ form.wfs_username|materializecss }}
+            {{ form.wfs_password|materializecss }}
+            {{ form.refresh_interval|materializecss }}
+
+            {{ form.polyline_style.as_hidden }}
+            {{ form.polygon_style.as_hidden }}
+            {{ form.point_style.as_hidden }}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        {{ form.reload_features|materializecss }}
+    </div>
+    <div class="row"></div>
+    <div class="col s12">
+        {{ form.notes|materializecss }}
+    </div>
+</div>
+
+<script>
+    // add listeners that handle showing/hiding stuff
+
+    var div_id_dict = {
+        'wkt': '#wkt',
+        'file': '#file',
+        'map': '#draw',
+        'geomark': '#geomark',
+        'wfs': '#wfs'
+    };
+
+
+    //Listen for changes to the original select control. These
+    // trigger materializecss to do it's thing to it's UI elements
+    // sitting on top:
+    $("#{{ form.input_type.auto_id }}").on('change', function () {
+
+        //Get selected value from dropdown:
+        var input_type_value = $(this).find('option:selected').attr('value');
+
+        //Hide the other showing divs (there really should only be one):
+        for (var div_id_key in div_id_dict) {
+            // Check we are only going to hide a div that is not of interest:
+            var input_div = $(div_id_dict[div_id_key]);
+            if (input_type_value != div_id_key) {
+                if ($(input_div).is(":visible")) {
+                    $(input_div).slideToggle();
+                }
+            }
+            else {
+                if (!$(input_div).is(":visible")) {
+                    $(input_div).slideToggle();
+                }
+            }
+        }
+
+        // This is hacky... but we want to show the feature title tempalte field for both files and wfs
+        var feature_title_template = $('#feature_titles_template');
+
+        if ($.inArray(input_type_value, ["file", "wfs"]) !== -1) {
+            if (!feature_title_template.is(":visible")) {
+                feature_title_template.slideToggle();
+            }
+        } else {
+            if (feature_title_template.is(":visible")) {
+                feature_title_template.slideToggle();
+            }
+        }
+
+        //Now show the div we want:
+        //if it's the map we have to trigger a resize because it
+        // may have gotten messed up by initially loading while hidden:
+        // NOTE: THIS DIDN"T HELP.
+        {#        if (input_type_value == 'map') {#}
+        {#            $(div_id_dict[input_type_value]).slideToggle().trigger('resize');#}
+        {#        }#}
+        {#        else {#}
+        {#            $(div_id_dict[input_type_value]).slideToggle()#}
+        {#        }#}
+
+
+    });
+
+    $(document).ready(function () {
+        //Trigger the change function on the select to hide controls that we don't want to see:
+        $("#{{ form.input_type.auto_id }}").trigger('change');
+
+        //Fudge the map z-index back into place.
+        $("#id_draw_div_map").css('z-index', 1);
+
+        //Remove the *highly* irritation float left on the map:
+        $("#id_draw_div_map").css('float', 'none');
+
+    });
+</script>
+
+
+{% block additional_form_fields_2 %} {% endblock %}
+
+

@@ -1,0 +1,82 @@
+{% comment %}
+This should eventually be used to attach the tags select2 widget to ajax.
+{% endcomment %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        //initialize select2 js:
+        $('#{{ widget_id }}').each(function () {
+
+            const freetagging = ("{{ freetagging }}" === "True");
+
+            function formatSuggestion(suggestion) {
+                let text;
+                if (suggestion.loading === true) {
+                    text = "Searching...";
+                } else {
+                    text = suggestion.text;
+                }
+                if (suggestion.isNew) {
+                    text = "Create new: " + text;
+                }
+
+                return $("<span>" + text + "</span>");
+            }
+
+            function formatSuggestionSelection(suggestion) {
+                return suggestion.text;
+            }
+
+            $(this).select2({
+                ajax: {
+                    url: "{{ url }}",
+                    dataType: "json",
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            q: params.term,
+                            // TODO Implement paging and infinite scrolling.
+                            // page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        // parse the results into the format expected by Select2
+                        // since we are using custom formatting functions we do not need to
+                        // alter the remote JSON data, except to indicate that infinite
+                        // scrolling can be used
+                        // params.page = params.page || 1;
+
+                        return {
+                            results: data.map(function(suggestion) {
+                                return {id: suggestion.name, text: suggestion.value}
+                            }),
+                            // pagination: {
+                            //     more: (params.page * 30) < data.total_count
+                            // }
+                        };
+                    },
+                    cache: true
+                },
+                createTag: function (params) {
+                    // Taggit doesn't like double-quotes in tags, so lets just remove them here!
+                    let term = $.trim(params.term).replace(/\"/g, '');
+
+                    if (term === '') {
+                        return null;
+                    }
+
+                    return {
+                        id: term,
+                        text: term,
+                        isNew: true
+                    };
+                },
+                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+                minimumInputLength: {{ min_input }},
+                templateResult: formatSuggestion,
+                templateSelection: formatSuggestionSelection,
+                tags: freetagging,
+                width: 'inherit'
+            });
+        });
+    });
+</script>

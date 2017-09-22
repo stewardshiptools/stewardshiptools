@@ -1,0 +1,68 @@
+<li>
+    <div class="collapsible-header">
+        <a class="side-nav-app-header" href="{% url 'heritage:dashboard' %}">
+            <i class="material-icons">local_library</i>Heritage
+        </a>
+        <i class="collapsible-header-dropdown right material-icons ">keyboard_arrow_down</i>
+    </div>
+    <div class="collapsible-body">
+        <ul>
+            <li>
+                <a class="blue-text text-darken-1" href="{% url 'heritage-library:search' %}">
+                    <i class="material-icons left">search</i>Search
+
+                </a>
+            </li>
+            <li>
+                <a class="blue-text text-darken-1" href="{% url 'heritage:project-list' %}">
+                    <i class="material-icons left">work</i>Projects
+
+                </a>
+            </li>
+            <li>
+                <a class="blue-text text-darken-1" href="{% url 'heritage:interviews' %}">
+                    <i class="material-icons left">folder_shared</i>Interviews
+                </a>
+            </li>
+            <li>
+                <a class="blue-text text-darken-1" href="{% url 'heritage-library:item-list' %}">
+                    <i class="material-icons left">list</i>Items
+                </a>
+            </li>
+            <li>
+                <a class="blue-text text-darken-1" href="{% url "heritage:place-list" %}">
+                    <i class="material-icons left">place</i>
+                    Named Places
+                </a>
+            </li>
+            <li>
+                <a class="blue-text text-darken-1" href="{% url 'heritage:gislayer-list' %}">
+                    <i class="material-icons left">layers</i>Layers
+                </a>
+            </li>
+
+            {% if IS_HAIDA %}
+                <li>
+                    <a class="blue-text text-darken-1" href="{% url 'heritage:cultural-observations' %}">
+                        <i class="material-icons left">star_border</i>Cultural Records
+                    </a>
+                </li>
+                <li>
+                    <a class="blue-text text-darken-1" href="{% url 'heritage:species-observations' %}">
+                        <i class="material-icons left">star_half</i>Species Records
+                    </a>
+                </li>
+            {% endif %}
+            {#            <li>#}
+            {#                <a class="blue-text text-darken-1" href="{% url 'heritage:secureasset-list' %}">#}
+            {#                    <i class="material-icons left">insert_drive_file</i>Files#}
+            {#                </a>#}
+            {#            </li>#}
+            {#            <li>#}
+            {#                <a class="blue-text text-darken-1" href="{% url 'heritage:settings' %}">#}
+            {#                    <i class="material-icons left">settings</i>Settings#}
+            {#                </a>#}
+            {#            </li>#}
+        </ul>
+    </div>
+</li>

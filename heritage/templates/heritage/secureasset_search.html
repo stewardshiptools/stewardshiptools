@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load heritage %}
+{% load sanitizer %}
+{% load cedar_material_form %}
+{% load cedar_settings %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Document Search{% endblock %}
+{% block second_bar_secondary_title %} {% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+
+    {% get_setting_as 'assets__default_files_div_id' as files_tab_id %}
+
+    <div class="row">
+        <form id="search_form" method="post" action=".">
+            {% csrf_token %}
+            {{ form.errors }}
+            <div class="row">
+                {{ form.q|materializecss:"s12 m8 l8" }}
+            </div>
+            {# Process the multiple select manually. Use filter to figure out which are selected #}
+            {# Problem is that materializecss blindly shows the first option if none are selected. lame  #}
+            <div class="row">
+                <div class="input-field col s12 m8 l8">
+                    <select multiple name="{{ form.asset_type.name }}" id="{{ form.asset_type.auto_id }}">
+                        <option value="" disabled>Select file type filter</option>
+                        {% for choice in form.asset_type.field.choices %}
+                            <option {{ choice|is_choice_selected:form.asset_type.value }} value="{{ choice.0 }}">{{ choice.1 }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                {{ form.number_of_excerpt_characters|materializecss:"s12 m8 l8" }}
+            </div>
+            <div class="row">
+                <div class="col s6 m3 l3">
+                    <input id="search_button" class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1" type="submit"
+                           value="Search">
+                </div>
+                <div class="col s6 push-m2 push-l2 m3 l3">
+                    <a href="#!" class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1"
+                       onclick="resetFilters('{{ form.asset_type.auto_id }}');">Clear filters</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    {% if query %}
+                        <h3>Results</h3>
+                        <div class="col s12 m6">
+                            <h5>{{ page_obj.paginator.count }} document{{ page_obj.paginator.count|pluralize }} found.</h5>
+                        </div>
+                        <div class="col s12 m6">
+                            {% if page_obj.paginator.count > 0 %}
+                                {#                                <button id="download_results_button" class="right waves-effect waves-light btn grey lighten-4 grey-text text-darken-1"#}
+                                {#                                        class="right btn"> Download Results#}
+                                {#                                </button>#}
+
+                                <!-- Download Dropdown Trigger -->
+                                <a
+                                        class='dropdown-button right waves-effect waves-light btn grey lighten-4 grey-text text-darken-1'
+                                        href='#'
+                                        data-activates='dropdown1'
+                                        data-beloworigin='true'
+                                >Download Results</a>
+
+                                <!-- Dropdown Structure -->
+                                <ul id='dropdown1' class='dropdown-content'>
+                                    <li>
+                                        <a class="btn-flat grey-text text-darken-1" href="#!" onclick="do_download('page');">
+                                            Current Page
+                                        </a></li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a
+                                                class="btn-flat grey-text text-darken-1 tooltipped"
+                                                data-position="left"
+                                                data-delay="50"
+                                                data-tooltip="Caution: avoid using with large numbers of results."
+                                                href="#!"
+                                                onclick="do_download('all');">
+                                            <div class="valign-wrapper">All Pages <i class="right material-icons valign">warning</i></div>
+                                    </a></li>
+                                </ul>
+
+
+
+                            {% endif %}
+                        </div>
+                        <table class="striped">
+                            <tbody>
+                            {#  See haystack best practices for changing template includes #}
+                            {#  based on model type (ie content-type)  #}
+                            {#  http://django-haystack.readthedocs.org/en/v2.4.1/best_practices.html #}
+
+                            {% for result in page_obj.object_list %}
+                                {% get_dict_val object_list_subtexts result.pk as result_subtexts %}
+                                {% get_interview_from_heritage_asset result.object as interview_obj_for_san %}
+                                <tr>
+                                    <td class="tight-table-row">
+                                        <div class="row tight-row">
+                                            <div class="col s12 m4 l4" style="padding: 0 0.05rem;">
+                                                {# putting the style here regrettable but MCSS is so stubborn #}
+                                                File:
+                                                <a class="tooltipped" data-tooltip="Download" href="{{ result.object.url }}">
+                                                    {#                                                        {{ result.object.name }}#}
+                                                    {% if not perms.heritage.view_sensitive_interview_data %}
+                                                        {% sanitize result.object.name obj=interview_obj_for_san as sanitized_text %}
+                                                        {{ sanitized_text }}
+                                                    {% else %}
+                                                        {{ result.object.name }}
+                                                    {% endif %}
+                                                </a>
+                                                <br>
+                                            </div>
+                                            <div class="col s12 m4 l4" style="padding: 0 0.05rem;">
+                                                Source: <a href="{{ result.object.source_url }}{{ files_tab_id }}">{{ result.object.source_string }}</a>
+                                            </div>
+                                            <div class="col s12 m4 l4" style="padding: 0 0.05rem;">
+                                                <a href="#!" class="btn-flat waves-effect tight-button"
+                                                   onclick="showSubtexts('#subtext-list-{{ result.pk }}');">Show/Hide
+                                                    Excerpt{{ result_subtexts|pluralize }} ({{ result_subtexts|length }})</a>
+                                            </div>
+                                        </div>
+                                        <div class="row tight-row">
+
+                                            <ul id='subtext-list-{{ result.pk }}' class="collection" style="display:none">
+                                                {% for subtext in result_subtexts %}
+                                                    <li class="collection-item" style="opacity:0;">
+                                                        {# Sanitize if user doesn't have the view permission: #}
+                                                        {% if not perms.assets.view_sensitive_interview_data %}
+                                                            {% sanitize subtext obj=interview_obj_for_san as sanitized_text %}
+                                                            {{ sanitized_text|replace_highlight_tags:"highlighted"|safe|linebreaks }}
+                                                        {% else %}
+                                                            {{ subtext|replace_highlight_tags:"highlighted"|safe|linebreaks }}
+                                                        {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td>No results.</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="divider"></div>
+                        <div>&nbsp;</div>
+                        <div class="row center">
+
+                            {% if page_obj.has_previous or page_obj.has_next %}
+                                {% if page_obj.has_previous %}
+                                    <button class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1"
+                                            onclick='setPaginator({{ page_obj.previous_page_number }});'>
+                                        Previous <i class="material-icons right">navigate_before</i>
+                                    </button>
+                                {% else %}
+                                    <button class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1 disabled">
+                                        Previous <i class="material-icons right">navigate_before</i>
+                                    </button>
+                                {% endif %}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {% if page_obj.has_next %}
+                                    <button class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1"
+                                            onclick='setPaginator({{ page_obj.next_page_number }});'>
+                                        Next <i class="material-icons right">navigate_next</i>
+                                    </button>
+                                {% else %}
+                                    <button class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1 disabled">
+                                        Next <i class="material-icons right">navigate_next</i>
+                                    </button>
+                                {% endif %}
+
+                                <h6 class="grey-text text-lighten-1">Page {{ page_obj.number }} of {{ paginator.num_pages }}</h6>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {{ form.page }}
+            {{ form.return_as_csv }}
+
+        </form>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        function showSubtexts(ul_id) {
+            $(ul_id).slideToggle();
+            Materialize.showStaggeredList(ul_id);
+        }
+
+        function resetFilters(select_id) {
+            //What I did here with the # contradicts what
+            // I did above with showSubtexts ul_id. lame.
+
+            $("#" + select_id).find('option:selected').removeAttr("selected");
+            $('select').material_select();
+        }
+
+        function setPaginator(page_number) {
+            console.log(page_number);
+            $('#' + '{{ form.page.auto_id }}').val(page_number);
+        }
+        function toggleDownload(val) {
+            //Should be either "False" or "True"
+            $('#' + '{{ form.return_as_csv.auto_id }}').val(val);
+            console.log($('#' + '{{ form.return_as_csv.auto_id }}'));
+        }
+
+        function do_download(option) {
+            toggleDownload(option);
+            $("#search_form").submit();
+
+            //We want to toggle the download value off again but
+            //it happens before the form submits if we don't use a timeout.
+            setTimeout(function () {
+                toggleDownload("no");
+            }, 300);
+        }
+        $(document).ready(function (evt) {
+            $('select').material_select();
+            $('.modal-trigger').leanModal();
+
+
+            // Due to setting the paginator as a form variable (and
+            // not just manually putting it in the url), we need to
+            // manually set it - either via Next/Prev clicks, OR
+            // if the form is submitted via Enter/Search Btn then
+            // it needs to be reset.
+
+            //Reset paginator to page 1 if form submitted via Enter/Search
+            $("#{{ form.q.auto_id }}").keydown(function (event) {
+                if (event.keyCode == 13) {   //trap Enter key.
+                    setPaginator(1);
+                }
+            });
+            $("#search_button").click(function () {
+                setPaginator(1);
+                toggleDownload("no");    //Make sure the download toggle is off.
+            });
+
+        })
+
+    </script>
+    {{ block.super }}
+{% endblock %}

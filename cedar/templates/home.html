@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block title %}Cedar{% endblock %}
+{% block stylesheets %}
+    {#    {{ block.super }}#}
+    <style>
+        /* Override the padding for the nav side bar: */
+        header, main, footer {
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div id="background-image">
+        <div style="height:200px;"></div>
+    </div>
+
+    {% block nav %}{# just blanking out the side nav #}{% endblock %}
+
+    <div class="splash-page-top-space"></div>
+    <div class="row">
+        {#        <div class="home-center valign-wrapper center-align card-panel">#}
+        <div class="home-center card-panel">
+            <div class="row">
+                <div class="col l4 m6 s12">
+                    <div class="center card small hoverable home-card heritage">
+                        <a href="{% url "heritage:dashboard" %}">
+                            <i class="material-icons home-icon">local_library</i>
+                            <p class="promo-caption">Heritage</p>
+                            <p class="light center">Curate cultural data from Traditional Ecological Knowledge,
+                                Traditional Use Studies, and Archaeology Reports</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col l4 m6 s12">
+                    <div class="center card small hoverable home-card development">
+                        <a href="{% url "development:dashboard" %}">
+                            <i class="material-icons home-icon">assignment</i>
+                            <p class="promo-caption">Development</p>
+                            <p class="light center">Manage consultation and run spatial analysis on development activities</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col l4 offset-m3 m6 s12">
+                    <div class="center card small hoverable home-card ecosystems">
+                        <a href="{% url "ecosystems:dashboard" %}">
+                            <i class="material-icons home-icon">nature_people</i>
+                            <p class="promo-caption">Ecosystems</p>
+                            <p class="light center">
+                                Manage ecosystems reports and GIS layers. Explore your ecosystems library.
+                            </p>
+                        </a>
+                    </div>
+                </div>
+{#                <div class="col l3 m6 s12">#}
+{#                    <div class="center card small hoverable home-card nation-admin">#}
+{#                        <span >#}
+{#                            <i class="material-icons home-icon">account_balance</i>#}
+{#                            <p class="promo-caption">Nation Administration</p>#}
+{#                        </span>#}
+{#                        <p class="light center">#}
+{#                            Manage council meetings, create agendas, minutes, and resolutions.#}
+{#                        </p>#}
+{#                    </div>#}
+{#                    <div class="coming-soon">Coming Soon</div>#}
+{#                </div>#}
+            </div>
+            <div class="row center">
+                <div class="col offset-l2 offset-m2 l2 m4 s6">
+                    <div class="center card small hoverable home-card-sub">
+                        <i class="material-icons home-icon">supervisor_account</i>
+                        <p class="promo-caption">Contacts</p>
+                        <p class="light center">Manage organization and contact information</p>
+                    </div>
+                </div>
+                <div class="col l2 m4 s6">
+                    <div class="center card small hoverable home-card-sub">
+                        <i class="material-icons home-icon">forum</i>
+                        <p class="promo-caption">Communications</p>
+                        <p class="light center">Track phone calls, faxes, letters. Automated
+                            tools pin emails to related projects.
+                        </p>
+                    </div>
+                </div>
+{#                <div class="col l2 m4 s6">#}
+{#                    <div class="center card small hoverable home-card-sub">#}
+{#                        <i class="material-icons home-icon">people_outline</i>#}
+{#                        <p class="promo-caption">Meetings</p>#}
+{#                        <p class="light center">Record information on meetings within any App</p>#}
+{#                    </div>#}
+{#                    <div class="coming-soon">Coming Soon</div>#}
+{#                </div>#}
+                <div class="row hide-on-large-only hide-on-small-only"></div>
+                <div class="col l2 m4 offset-m2 s6">
+                    <div class="center card small hoverable home-card-sub">
+                        <i class="material-icons home-icon">public</i>
+                        <p class="promo-caption">Spatial</p>
+                        <p class="light center">Access and manage spatial data. Create and run detailed reports.
+                            Explore interactive maps.
+                        </p>
+                    </div>
+                </div>
+                <div class="col l2 m4 s6">
+                    <div class="center card small hoverable home-card-sub">
+                        <i class="material-icons home-icon">library_books</i>
+                        <p class="promo-caption">Library</p>
+                        <p class="light center">Manage organization and contact information</p>
+                    </div>
+                </div>
+{#                <div class="col l2 m4 s6">#}
+{#                    <div class="center card small hoverable home-card-sub">#}
+{#                        <i class="material-icons home-icon">tap_and_play</i>#}
+{#                        <p class="promo-caption">Mobile</p>#}
+{#                        <p class="light center">Collect survey forms and multimedia data in the field and#}
+{#                            sync data with Cedar Apps.#}
+{#                        </p>#}
+{#                    </div>#}
+{#                    <div class="coming-soon">Coming Soon</div>#}
+{#                </div>#}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{#{% block footer %}#}
+{#    <div class="footer-copyright">#}
+{#        <div class="container">#}
+{#        Copyright © Geomemes Research Inc.#}
+{#        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>#}
+{#        </div>#}
+{#    </div>#}
+{#{% endblock %}#}
+

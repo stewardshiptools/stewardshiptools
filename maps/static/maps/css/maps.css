@@ -1,0 +1,12 @@
+/* This should be included with leaflet_assets_css.html. Maybe others?*/
+
+/* Override the materializecss button-hiding nonsense: */
+input[class="leaflet-control-layers-selector" ] {
+    position: inherit !important;
+    visibility: inherit !important;
+}
+
+.awesome-marker i {
+    font-size: 20px;
+    margin-top: 10px;
+}

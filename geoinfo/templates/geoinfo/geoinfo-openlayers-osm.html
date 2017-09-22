@@ -1,0 +1,7 @@
+{% extends 'gis/openlayers-osm.html' %}
+{% load l10n %}
+
+{% block options %}
+    {{ block.super }}
+    options['default_zoom'] = {{ default_zoom|unlocalize }};
+{% endblock %}

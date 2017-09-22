@@ -1,0 +1,22 @@
+/* reduce size of pagination icons */
+div.row div.center ul.pagination i {
+    font-size:1.2rem;
+}
+
+/* reduce size of pagination text */
+div.row div.center ul.pagination span {
+    font-size:0.9rem;
+}
+
+/* reduce size of pagination text */
+div.row div.center ul.pagination select {
+    font-size:0.9rem;
+    padding: 0;
+    height: 30px;
+}
+
+/* remove crazy margins on ULs (spatial reports) */
+td.extra-tight-table-row > ul {
+    margin-top:0.1rem;
+    margin-bottom:0.1rem;
+}

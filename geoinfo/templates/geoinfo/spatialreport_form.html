@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Spatial Report
+{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }} {% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="section">
+        <div class="row">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {% include 'geoinfo/spatialreport_form_fields.html' with form=form %}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var current_nav_url = '{% url "geoinfo:spatialreport-list" %}';
+    </script>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'search/results/search_result_base.html' %}
+{% load cedar_extras %}
+
+{% block result %}
+    {{ block.super }}
+
+    <td class="tight-table-row">
+        <div class="row tight-row">
+            <div class="col s12 m8 l8" style="padding: 0 0.05rem;">
+                {# putting the style here regrettable but MCSS is so stubborn #}
+                <div class="valign-wrapper">
+                    <i class="material-icons start-icon grey-text">group_work</i>
+                    &nbsp;<strong><span class="teal-text text-darken-5">Synthesis:</span></strong>
+                    <a class="tooltipped" data-tooltip="View" href="{% url 'library:synthesis-detail' result.object.id %}">
+                        &nbsp;{{ result.object.name }}
+                    </a>
+                </div>
+                <div class="col s12">
+                    <div>
+                        <span class="teal-text text-darken-5">Synthesis Item{{ result.object.synthesisitem_set.all|pluralize }}:</span> {{ result.object.synthesisitem_set.all.count }} <br/>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m4 l4" style="padding: 0 0.05rem;">&nbsp;</div>
+        </div>
+        <div class="row tight-row"></ul>
+        </div>
+    </td>
+
+{% endblock result %}

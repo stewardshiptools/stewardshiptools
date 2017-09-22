@@ -1,0 +1,42 @@
+{% extends 'search/results/search_result_base.html' %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load cedar_material_form %}
+{% load cedar_settings %}
+
+{% block result %}
+    {{ block.super }}
+
+    {% get_dict_val object_list_subtexts result.pk as result_subtexts %}
+
+    <td class="tight-table-row">
+        <div class="row tight-row">
+            <div class="col s12 m4 l4" style="padding: 0 0.05rem;">
+                {{ result.model_name | capfirst }}:
+                <a class="tooltipped" data-tooltip="Search result" href="{{ result.object.get_absolute_url }}">
+                    {{ result.object.get_absolute_url }}
+                </a>
+                <br>
+            </div>
+            <div class="col s12 m4 l4" style="padding: 0 0.05rem;">
+                Some other generic result info.
+            </div>
+            <div class="col s12 m4 l4" style="padding: 0 0.05rem;">
+                <a href="#!" class="btn-flat waves-effect tight-button"
+                   onclick="showSubtexts('#subtext-list-{{ result.pk }}');">Show/Hide
+                    Excerpt{{ result_subtexts|pluralize }} ({{ result_subtexts|length }})</a>
+            </div>
+        </div>
+        <div class="row tight-row">
+
+            <ul id='subtext-list-{{ result.pk }}' class="collection" style="display:none">
+                {% for subtext in result_subtexts %}
+                    <li class="collection-item" style="opacity:0;">
+                        {{ subtext|replace_highlight_tags:"highlighted"|safe|linebreaks }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </td>
+
+{% endblock result %}

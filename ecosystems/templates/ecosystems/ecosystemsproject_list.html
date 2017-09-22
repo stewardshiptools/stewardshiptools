@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load leaflet_assets %}
+{% load ecosystems %}
+
+{% block stylesheets %}
+    {% leaflet_assets_css %}
+    <link href="{% static 'css/griddle_style.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{# Note: {{ block.super }} must appear in the {% block content %} tag for the following to work. #}
+{# Note: uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Ecosystems Projects{% endblock %}
+{% block second_bar_secondary_title %}<span class="eco-project-table-count">{{ object_list.count }}</span> Project
+    {{ object_list|pluralize }} {% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'ecosystems.add_ecosystemsproject' }}"
+       href="{% url 'ecosystems:project-create' %}">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">add_circle</i>
+            &nbsp;Project
+        </div>
+    </a>
+{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12">
+            {# Need to add the div manually.  The include tag is for adding the javascript. #}
+            <div id="eco-project-table"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+    {% ecosystems_project_list 'eco-project-table' ajax_url=ajax_url default_sort='-id' %}
+{% endblock %}

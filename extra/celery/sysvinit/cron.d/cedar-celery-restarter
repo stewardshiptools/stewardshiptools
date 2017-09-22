@@ -1,0 +1,3 @@
+# /etc/cron.d/django-cedar: crontab fragment for django-cedar
+# To install simply copy this file into /etc/cron.d/ and restart the cron service
+* */6 * * * root /etc/init.d/cedar-celery restart >> /dev/null 2>&1

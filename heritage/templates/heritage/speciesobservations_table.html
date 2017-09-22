@@ -1,0 +1,10 @@
+{% load staticfiles %}
+
+<script type="text/javascript">
+
+    var table_id = "{{ table_id|escapejs }}";
+    var species_ajax_url = "{{ ajax_url|escapejs }}";
+    var extra_query = "{{ ajax_url_extra_query|escapejs}}"; // This should always be appended to the end of the query url.
+
+</script>
+<script type="text/javascript" src="{% static 'build/heritage/js/speciesobservations_table.js' %}"></script>

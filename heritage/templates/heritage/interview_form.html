@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load cedar_settings %}
+
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Interview
+{% endblock %}
+{% block second_bar_secondary_title %}{{ view.report.name }} {{ interview }}{% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    {% is_update_view "Update" "New" as button_text %}
+
+    <div class="section">
+        <div class="row">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="form-errors" style="display: none;">
+                    {{ form.errors }}
+                </div>
+                <div class="row">
+                    {# Select2 Primary interviewer #}
+                    <div id="primary-interviewer" class="col s8">
+                        {{ form.primary_interviewer|materialselect2 }}
+                    </div>
+                    <div id="interview-date" class="col s4">
+                        {{ form.date_picker|materializecss:"s6" }}
+                        {{ form.time_picker|materializecss:"s6" }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    {# Select2 Other interviewers #}
+                    <div id="other-interviewers" class="col s12">
+                        {{ form.other_interviewers|materialselect2 }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    {# Select2 Participants #}
+                    <div id="participants" class="col s12">
+                        {{ form.participants|materialselect2 }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    {# Select2 Attendees #}
+                    <div id="primary-interviewer" class="col s12">
+                        {{ form.attendees|materialselect2 }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    {{ form.participant_number|materializecss:"s12 m4 l3" }}
+                    {{ form.community|materializecss:"s12 m8 l9" }}
+                </div>
+
+                <div id="interview-type" class="row">
+                    {{ form.type|materializecss }}
+                </div>
+                {{ form.phase.as_hidden }}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var current_nav_url = '{% url "heritage:interviews" %}';
+
+        $(document).ready(function () {
+            $("#{{ form.date_picker.auto_id }}").pickadate(
+                {
+                    selectYears: {{ 'cedar__default_datepicker_years'|get_setting }},
+                    selectMonths: true,
+                    format: 'yyyy-mm-dd',
+                    max: new Date() //limits max date to today.
+                }
+            );
+
+        });
+    </script>
+
+{% endblock %}

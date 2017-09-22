@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load html_filters %}
+{% load leaflet_assets %}
+{% load geoinfo %}
+
+{% block stylesheets %}
+    {{ block.super }}
+
+    {% leaflet_assets_css %}
+{% endblock %}
+
+{# Note: {{ block.super }} must appear in the {% block content %} tag for the following to work. #}
+{# Note: uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}{{ object }}{% endblock %}
+{% block second_bar_secondary_title %}
+{% if object.input_type == 'file' %}
+    {{ object.input_type }} - {{ object.file.name }}
+{% else %}
+    {{ object.input_type }}
+{% endif %}
+{% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'geoinfo.change_gislayer' }}"
+       {% if object.get_edit_url %}
+           href="{{ object.get_edit_url }}"
+       {% else %}
+           href="{% url 'geoinfo:layer-update'  object.id %}"
+       {% endif %}
+    >
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">edit</i>
+            &nbsp;Edit
+        </div>
+    </a>
+    &nbsp;
+
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+
+    <section>
+        <div class="row">
+            <div class="col s12 m4 l4">
+                <p>{{ object.notes|strip_html_wrap }}</p>
+            </div>
+
+            <div class="col s12 m8 l8 thin-border-left-grey">
+                <ul class="tabs hide-scroll-x">
+                    <li class="tab col s6"><a class="active" href="#tab-map">Map</a></li>
+                    <li class="tab col s6"><a class="active" href="#tab-list">List</a></li>
+                </ul>
+                <div id="tab-map" class="info-panel-height-max">
+                    <div id="feature-map"></div>
+                </div>
+
+                <div id="tab-list" class="info-panel-height-max">
+                    <div id="feature-list"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+
+    <script>
+        {% if nav_url %}
+            var current_nav_url = '{{ nav_url|safe }}';
+        {% else %}
+            var current_nav_url = '{% url "geoinfo:layer-master-list" %}';
+        {% endif %}
+    </script>
+
+    {% react %}
+    {% react_dom %}
+
+    {% leaflet_assets_js %}
+    {% leaflet_load_main %}
+    {% leaflet_map_json 'map_default' as map_json %}
+    {% geoinfo_feature_map 'feature-map' map_json feature_ajax_geojson_url %}
+
+    {% geoinfo_feature_list 'feature-list' feature_ajax_url %}
+{% endblock %}

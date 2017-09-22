@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load cedar_extras %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Spatial Tools{% endblock %}
+{% block second_bar_secondary_title %}Welcome to the CedarBox Spatial Tools App{% endblock %}
+{% block second_bar_secondary_content_right %} {% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="background-image">
+        <div class="row">
+{#            <div class="col s12 m6 l4">#}
+{#                <div class="card dashboard-card big-card hoverable">#}
+{#                    <div class="card-content">#}
+{#                        <span class="card-title">#}
+{#                            <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">layers</i>#}
+{#                                <a href="{% url 'geoinfo:layer-list' %}">Misc. Layers ({{ layer_count }})</a>#}
+{#                            </div>#}
+{#                        </span>#}
+{#                        <p>#}
+{#                            All uploaded misc. spatial layers.#}
+{#                        </p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+            <div class="col s12 m6 l4">
+                <div class="card dashboard-card big-card hoverable">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">layers</i>
+                                <a href="{% url 'geoinfo:layer-master-list' %}">All Layers ({{ layer_master_count }})</a>
+                            </div>
+                        </span>
+                        <p>
+                            All uploaded spatial layers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 l4">
+                <div class="card dashboard-card big-card hoverable">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">my_location</i>
+                                <a href="{% url 'geoinfo:spatialreport-list' %}">Spatial Reports ({{ spatialreport_count }})</a>
+                            </div>
+                        </span>
+                        <p>
+                            All general spatial reports.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

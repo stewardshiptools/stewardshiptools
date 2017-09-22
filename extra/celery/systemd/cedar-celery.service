@@ -1,0 +1,19 @@
+[Unit]
+Description=Celery Service
+After=network.target rabbitmq-server.service
+Requires=rabbitmq-server.service
+PartOf=rabbitmq-server.service
+
+[Service]
+Type=forking
+User=www-data
+Group=www-data
+EnvironmentFile=-/etc/conf.d/cedar-celery.conf
+WorkingDirectory=/data/django/demo8.cedarbox.ca/cedar
+ExecStart=/bin/sh -c '${CELERY_BIN} multi start $CELERYD_NODES -A $CELERY_APP --logfile=${CELERYD_LOG_FILE} --pidfile=${CELERYD_PID_FILE} $CELERYD_OPTS'
+ExecStop=/bin/sh -c '${CELERY_BIN} multi stopwait $CELERYD_NODES --pidfile=${CELERYD_PID_FILE}'
+ExecReload=/bin/sh -c '${CELERY_BIN} multi restart $CELERYD_NODES -A $CELERY_APP --pidfile=${CELERYD_PID_FILE} --logfile=${CELERYD_LOG_FILE} --loglevel="${CELERYD_LOG_LEVEL}" $CELERYD_OPTS'
+
+[Install]
+WantedBy=multi-user.target
+RequiredBy=cedar-celery-cam.service

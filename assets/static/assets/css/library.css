@@ -1,0 +1,16 @@
+.cedar-griddle-column{
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+.cedar-griddle-column-fix-width-s{
+    width:50px;
+}
+.cedar-griddle-column-fix-width-s2{
+    width:75px;
+}
+.cedar-griddle-column-fix-width-m{
+    width:100px;
+}
+.cedar-griddle-column-fix-width-l{
+    width:150px;
+}

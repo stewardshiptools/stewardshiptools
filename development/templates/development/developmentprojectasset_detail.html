@@ -1,0 +1,5 @@
+{% extends 'assets/genericasset_detail.html' %}
+
+{% block second_bar_secondary_title %}
+    Project: <a href="{% url 'development:project-detail' object.project.pk %}">{{ object.project }}</a>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load cedar_extras %}
+{% load library %}
+{% load staticfiles %}
+
+{#{% block stylesheets %}#}
+{#    {{ block.super }}#}
+{#{% endblock %}#}
+
+{% block second_bar_page_title %}Library Dashboard{% endblock %}
+{% block second_bar_secondary_title %}This is the default library template.{% endblock %}
+{% block second_bar_secondary_content_right %} {% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        {% include_library_items %}
+        {% include_library_casebriefs %}
+        {% include_library_collectiontags %}
+        {% include_library_syntheses %}
+    </div>
+{% endblock %}
+
+{#{% block javascripts %}#}
+{#    {{ block.super }}#}
+{#{% endblock javascripts %}#}

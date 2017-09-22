@@ -1,0 +1,42 @@
+{% load staticfiles %}
+{% load leaflet_tags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <meta charset="utf-8" />
+
+    <link rel="shortcut icon" type="image/png" href="{% static 'css/cedarbox_icon_gry.png' %}"/>
+
+    <link href="{% static 'css/cedar-material-icons.css' %}" rel="stylesheet"/>
+    <link href="{% static 'lib/materialize-src/css/materialize.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/cedar.css' %}" rel="stylesheet"/>
+
+    {% leaflet_css %}
+
+    <script src="{% static 'js/history.js' %}"></script>
+    <script src="{% static 'build/cedar/js/cedar.js' %}"></script>
+    <script src="{% static 'lib/jquery/jquery-1.11.3.js' %}"></script>
+    <script src="{% static 'lib/jquery-expander/jquery.expander.min.js' %}"></script>
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #community-map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+{% include 'communitymap/communitymap_fullscreen.html' %}
+<script src="{% static 'lib/materialize-src/js/bin/materialize.min.js' %}"></script>
+<script>
+    window.chip_hack();  // TODO Not actually sure if this needs to be here
+</script>
+{% include 'communitymap/communitymap_javascripts.html' with leaflet_settings=leaflet_settings is_app_page=is_app_page %}
+</body>
+</html>

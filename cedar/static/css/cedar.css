@@ -1,0 +1,810 @@
+/* General Fixes */
+img {
+    height: auto;
+    max-width: 100%;
+}
+
+/* Main */
+html{
+    height: 100%
+}
+/*body {*/
+    /*height: 100%*/
+/*}*/
+
+/* Print styles */
+@media print {
+    .hide-on-print, .top-bar-hide-on-print {
+        display: none;
+    }
+
+    .show-on-print {
+        display: inherit;
+    }
+}
+
+/* Add padding for the nav side bar: */
+header, main, footer {
+    padding-left: 260px;
+}
+
+@media only screen and (max-width : 992px) {
+  header, main, footer {
+    padding-left: 0;
+  }
+}
+
+nav {
+    padding: 0 24px 0 24px;
+    position: relative; /* Explicitly set position so that z-index will have an effect. */
+    z-index: 998;  /* Set z-index above the sidenav-overlay greyout. */
+}
+
+/* Beef up font size on large pg nav links */
+nav > div.nav-wrapper > ul.large-nav-links > li > a {
+    font-size: 1.05rem;
+}
+
+.side-nav li:hover, .side-nav li.active {
+    background-color: rgba(221, 221, 221, 0.62);
+}
+.side-nav i.collapsible-header-dropdown {
+    margin: 0;
+}
+
+.side-nav div.collapsible-header a.side-nav-app-header {
+    display: inline-block;
+    all: unset;
+}
+
+.side-nav li > div.collapsible-header {
+    background-color: unset !important;
+}
+
+.side-nav li > div.collapsible-header.active i.collapsible-header-dropdown {
+    -ms-transform: rotate(180deg); /* IE 9 */
+    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+    transform: rotate(180deg);
+    /*color:red;*/
+}
+
+.side-nav li > div.collapsible-header.active {
+    color: #e0e0e0;
+}
+
+div.second_bar_page_title h4 {
+    margin-top:0.5rem;
+    margin-bottom:0.5rem;
+}
+
+div.second_bar_secondary_title h2 {
+    margin-top:0.5rem;
+    margin-bottom:0.5rem;
+}
+
+div.second_bar_secondary_title h5 {
+    /*-ms-word-wrap: break-word;*/
+    /*word-wrap: break-word;*/
+}
+
+
+div.second_bar_secondary_content_right{
+    margin-top: 0.5rem;
+    padding-right:5px;
+    float: right;
+    max-width: 50%;
+    text-align: right;
+}
+
+
+div.second_bar_page_title_outer div.row{
+    margin-bottom:2px;
+}
+
+.progress {
+    visibility: hidden;  /* Initially hidden, optionally exposed by JS. */
+}
+
+#background-image {
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding-top:70px;
+    /*background: url('cedar_bark_30.jpg') no-repeat center center fixed;*/
+    background: url('cedar8_background.jpg') no-repeat center center fixed;
+    background-origin: content-box;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position: fixed;
+    z-index : -1;
+}
+
+#cedarbox-icon-white {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+}
+
+.welcome-div {
+    padding: 24px;
+    margin-top: 36px;
+}
+
+.welcome-icon {
+    text-align: center;
+}
+
+.welcome-icon i {
+    padding: 10px;
+    font-size: 5.2em;
+}
+
+.no-icon i {
+    display: none;
+}
+
+/* TODO Get the ellipisis working on dashboard cards */
+.heritage-project-dashboard-card-container {
+    min-width: 280px;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.heritage-project-dashboard-card > .card-action, .card-content {
+    padding: 13px !important;
+}
+
+.heritage-project-dashboard-card > .card-action > a {
+    font-size: 12px;
+}
+
+.heritage-project-dashboard-card > .card-reveal {
+    text-overflow: ellipsis;
+    overflow-y: hidden;
+}
+
+.development-project-file-number-item {
+    margin: 5px 0;
+}
+
+.dashboard-card > .card-content {
+    height: 178px;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+}
+
+.dashboard-card > .card-content > .card-title {
+    white-space: nowrap;
+    font-size: 20px;
+    line-height: 30px;
+
+}
+
+
+.full-width {
+    width: 100%;
+}
+
+div.progress {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+div.list-spinner {
+    margin: 5px auto;
+    display: block;
+}
+
+#species-table, #species-detail-table {
+    margin-top: 42px;
+}
+#species-detail-table .td-key {
+    text-align: right;
+    width: 310px;
+}
+#species-detail-table .td-value, #species-detail-table .td-key {
+    padding: 0 30px 10px 0;
+}
+
+.griddle div.griddle-settings div.griddle-columns {
+    border-bottom: none;
+}
+
+div.griddle-settings div label[for=maxRows] {
+    display: none;
+}
+
+#back-button{
+    font-size: 36px;
+    margin-top: 24px;
+}
+
+
+#con-vert #search-box-input-field {
+    margin-top: 2px;
+}
+
+#con-vert #search-box, 
+#con-vert #page-length-wrapper, 
+#con-vert #page-info-wrapper, 
+#con-vert #paging-buttons-wrapper  {
+    margin-bottom: 10px;
+}
+
+#con-vert #search-box, 
+#con-vert #page-length-wrapper {
+    width: 180px;
+}
+
+#con-vert #page-length-wrapper {
+    margin-top: 0;
+}
+
+select#page-length {
+    width: 60px;
+    height: 40px;
+    display: inline;
+    margin-right: 8px;
+}
+
+#paging-buttons-wrapper a {
+    margin-right: 10px;
+}
+
+#con-hor #paging-buttons-wrapper {
+    margin-top: 15px;
+}
+#con-hor #page-info-wrapper {
+    margin-top: 24px;
+}
+
+#login-title {
+    margin-bottom: 0;
+    margin-top: 48px;
+}
+
+/* This was messing with the Add Project form!
+/*.input-field:first-of-type {*/
+/*margin-top: 0;*/
+/*}*/
+
+#records-table {
+    overflow-y: scroll;
+    /*height: 500px;*/
+    max-height: 500px;
+}
+
+.interview-dates{
+   overflow-y: scroll;
+    /*height: 500px;*/
+    max-height: 90px;
+}
+
+.home-center {
+    /*width:80%;*/
+    /*height:300px;*/
+    /*opacity: 0.5;*/
+    background:rgba(255,256,255,0.4);
+    overflow: auto;
+    /*margin-left: 50px;*/
+    /*margin-right: 50px;*/
+}
+
+div.home-card {
+    opacity: 1.0; !important;
+    padding-top: 15px;
+    /*background-color: #fff;*/
+    /*background-color: transparent;*/
+    /*border-radius: 15px 50px 30px 5px;*/
+    /*-moz-border-radius-topleft: 80px;*/
+    /*border-top-left-radius: 80px;*/
+    border-radius: 80px 0px 5px 0px;
+}
+div.home-card:hover {
+    color: #e0e0e0;
+}
+
+div.home-card.heritage {
+    background-color: #cc3333;
+}
+div.home-card.development {
+    background-color: #478fcc;
+}
+div.home-card.ecosystems {
+    background-color: #4daf4e;
+}
+div.home-card.nation-admin {
+    background-color: #fff176;
+}
+div.home-card.nation-admin:hover {
+    color: #b4b4b4;
+}
+div.home-card-sub {
+    padding-top: 10px;
+    font-size: 12px;
+    background-color: #eeeeee;
+}
+div.home-card-sub {
+    padding-top: 10px;
+    font-size: 12px;
+    background-color: #eeeeee;
+    text-overflow: ellipsis;
+    overflow-x:hidden;
+    overflow-y:hidden;
+}
+div.card.small.home-card-sub{
+    height:215px;
+}
+div.coming-soon{
+    position:relative;
+    z-index: 1000;
+    text-align: center;
+    color:black;
+    background: #fb8c00;
+
+    /*width:100%;*/
+    /*padding-right:10px;*/
+    margin-top: -35.5px;
+    top:0;
+    bottom:-1;
+    right:0;
+    left:0;
+}
+.splash-page-top-space {
+    margin-top: 10%;
+}
+
+
+.fat-button {
+    width: 100%;
+}
+
+/* Override materialize css button padding. Too wide. */
+a.btn, button.btn, i.waves-input-wrapper, div.btn, button.btn-flat, button.btn-flat, a.btn-flat{
+    padding: 0 1rem;
+    font-size:0.85rem;
+}
+
+/* Add some padding to these buttons in the top right area in case they wrap. */
+div.second_bar_secondary_content_right a.btn, button.btn, i.waves-input-wrapper, div.btn, button.btn-flat {
+    margin-top:0.15rem;
+}
+
+/* makes for fun little buttons that are easier to include in a row */
+a.btn-little{
+    line-height:unset;
+    height: unset;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    margin-top:0.15rem;
+}
+
+.btn-little.rounded{
+    border-radius: 4px 4px 4px 4px;
+}
+
+/* Style the helptext found in some fields. */
+/*div.input-field > p {*/
+/*color: #CCCCCC;*/
+/*font-size: 0.8rem;*/
+/*}*/
+
+p.help-block.help-text{
+    color: #CCCCCC;
+    font-size: 0.7rem;
+    margin-top:0.1rem;
+    padding-top: 0.1rem;
+    padding-bottom:0.75rem;
+}
+
+/* Override materializecss search field padding: */
+.input-field input[type=search] {
+    padding-left: 0.2rem;
+}
+
+/* Override materializecss textarea field padding: */
+div.input-field textarea.materialize-textarea{
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 15px;
+}
+
+/* USER PROFILE PIC
+    If you are using a responsive material box image then
+    add the ".person-pic" class and the following two
+    selectors will set the inactive size (so it doesn't
+    get too big) and unset the size when active.
+*/
+.person-pic {
+}
+
+div.material-placeholder > img.active.person-pic {
+    height: 100%;
+    max-height: none;
+!important;
+}
+
+div.material-placeholder > img.person-pic {
+    max-height: 250px;
+}
+
+/* Search text highlighting colour: */
+.highlighted {
+    /*background-color: yellow;*/
+
+    /*background-color: rgb(245, 245, 245);*/
+    /*color: #1E88E5;*/
+
+    color: #E5851E;
+}
+
+/*Turn off blue link font on dash anchors  */
+ div.home-card > a:visited, div.home-card > a:link {
+    color: inherit;
+}
+
+/*div.collapsible-header .active{*/
+    /*background-color: blueviolet; !important;*/
+    /*padding: 30px;*/
+/*}*/
+
+/* reduce insane default padding inside collapsible bodies */
+div.collapsible-body p {
+    padding: 0.1rem;
+}
+
+i.home-icon {
+    font-size:6rem;
+}
+.home-card-sub > i.home-icon {
+    font-size: 3.5rem;
+}
+
+
+.help-icon-secondary-menu {
+    color: inherit;
+!important;
+}
+
+.promo-caption {
+    font-size: 1.7rem;
+    font-weight: 500;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+.home-card-sub > .promo-caption {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 5px;
+    margin-bottom: 0;
+    overflow-x:hidden;
+}
+
+.thin-border-left-grey {
+    border-left: 1px solid #bdbdbd;
+}
+
+.thin-border-right-grey {
+    border-right: 1px solid #bdbdbd;
+}
+
+.thin-border-bottom-grey {
+    border-bottom: 1px solid #bdbdbd;
+}
+
+.thin-border-top-grey {
+    border-top: 1px solid #bdbdbd;
+}
+
+.info-panel-height-max {
+    max-height: 650px;
+    /*overflow: scroll;*/
+    overflow-y: auto
+}
+
+/*The tab header sometimes has an X scroll when it shouldn't*/
+.hide-scroll-x {
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F8F8F8;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #e0e0e0;
+}
+
+/*********************************************************************/
+/* USER MENU
+/*********************************************************************/
+/*ul.user-menu > .collection-item.avatar {*/
+/*background-color: #f5f5f5;*/
+/*}*/
+
+.user-menu-dropdown-button {
+    padding: 3px 5px 3px 5px;
+    width: 100%;
+    height: auto;
+}
+
+.user-menu-pic {
+    width: 35px;
+!important;
+    height: 35px;
+!important;
+}
+
+/*@media only screen and (min-width: 993px) {*/
+/*.user-menu-dropdown-button{*/
+/*background-color: red; !important;*/
+/*}*/
+/*}*/
+
+/*@media only screen and (max-width: 992px) {*/
+/*.user-menu-dropdown-button{*/
+/*background-color: green; !important;*/
+/*}*/
+/*}*/
+
+/*@media only screen and (max-width: 600px) {*/
+/*.user-menu-dropdown-button{*/
+/*background-color: yellow; !important;*/
+/*}*/
+/*}*/
+
+/* ellipsis for overflow
+    This is set up mostly for the Project Description bit of the project cards.
+    By trial and error I figured that over 1600 pixels the card can handle up to 6 lines
+    of text, below that it defaults to 3.
+*/
+p.overflow-ellipsis {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+}
+
+@media only screen and (min-width: 1601px) {
+    p.overflow-ellipsis {
+        -webkit-line-clamp: 6 !important;
+    }
+}
+
+@media only screen and (max-width: 1600px) {
+    p.overflow-ellipsis {
+        -webkit-line-clamp: 3 !important;
+    }
+}
+
+
+.tight-row {
+    margin-bottom: 5px;
+}
+
+.tight-table-row {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.extra-tight-table-row {
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+}
+
+/* tight-col was not working. MCSS was winning. */
+/*.tight-col {*/
+/*!*padding-right: 0.05rem; !important;*!*/
+/*!*padding-left: 0.05rem;  !important;*!*/
+/*padding: 0 0.05rem; !important;*/
+/*}*/
+
+.tight-button {
+    line-height: unset;
+!important;
+    height: unset;
+!important;
+}
+div.personList > div.collection > .collection-item.avatar {
+    border-bottom: 0px;
+    min-height: 55px;
+}
+
+div.personList > div.collection {
+    border: 0px;
+}
+
+i.half-small {
+    font-size: 1.5rem;
+}
+
+div.smaller-spinner {
+    width: 25px;
+    height: 25px;
+}
+
+.show-on-print{
+    display: none;
+}
+
+div.print-page-break {
+    page-break-before: always;
+}
+div.print-avoid-page-break {
+    page-break-inside: avoid;
+}
+#print-page-indicator{
+    display:none;
+}
+
+@media print {
+    #print-page-indicator{
+        display: block;
+    }
+}
+
+span.cedar-badge {
+    position: unset;
+    right: unset;
+    padding-top:3px;
+    padding-bottom:3px;
+    line-height: 0.85rem;
+    font-size: 0.80rem;
+}
+
+label.datepicker-label {
+    font-size: 0.8rem;
+}
+
+label,
+label.input-control,
+.input-field > label,
+div.input-field > div > div.checkbox > label {
+    color: #405d6c;
+    margin-top: 0.5rem;
+}
+
+div.form-error-div{
+    display:none;
+}
+
+span.pre {
+    white-space: pre;
+}
+
+/* get crazy materialize css list option sizes under control. */
+.dropdown-content li{
+    line-height: 0.75rem;
+    min-height: unset;
+}
+
+/* get crazy materialize css list option sizes under control. */
+.dropdown-content li > a, .dropdown-content li > span {
+    font-size: unset;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.dropdown-content li > span > label {
+    height: inherit;
+    top: -17px;
+}
+
+/* add a little space after materialized checkboxes */
+div.input-field > div > div.checkbox {
+    margin-bottom: 0.3rem;
+}
+
+table.cedar-horz-table .th {
+    display: block;
+    text-align: right;
+    padding-right: 0.5rem;
+    padding-bottom: 0.1rem;
+    white-space: nowrap;
+}
+
+table.cedar-horz-table .td {
+    /*display: block;*/
+    min-height: 1.25em;
+    text-align: left;
+    padding-left: 0.5rem;
+    padding-bottom: 0.3rem;
+    border-left: 1px solid #d0d0d0;
+    width:100%;
+}
+
+div.break-long-anchors > a {
+    word-break: break-all;
+}
+
+div.chip {
+    margin-top: 0.075rem;
+    margin-bottom: 0.075rem;
+    max-width:250px;
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Cedar List Global CSS */
+td.prefixed_id-list-field{
+    white-space: nowrap;
+}
+td.creation_date-list-field{
+    white-space: nowrap;
+}
+td.modified_date-list-field{
+    white-space: nowrap;
+}
+td.created-list-field{
+    white-space: nowrap;
+}
+td.modified-list-field{
+    white-space: nowrap;
+}
+
+/* cke editor stuff */
+div.cke_textarea_inline {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #9e9e9e;
+    min-height: 2rem;
+}
+
+div.cke_textarea_inline:focus:not([readonly]) {
+    border-bottom: 1px solid #26a69a;
+    border-spacing: 1rem;
+    box-shadow: 0 1px 0 0 #26a69a;
+}
+
+/* end ckeditor stuff */
+
+/* fix materializecss list weirdness */
+span.strip-wrap ul,
+span.strip-wrap ol,
+div.cke_textarea_inline ul,
+div.cke_textarea_inline ol {
+    padding-left: 1rem;
+}
+
+span.strip-wrap ol li,
+div.cke_textarea_inline ol li {
+    list-style-type: decimal;
+}
+
+span.strip-wrap ul > li,
+div.cke_textarea_inline ul > li {
+    list-style-type: disc;
+}
+
+span.strip-wrap ul,
+span.strip-wrap li > ul > li,
+div.cke_textarea_inline ul,
+div.cke_textarea_inline li > ul > li {
+    list-style-type: circle;
+}
+
+/*ul:not(.side-nav), ul:not(.collapsible-header), ul:not(.collapsible) li {*/
+/*list-style-type: disc;*/
+/*}*/
+
+div.second_bar_page_title_outer div.second_bar_secondary_content_right.pinned {
+    right: 0;
+    z-index: 1000;
+}

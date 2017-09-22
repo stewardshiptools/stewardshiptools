@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load crm %}
+
+{% comment %}
+
+What is this form about? It looks like communicationasset but includes a development project asset form template!
+
+{% endcomment %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Communication File{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }} {% endblock %}
+{% block second_bar_secondary_content_right %} {% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="section">
+        <div class="row">
+            <div class="col s12">
+                <h5>Project file for {{ form.fields.project.initial }}</h5>
+            </div>
+        </div>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% include 'development/developmentprojectasset_form_fields.html' with form=form %}
+            <div class="row"></div>
+            <div class="row">
+                <div class="col s12">
+                    {# I think using this tag instead of an IF may save some space:#}
+                    {# I left this is in for posterity, but we really should only ever do an Add or Delete on assets #}
+                    {% is_update_view "Update Project File" "Add Project File" as submit_value %}
+                    <input class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1" type="submit" value="{{ submit_value }}"/>
+                </div>
+            </div>
+            <div class="row"></div>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    <script>
+        var current_nav_url = '{% url 'development:project-list' %}';
+
+    </script>
+{% endblock %}

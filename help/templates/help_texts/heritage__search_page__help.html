@@ -1,0 +1,164 @@
+{% load static %}
+This page is the general search page for all content in the Heritage App.
+<br/><br/>
+<strong>How to search</strong><br/>
+Type your search string (words or phrase) into the <i>Search</i> field and click ENTER or the <img style="vertical-align:middle" src="{% static 'help/search_button.png' %}" height=56 width=107 /> button.
+<br/><br/>
+
+<strong>What can you search?</strong> 
+<br/>
+Cedar automatically updates its search index of the following:
+<ul class="collection">
+	<li class="collection-item"><i style="vertical-align:middle" class="material-icons">work</i>&nbsp;<b>Projects</b> - <i>title and fields</i></li>
+	<li class="collection-item"><i class="material-icons">grain</i>&nbsp;<b>Collections</b> - <i>title and fields</i></li>
+	<li class="collection-item"><i style="vertical-align:middle" class="material-icons">format_list_bulleted</i>&nbsp;<b>Items</b> - <i>title and fields</i></li>
+	<li class="collection-item"><i class="material-icons">folder</i>&nbsp;<b>Case Brief</b> - <i>title and fields</i></li>
+	<li class="collection-item"><i class="material-icons">device_hub</i>&nbsp;<b>Synthesis</b> - <i>title and fields</i></li>
+	<li class="collection-item"><i class="material-icons">flag</i>&nbsp;<b>Place</b> - <i>title and fields</i></li>
+	<li class="collection-item"><i class="material-icons">layers</i>&nbsp;<b>Layer</b> - <i>title and fields</i></li> 
+	<li class="collection-item"><i class="material-icons">insert_drive_file</i>&nbsp;<b>Attached Files</b> - <i>full text</i>, e.g. linked to a Project (manually uploaded or harvested by MailHarvest)</li>
+	<li class="collection-item"><i class="material-icons">insert_drive_file</i>&nbsp;<b>Attached Files</b> - <i>full text</i>, e.g. linked to an Item (manually uploaded)</li>
+</ul>
+<br/>
+<strong>What are Excerpts?</strong><br/>
+Search will show you an excerpt of the text(s) <i>around</i> the found search terms. Use the Show/Hide Excerpt(#) link in the Results to view the excerpt(s) for that result. You can adjust the number of characters around the search term by changing the value in 'Number of Execerpt characters' field. 
+<br/><br/>
+Researchers may want to download the results of their search query, including Excerpts. The results are downloaded in a comma separated values (CSV) file format that can be  opened and analysed in a spreadsheet program. Download results by clicking on <img style="vertical-align:middle" src="{% static 'help/download_excerpts.png' %}" height=56 width=107 />
+<br/><br/>
+<strong>Advanced: Search Query Modifiers</strong> <br/>
+<strong><em>a. Boolean modifiers</em></strong><br/>
+<br/>
+<strong>AND</strong> - AND requires both terms on either side of the AND modifier to be present for a document to match.
+This is the search default and is not required explicitly, but is good practice when building complex search statements: salmon AND herring<br/>
+<strong>OR</strong> - OR requires that either term (or both terms) be present for a document to match:
+bear OR salmon<br/>
+<strong>OR</strong> - NOT Requires that the following term not be present.
+bear NOT elk<br/>
+<strong>(   )</strong> - Parentheses can be used to group search clauses into sub-queries:
+(bear OR salmon) AND herring  ...versus ... (bear AND salmon) NOT elk<br/>
+<strong>"   " </strong> - Phrased searches. Enclosing search terms with quotes will look for exact phrase matches:
+"How to navigate in the fog with no compass" <br/>
+<br/>
+<strong><em>b. Wildcard modifiers</em></strong><br/>
+<br/><strong>?</strong> - ? matches a single character: bo?t will match boat and bolt.<br/>
+<strong>*</strong> - * Multiple characters (matches zero or more sequential characters): fi* will match fist, first, and fish. te*t will match test and text. *est will match rest, pest, test, and smallest.<br/>
+<br/>
+<strong><em>c. Combining modifiers</em></strong><br/>
+<br/>Example of a complex query using modifiers and wildcards: (nets OR traps) AND (sal* AND ?ear)
+
+<br/><br/>
+
+<strong><em>d. Using field names in Search</em></strong><br/>
+You can do very specific searches by directing search to look for value in particular fields. 
+<br/>
+Try these examples: 
+<ul class="collection">
+	<li class="collection-item">To search for Items from a particular <b>author</b> enter the following into the Search Field: <i>creator:"Brown, Pat Jr. - Interviewee"</i> or <i>creator:Brown*</i> (to use a wildcard too).</li>
+		<li class="collection-item">To search for Items for a <b>spreadsheet id</b> enter the following into the Search Field: <i>spreadsheet_id:"220"</i></li>
+</ul>
+<br/>
+Here is a list of all the current Heritage App content type field names:<br/>
+ 
+<table >
+	<tbody>
+		<tr>
+			<td style="vertical-align:top">
+<strong>Item Base Fields</strong><br/>
+name<br/>
+tags<br/>
+collections<br/>
+cataloger<br/>
+reviewer<br/>
+<br/>
+
+<strong>Item Dublin Core Fields</strong><br/>
+item_type<br/>
+contributor<br/>
+coverage<br/>
+creator<br/>
+date<br/>
+description<br/>
+format<br/>
+identifier<br/>
+language<br/>
+publisher<br/>
+relation<br/>
+rights<br/>
+source<br/>
+subject<br/>
+<br/>
+<strong>Item Holdings Fields</strong><br/>
+item_type_comments<br/>
+source_type<br/>
+media_mode<br/>
+item_internal_location<br/>
+digital_file_name_path<br/>
+digital_file_name<br/>
+digital_file_ocrd<br/>
+digital_file_type_comments<br/>
+
+			</td>
+			<td style="vertical-align:top">
+<strong>Item Review Fields</strong><br/>
+summary<br/>
+people_mentioned<br/>
+plants<br/>
+animals<br/>
+mup_category<br/>
+use_occupancy_category<br/>
+full_text<br/>
+<br/>
+<strong>Item Researcher Notes Fields</strong><br/>
+spreadsheet_id<br/>
+researcher_notes<br/>
+actions_needed<br/>
+search_location<br/>
+search_terms<br/>
+search_results<br/>
+search_identifier<br/>
+cross_reference<br/>
+search_summary<br/>
+<br/>
+<strong>Case Brief Fields</strong><br/>
+story_title<br/>
+cataloger<br/>
+reviewer<br/>
+source_notes<br/>
+issues<br/>
+facts<br/>
+decision<br/>
+reasons<br/>
+notes<br/>
+tags<br/>
+keywords<br/>
+
+
+			</td>
+			<td style="vertical-align:top">
+<strong>Synthesis Fields</strong>   <br/>  
+name<br/>
+<br/>
+<strong>Synthesis Concept Fields</strong><br/>
+subject<br/>
+overview<br/>
+synthesis_category<br/>
+<br/>
+<strong>Collection Fields</strong><br/>
+name<br/>
+description<br/>
+<br/>
+<strong>Named Places Fields</strong><br/>
+name<br/>
+notes<br/>
+alternate_names<br/>
+common_names<br/>
+gazetteer_names<br/>
+place_types<br/>	
+			
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+

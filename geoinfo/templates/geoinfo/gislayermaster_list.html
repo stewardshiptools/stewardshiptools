@@ -1,0 +1,8 @@
+{% extends 'geoinfo/gislayer_list.html' %}
+{% load geoinfo %}
+
+{% block second_bar_page_title %}All Spatial Layers{% endblock %}
+
+{% block javascripts %}
+    {% geoinfo_layer_list 'layer-list' ajax_url=ajax_url layer_type_choices=layer_type_choices default_layer_type=default_layer_type %}
+{% endblock %}

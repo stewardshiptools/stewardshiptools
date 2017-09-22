@@ -1,0 +1,122 @@
+[
+	{
+		"pk": 1188,
+		"fields": {
+			"name": "permission or invitation protocols",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1189,
+		"fields": {
+			"name": "plants, herbs and medicines used and where they grew",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1190,
+		"fields": {
+			"name": "fishing and hunting camps",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1191,
+		"fields": {
+			"name": "lands and waters regularly used for hunting, fishing, trapping, gathering",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1192,
+		"fields": {
+			"name": "old village sites, residences or building structures",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1193,
+		"fields": {
+			"name": "trails (on land and on water)",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1194,
+		"fields": {
+			"name": "place names",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1195,
+		"fields": {
+			"name": "historic inter-tribal agreements with neighbours about uses or boundaries",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1196,
+		"fields": {
+			"name": "archaeological sites",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1197,
+		"fields": {
+			"name": "sites relating to creation stories and other cultural stories",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1198,
+		"fields": {
+			"name": "spiritual or sacred sites",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1199,
+		"fields": {
+			"name": "burial sites",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1200,
+		"fields": {
+			"name": "wars and history of defending lands and waters",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1201,
+		"fields": {
+			"name": "shell middens",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	},
+	{
+		"pk": 1202,
+		"fields": {
+			"name": "repelling intruders",
+			"weight": 0
+		},
+		"model": "library.useandoccupancycategory"
+	}
+]

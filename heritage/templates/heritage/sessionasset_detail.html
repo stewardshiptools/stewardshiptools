@@ -1,0 +1,13 @@
+{% extends 'assets/genericasset_detail.html' %}
+
+{% block second_bar_secondary_title %}
+    Interview: <a href="{% url 'heritage:interview-detail' object.session.interview.pk %}">{{ object.session.interview }}</a>.
+    Session: {{ object.session }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+    <script>
+        var current_nav_url = '{% url 'heritage:interviews' %}';
+    </script>
+{% endblock %}

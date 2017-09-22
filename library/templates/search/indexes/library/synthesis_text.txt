@@ -1,0 +1,2 @@
+{{ object.name | default:"" }}
+{{ object.prefixed_id }}

@@ -1,0 +1,12 @@
+{% extends 'communication/items/item.html' %}
+{% block material_icon_colour %}blue-text{% endblock %}
+{% block material_icon_code %}phone{% endblock %}
+
+{% block comm_type_content %}
+    {% if object.comm_type.from_number %}
+        <span class="grey-text text-darken-4">From </span>{{ object.comm_type.from_number }}.
+    {% endif %}
+    {% if object.comm_type.to_number %}
+        <span class="grey-text text-darken-4">To </span>{{ object.comm_type.to_number|default_if_none:"" }}
+    {% endif %}
+{% endblock %}

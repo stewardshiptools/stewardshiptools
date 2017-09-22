@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load html_filters %}
+{% load leaflet_assets %}
+{% load geoinfo %}
+
+{% block stylesheets %}
+    {{ block.super }}
+
+    {% leaflet_assets_css %}
+{% endblock %}
+
+{# Note: {{ block.super }} must appear in the {% block content %} tag for the following to work. #}
+{# Note: uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}{{ gisfeature }}{% endblock %}
+{% block second_bar_secondary_title %}Layer: <a href="{% url 'geoinfo:layer-detail' gisfeature.layer.id %}">{{ gisfeature.layer }}</a>{% endblock %}
+{% block second_bar_secondary_content_right %} {% endblock %}
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="row">
+        <div class="col s12 m6 l4">
+            <h4>Attributes</h4>
+            {% for label, value in gisfeature.data.items %}
+                <div class="row tight-row">
+                    <div class="col s6 grey-text text-darken-4">{{ label }}:</div>
+                    <div class="col s6 grey-text text-darken-1">{{ value|strip_html_wrap }}</div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col s12 m6 l8">
+            <div id="feature-map"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+
+    <script>
+        var current_nav_url = '{% url "geoinfo:layer-list" %}';
+    </script>
+
+    {% react %}
+    {% react_dom %}
+    {% leaflet_assets_js %}
+    {% leaflet_load_main %}
+    {% leaflet_map_json 'map_default' as map_json %}
+    {% geoinfo_feature_map 'feature-map' map_json feature_ajax_geojson_url %}
+{% endblock %}

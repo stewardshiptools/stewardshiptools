@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load cedar_list %}
+
+{% block stylesheets %}
+    <link href="{% static 'css/griddle_style.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block second_bar_page_title %}File Browser{% endblock %}
+{% block second_bar_secondary_title %}Total Number of Files: <span class="library-file-table-count">{{ total_files }}</span> {% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'assets.add_secureasset' }}"
+       href="{% url 'assets:secureasset-create'%}">
+        <div class="valign-wrapper">
+            <i class="material-icons">add_circle</i>
+            &nbsp;File
+        </div>
+    </a>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12">
+            {# Need to add the div manually.  The include tag is for adding the javascript. #}
+            <div id="library-file-table"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% react %}
+    {% react_dom %}
+    {% cedar_list 'library-file-table' ajax_url=secure_asset_list_ajax_url fields=fields sort_field_options=sort_options default_sort='-id' %}
+{% endblock %}

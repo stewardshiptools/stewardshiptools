@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Delete Spatial Report Item{% endblock %}
+{% block second_bar_secondary_title %}{{ spatialreportitem.report.name }}
+    -  Item #{{ spatialreportitem.id }}: {{ spatialreportitem.layer }} {% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2"
+       href="{% url 'geoinfo:spatialreport-detail' spatialreportitem.report.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">cancel</i>
+            &nbsp;Cancel
+        </div>
+    </a>
+{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="section">
+        <div class="row">
+            <div class="col s12">
+                <form action="{% url 'geoinfo:spatialreportitem-delete'  spatialreportitem.id %}" method="POST">
+                    {% csrf_token %}
+                    <p>Are you sure you want to delete this report item?</p>
+                    <input class="waves-effect waves-light btn grey lighten-4 red-text text-darken-1" type="submit" value="Confirm delete"/>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var current_nav_url = '{% url "geoinfo:spatialreport-list" %}';
+    </script>
+
+{% endblock %}

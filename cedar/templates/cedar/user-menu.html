@@ -1,0 +1,82 @@
+{% load static %}
+{% load thumbnail %}
+{% load cedar_settings %}
+
+{#Consider disabling button and dropdown if crm profile doesn't exist.#}
+{#Instead for now give them form with basic user auth.#}
+
+{# This is going to be problematic: we are mixing auth.User and crm.Person fields #}
+{# here. Care must be taken. #}
+
+{#  Note: any modals you want to make should go in the user-menu-modals template. Since #}
+{#  this sub-template is repeated in base.html (for responsive reasons) the duplicated modals #}
+{#  get messed up.  I am talking about the logout confirm modal. #}
+
+<div class="right">
+    <!-- Dropdown Button -->
+    <a class='dropdown-button btn blue darken-1 waves-effect user-menu-dropdown-button '
+       href='#'
+       data-activates='user-menu-dropdown-{{ user_menu_id }}'
+       data-beloworigin='true'
+       data-constrainwidth='false'>
+
+        <div class="valign-wrapper">
+            <span class="hide-on-small-and-down"> {{ context.user.first_name }} {{ context.user.last_name }} &nbsp;&nbsp;&nbsp;</span>
+            {% if person.pic %}
+                <img src="{{ person.pic|thumbnail_url:'avatar' }}" alt="profile pic" class="user-menu-pic right circle">
+            {% else %}
+                <img src="{% static 'crm/img/trees_small.jpg' %}" alt="profile pic" class="right circle user-menu-pic">
+            {% endif %}
+
+        </div>
+    </a>
+    <!-- Dropdown List -->
+    <ul id='user-menu-dropdown-{{ user_menu_id }}' class='dropdown-content'>
+        <li><a href="{% url 'user-settings' %}" class="blue-text text-darken-1">Settings</a></li>
+        {% if context.request.user.is_staff %}
+            <li><a href="{% url 'admin:index' %}" class="blue-text text-darken-1">System Administration</a></li>
+        {% endif %}
+        <li><a target='_blank' href="{{ 'cedar__default_support_url'|get_setting }}" class="blue-text text-darken-1">Support Ticket</a></li>
+        {#        urlresolvers.reverse('admin:help_helptext_change', args=(h.id,))#}
+
+        {# Harvest mail #}
+        <li class="valign-wrapper task-mon">
+                <span class="valign" style="padding=0; cursor: default;" data-task-trigger-url="{% url 'celery-apply' task_name='communication.tasks.harvest_mail' %}">Harvest mail</span>
+                <span class="secondary-content" style="padding: 0;">
+                    <a href="#"
+                       class="tooltipped-harvest task-trigger col s6"
+                       data-task-trigger-url="{% url 'celery-apply' task_name='communication.tasks.harvest_mail' %}"
+                       data-task-parent-status-url="{% url 'communication:mailharvest-run-status-all' %}"
+                       data-task-status-url-mask="{% url 'celery-task_status' task_id='placeholder' %}"
+                       data-task-revoke-url-mask="{% url 'celery-task_revoke' task_id='placeholder' %}"
+                       data-tooltip="Run mail harvest"
+                       data-position="left">
+                        <i class="material-icons start-icon grey-text">send</i>
+                        <i class="material-icons running-icon" style="color: #26AF7C;">directions_run</i>
+                    </a>
+                    <a href="#"
+                       class="tooltipped-harvest task-killer red-text col s6"
+                       data-tooltip="Stop task"
+                       data-position="top">
+                        <i class="material-icons">close</i>
+                    </a>
+                </span>
+        </li>
+
+        <li class="divider"></li>
+        <li>
+            <a class="blue-text text-darken-1 modal-trigger logout-modal-trigger" href="#modal-logout-confirm">Logout</a>
+        </li>
+    </ul>
+</div>
+
+<script>
+    $(document).ready(function (evt) {
+        $('.logout-modal-trigger').leanModal({
+            dismissible: true,
+            complete: function () {
+                $('.lean-overlay').remove()
+            }
+        });
+    });
+</script>

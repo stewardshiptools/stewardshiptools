@@ -1,0 +1,114 @@
+<h5>File Type Filters:</h5>
+<div class="row">
+    <div class="col s12">
+        Selecting one or more document type(s) from the file type drop-down list will restrict the search results by document type. If the list is
+        empty or if all items in the list are checked, then the search will not be restricted by file type.
+        The <strong>Clear Filters</strong> button will reset the list of selected file types to its default setting. By default, the search
+        does not filter results by file type.
+    </div>
+    <div class="col push-s2 s10">
+        <blockquote>
+            Selecting <strong>all</strong> or <strong>none</strong> of the file types in the list
+            are functionally equivalent
+        </blockquote>
+    </div>
+</div>
+<h5>Excerpts:</h5>
+<div class="row">
+    <div class="col s12">
+        Where search terms are found in a document, the text surrounding that (or those) search terms is snipped out. The size of
+        the excerpts can be determined by adjusting the <strong>number of excerpt characters</strong>.
+    </div>
+    <div class="col push-s2 s10">
+        <blockquote>The default excerpt size is set to <strong>500</strong> characters.</blockquote>
+    </div>
+</div>
+
+<h5>Search modifiers:</h5>
+<div class="row">
+    <div class="col s2">
+        <strong>OR</strong>
+    </div>
+    <div class="col s10">
+        Requires that either term (or both terms) be present for a document to match:
+        <blockquote>bear OR salmon</blockquote>
+    </div>
+</div>
+<div class="row">
+    <div class="col s2">
+        <strong>AND</strong>
+    </div>
+    <div class="col s10">
+        Requires both terms on either side of the AND modifier to be present for a document to match.
+        <p>This is the search default and is not required explicitly, but is good practice when building
+            complex search statements:</p>
+        <blockquote>salmon AND herring</blockquote>
+    </div>
+</div>
+<div class="row">
+    <div class="col s2">
+        <strong>NOT</strong>
+    </div>
+    <div class="col s10">
+        Requires that the following term not be present.
+        <blockquote>bear NOT elk</blockquote>
+    </div>
+</div>
+<div class="row">
+    <div class="col s2">
+        <strong>( &nbsp; )</strong>
+    </div>
+    <div class="col s10">
+        Parentheses can be used to group search clauses into sub-queries:
+        <blockquote>
+            (bear OR salmon) AND herring <br>
+            (bear AND salmon) NOT elk
+        </blockquote>
+    </div>
+</div>
+<div class="row">
+    <div class="col s2">
+        <strong>" &nbsp; "</strong>
+    </div>
+    <div class="col s10">
+        Phrased searches. Enclosing search terms with quotes will look for exact phrase matches:
+        <blockquote>
+            "How to navigate in the fog with no compass" <br>
+        </blockquote>
+    </div>
+</div>
+<h5>Wildcards:</h5>
+<div class="row">
+    <div class="col s2">
+        <strong>?</strong>
+    </div>
+    <div class="col s10">
+        Matches a single character:
+        <blockquote>
+            <strong>bo?t</strong> will match <strong>boat</strong> and <strong>bolt</strong>.
+        </blockquote>
+    </div>
+</div>
+<div class="row">
+    <div class="col s2">
+        <strong>*</strong>
+    </div>
+    <div class="col s10">
+        Multiple characters (matches zero or more sequential characters):
+        <blockquote>
+            <strong>fi*</strong> will match <strong>fist</strong>, <strong>first</strong>, and <strong>fish</strong>.<br>
+
+            <strong>te*t</strong> will match <strong>test</strong> and <strong>text</strong>.<br>
+
+            <strong>*est</strong> will match <strong>rest</strong>, <strong>pest</strong>, <strong>test</strong>, and <strong>smallest</strong>.
+        </blockquote>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <h6>Example of a complex query using modifiers and wildcards:</h6>
+    </div>
+    <div class="col push-s2 s10">
+        <blockquote>(nets OR traps) AND (sal* AND ?ear)</blockquote>
+    </div>
+</div>

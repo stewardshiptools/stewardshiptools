@@ -1,0 +1,31 @@
+{#{% if context.messages %}#}
+{#<ul class="messages">#}
+{#    {% for message in context.messages %}#}
+{#    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>#}
+{#        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}#}
+{#        {{ message }}#}
+{#    </li>#}
+{#    {% endfor %}#}
+{#</ul>#}
+{#{% endif %}#}
+{##}
+
+{% if context.messages %}
+
+<ul class="messages" style="display:none">
+    {% for message in context.messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<script>
+    $(document).ready(function(){
+        $('ul.messages li').each(function(e){
+            Materialize.toast($(this).text(), 3000)
+        }) ;
+    });
+</script>

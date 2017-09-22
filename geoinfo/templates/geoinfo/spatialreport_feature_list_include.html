@@ -1,0 +1,10 @@
+{% load staticfiles %}
+
+<script type="text/javascript">
+    var spatialreports_feature_list_attach_id = "{{ attach_id|escapejs }}";
+    var spatialreports_items = {{ ajax_urls|safe }};
+
+    var spatialreports_feature_list_show_pager = {{ pager|escapejs }};
+    var spatialreports_feature_list_show_search = {{ search|escapejs }};
+</script>
+<script type="text/javascript" src="{% static 'build/geoinfo/js/spatialreport_feature_list.js' %}"></script>

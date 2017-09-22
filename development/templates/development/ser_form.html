@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load cedar_settings %}
+{% load crm %}
+
+
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link href="{% static 'bower_components/select2/dist/js/select2.min.js' %}" rel="stylesheet"/>
+    <link href="{% static 'css/materialize_select2.css' %}" rel="stylesheet"/>
+    <style>
+        header, main, footer {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    </style>
+{% endblock %}
+
+{#Take out the side nav#}
+{% block nav %}{% endblock %}
+{% block second_bar %}{% endblock %}
+
+{#{% block second_bar_page_title %}XML Generator{% endblock %}#}
+{#{% block second_bar_secondary_title %}New Shared Engagment Record {% endblock %}#}
+{#{% block second_bar_secondary_content_right %}{% endblock %}#}
+
+
+{% block content %}
+    <div class="row grey lighten-4">
+        <div class="valign-wrapper">
+            <div class="col s12">
+                <div class="grey-text text-darken-2" style="display: inline-block"><h4>XML Generator</h4></div>
+                <div class="right grey-text text-lighten" style="display: inline-block; padding-top: 15px;"><h5>New Project Application Record</h5></div>
+            </div>
+        </div>
+    </div>
+
+
+    {{ block.super }}
+    <div class="section">
+        <div class="row">
+            <div class="col s12">
+                <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class='form-errors' style="display:none;">
+                {{ form.errors }}
+            </div>
+            <div class="row">
+                <div class="col s8">
+                    {{ form.title|materializecss:"s12" }}
+                </div>
+                <div>
+                    {{ form.due_date|materializecss:"s4" }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    {{ form.proposal_short_summary|materializecss:"s12" }}
+                </div>
+            </div>
+            <div class="divider"></div>
+            <h5>Government Representative</h5>
+            <div class="row">
+                {{ form.govt_rep_name_first|materializecss:"s12 m4" }}
+                {{ form.govt_rep_name_last|materializecss:"s12 m4" }}
+                {{ form.govt_rep_position|materializecss:"s12 m4" }}
+            </div>
+            <div class="row">
+                {{ form.govt_rep_email|materializecss:"s12 m4" }}
+                {{ form.govt_rep_phone_number|materializecss:"s12 m4" }}
+                {{ form.govt_rep_mailing_address|materializecss:"s12 m4" }}
+            </div>
+            <div class="divider"></div>
+            <h5>Applicant Representative</h5>
+            <div class="row">
+                {{ form.applicant_rep_first_name|materializecss:"s12 m4" }}
+                {{ form.applicant_rep_last_name|materializecss:"s12 m4" }}
+                {{ form.applicant_company_name|materializecss:"s12 m4" }}
+            </div>
+            <div class="row">
+                {{ form.applicant_rep_email|materializecss:"s12 m4" }}
+                {{ form.applicant_rep_phone_number|materializecss:"s12 m4" }}
+                {{ form.applicant_rep_mailing_address|materializecss:"s12 m4" }}
+            </div>
+            <div class="divider"></div>
+            <h5>Filing Codes</h5>
+            <div class="row">
+                {{ form.bc_filing_code_n|materializecss:"s6" }}
+                {{ form.applicant_filing_code_n|materializecss:"s6" }}
+            </div>
+            <div class="divider"></div>
+            <h5>Location</h5>
+            <div class="row">
+                {{ form.location_general_desc|materializecss:"s6" }}
+                {{ form.location_n_legal_desc|materializecss:"s6" }}
+            </div>
+            <div class="row">
+                {{ form.location_n_geomark|materializecss:"s6" }}
+                {{ form.location_n_geomark_comment|materializecss:"s6" }}
+            </div>
+            <div class="divider"></div>
+            <h5>Rationale</h5>
+            <div class="row">
+                {{ form.project_rationale|materializecss:"s6" }}
+                {{ form.engagement_lvl_bc_rationale|materializecss:"s6" }}
+            </div>
+            <div class="divider"></div>
+            <h5>Information Sharing</h5>
+            <div class="row">
+                {{ form.info_sharing_bc|materializecss:"s12" }}
+            </div>
+            <div class="divider"></div>
+            <h5>Authorization</h5>
+            <div class="row">
+                {{ form.authorization_n_name|materializecss:"s6" }}
+                {{ form.authorization_n_description|materializecss:"s6" }}
+                {{ form.primary_authorization_type|materializecss:"s12" }}
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <input class="waves-effect waves-light btn green lighten-4 grey-text text-darken-1" type="submit" value="Generate XML"/>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div class="row">
+                <div class="col m4 s12">
+                    <br/>
+                    <h6>You may populate fields by uploading a pre-existing XML document here.</h6><br/>
+                    <input class="waves-effect waves-light btn grey lighten-4 grey-text text-darken-1" type="submit" value="Upload XML Template"/>
+                </div>
+               {{ form.template_document|materializecss:"s12 m8" }}
+            </div>
+        </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    <script src="{% static 'bower_components/select2/dist/js/select2.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').pickadate(
+                {
+                    selectYears: {{ 'cedar__default_datepicker_years'|get_setting }},
+                    selectMonths: true,
+                    format: 'yyyy-mm-dd',
+{#                    max: new Date() //limits max date to today.#}{# remove this restriction so we can set dates way into the future #}
+                }
+            );
+
+        });
+
+    </script>
+
+
+{% endblock %}

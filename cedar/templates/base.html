@@ -1,0 +1,130 @@
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load repeatedblocks %}
+{% load help %}
+{% load cedar_settings %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="shortcut icon" type="image/png" href="{% static 'css/cedarbox_icon_gry.png' %}"/>
+
+    {#    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">#}
+    <link href="{% static 'css/cedar-material-icons.css' %}" rel="stylesheet"/>
+    <link href="{% static 'lib/materialize-src/css/materialize.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/cedar.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/task-mon.css' %}" rel="stylesheet"/> {# task-mon for the global Harvest Mail button #}
+    <script src="{% static 'js/history.js' %}"></script>
+    <script src="{% static 'build/cedar/js/cedar.js' %}"></script>
+
+    {% block stylesheets %}{% endblock %}
+
+{#    If jquery is included here then child templates can import their own#}
+{#    js with their own document ready functions#}
+    <script src="{% static 'lib/jquery/jquery-1.11.3.js' %}"></script>
+    <script src="{% static 'lib/jquery-expander/jquery.expander.min.js' %}"></script>
+
+</head>
+<body>
+
+{% block nav %}
+    {% include 'sidenav.html' %}
+{% endblock %}
+<main>
+    {% block content %}
+        {% spinner %}
+        {% block second_bar %}
+            <div class="row grey lighten-4">
+{#            <div class="valign-wrapper hide-on-med-and-down">#}
+            {# JS is sometimes used to make the print pages look correct even when not printing.  We don't want to hide this unless its a real print page. #}
+            <div class="hide-on-med-and-down top-bar-hide-on-print">
+                    <div class="second_bar_page_title_outer">
+                        <div class="row grey lighten-4">
+                            <div class="col s6 second_bar_page_title grey-text text-darken-2">
+                                <h4>{% repeated_block second_bar_page_title %}{% endblock %}</h4>
+                            </div>
+                            <div class="col s6 second_bar_secondary_content_right">
+                                <div class="grey-text text-darken-1">
+        {% repeated_block second_bar_secondary_content_right %}{% endblock %}
+    {% include 'cedar/edit_buttons.html' %}
+    {% help_button %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row grey lighten-4">
+                            <div class="col s12 second_bar_secondary_title grey-text text-lighten">
+                                <h5>{% repeated_block second_bar_secondary_title %}{% endblock %}</h5>
+                            </div>
+                        </div>
+                    </div>
+                {#    <div class="col s12 m5 l4">#}
+
+                </div>
+
+    {# This is this is the top bar that shows on mobile.  It also shows on print. #}
+                <div class="show-on-medium-and-down hide-on-large-only">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="grey-text text-darken-2 left"><h5>{% repeat second_bar_page_title %}</h5></div>
+                            <div class="grey-text text-lighten right"><h5>{% repeat second_bar_secondary_title %}</h5></div>
+                        </div>
+                        <div class="col s12">
+                            <div class="grey-text text-darken-1 right">
+                                {% repeat second_bar_secondary_content_right %}
+                                <span class="hide-on-print">
+                                    {% include 'cedar/edit_buttons.html' %}
+                                    {% help_button %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock second_bar %}
+    {% endblock content %}
+
+    {#  insert super secret help modal div area #}
+    {% help_modal %}
+    {% include 'cedar/user-menu-modals.html' %}
+
+</main>
+
+
+
+<script src="{% static 'lib/materialize-src/js/bin/materialize.min.js' %}"></script>
+<script src="{% static 'js/task-mon.js' %}"></script> {# task-mon for the global Harvest Mail button #}
+<script>
+    $(document).ready(function () {
+        $("#id_password").click();  // This is a workout for
+                                    // autofill password text
+                                    // overlapping with css text.
+
+
+        $('.second_bar_secondary_content_right').pushpin({
+            top: 50,
+            offset: 0
+        });
+
+        $('form').on('submit', function (e) {
+            $('.progress').css('visibility', 'visible');
+        });
+
+    });
+
+    window.chip_hack();
+
+    {% get_background_url as bg_url %}
+    var bg_img_url = "{{ bg_url|safe }}";
+    $('#background-image').css('background-image', 'url("' + bg_img_url + '")');
+</script>
+{% block messages %}
+    {% messages %}
+{% endblock messages %}
+{% block javascripts %}{% endblock %}
+</body>
+</html>

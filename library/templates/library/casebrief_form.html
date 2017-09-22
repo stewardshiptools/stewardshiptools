@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load cedar_extras %}
+{% load cedar_material_form %}
+{% load cedar_settings %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load crm %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock %}
+
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Case Brief{% endblock %}
+{% block second_bar_secondary_title %}{{ object }} {% if object %}({{ object.prefixed_id }}){% endif %}{% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if form.errors %}
+            <div class="row yellow lighten-3 form-error-div">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+        <div style="display:none;">
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+            {{ form.cataloger.as_hidden }}
+            {{ form.belongs_to.as_hidden }}
+        </div>
+        <div class="row">
+            <div class="col s6">
+                {{ form.story_title | materializecss}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m7">
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">subject</i> Sources
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <div class="row">
+                                <div class="col" style="width:100%">
+                                    {{ form.sources | materialselect2 }}
+                                </div>
+                                <p>&nbsp;</p>
+                                {{ form.source_notes | materializecss }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col s7 m5">
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">subject</i> Admin
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <div class="row">
+                                <div class="col s12">
+                                    <label for="fn-identifier">FN Identifier</label>
+                                    <span id="fn-identifier">[FN IDENTIFIER]</span><br/>
+                                    <label for="cataloger-chip">Cataloger:&nbsp;</label>
+                                    <div id="cataloger-chip" class="chip">
+                                        {% if object.cataloger %}
+                                                <img src="{{ object.cataloger|crm_get_avatar_url }}" alt="Cataloger Pic">
+                                                {{ object.cataloger|crm_get_person_text }}
+                                        {% else %}
+                                                <img src="{{ request.user|crm_get_avatar_url }}" alt="Cataloger Pic">
+                                                {{ request.user|crm_get_person_text }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col s12">
+                                    {{ form.reviewer | materialselect2 }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                </ul>
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">subject</i> Tags
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <div class="row">
+                                <div class="col s12">
+                                    <label for="{{ form.label_for_id }}">Tag(s)</label>
+                                    {{ form.tags }}
+                                    {% for error in form.tags.errors %}
+                                        <p class="help-block orange-text">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                </ul>
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">subject</i> Keywords
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <div class="row">
+                                <div class="col s12">
+                                    <label for="{{ form.label_for_id }}">Keyword(s)</label>
+                                    {{ form.keywords }}
+                                    {% for error in form.tags.errors %}
+                                        <p class="help-block orange-text">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">subject</i> Issues & Facts
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    {{ form.issues | materializecss }}
+                                </div>
+                                <div class="col s12 m6">
+                                    {{ form.facts | materializecss }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">subject</i> Decisions & Reasons
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    {{ form.decision | materializecss }}
+                                </div>
+                                <div class="col s12 m6">
+                                    {{ form.reasons_notes | materializecss }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">subject</i> Notes
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    {{ form.notes | materializecss }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+
+{% endblock content %}
+
+{% block javascripts %}
+{% endblock javascripts%}

@@ -1,0 +1,19 @@
+{#Use the back_button template tag to get a functioning back button.#}
+{% load cedar_extras %}
+{% if BACK_URL %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2"
+       href="{{ BACK_URL }}">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">cancel</i>
+            &nbsp;Cancel
+        </div>
+    </a>
+{% else %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 disabled"
+       href="#">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">cancel</i>
+            &nbsp;Cancel
+        </div>
+    </a>
+{% endif %}

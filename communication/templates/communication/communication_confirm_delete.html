@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load communication %}
+{% load cedar_settings %}
+{% load html_filters %}
+
+{% block second_bar_page_title %}Delete Communication Item{% endblock %}
+{% block second_bar_secondary_title %}{{ object.subject | strip_html_wrap }} {% endblock %}
+{% block second_bar_secondary_content_right %}{% cancel_button %}{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="section">
+        <div class="row">
+            <div class="col s12">
+                <form action="{% url 'communication:communication-delete' pk=object.id %}" method="POST">
+                    {% csrf_token %}
+                    <p>
+                    <h6>Are you sure you want to delete this <strong>{{ object.comm_type|get_model_title_singular|capfirst }}</strong>?</h6>
+                    </p>
+                    <div class="row">
+                        <div class="col s12 m6">
+                            <p><strong>Subject: </strong> {{ object.subject | strip_html_wrap }}</p>
+                            <p><strong>Date: </strong> {{ object.date }}</p>
+                        </div>
+                        <div class="col s12 m6">
+                            {#                            <p><strong>Related to the following database entit{{ communication_relations|pluralize:"y,ies" }}:</strong><br></p>#}
+                            <p><strong>Related to:</strong><br></p>
+                            {% for rel in communication_relations %}
+                                <a href="
+                                        {{ rel.related_object.get_absolute_url }}{{ 'communication__comm_items_panel_html_id'|get_setting }}">{{ rel.related_object }}</a>
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if related_assets %}
+                        <div class="row">
+                            <div class="col s12">
+                                <p><strong>The following file{{ related_assets|pluralize }} will be deleted:</strong></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            {% for asset in related_assets %}
+                                {% if asset %}  {# in case the asset was already delete manually on the project deets page #}
+                                <div class="col s12 m6">
+                                    <a href="{{ asset.url }}">{{ asset.name }}</a>
+                                </div>
+                                <div class="col s12 m6">
+                                    <span style="font-size:.9em;"><a class="teal-text"
+                                                                      href="{{ asset.source_url }}">{{ asset.source_string }}</a></span>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="row">
+                        <p></p>
+                        <br/>
+                        <input class="waves-effect waves-light btn grey lighten-4 red-text text-darken-1" type="submit" value="Confirm delete"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,12 @@
+{% extends 'assets/genericasset_detail.html' %}
+
+{% block second_bar_secondary_title %}
+    Project: <a href="{% url 'heritage:project-detail' object.project.pk %}">{{ object.project }}</a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+    <script>
+        var current_nav_url = '{% url 'heritage:project-list' %}';
+    </script>
+{% endblock %}

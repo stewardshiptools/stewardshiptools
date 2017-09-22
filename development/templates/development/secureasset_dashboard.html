@@ -1,0 +1,12 @@
+{% extends "assets/secureasset_dashboard.html" %}
+{% load cedar_extras %}
+{% block second_bar_page_title %}Development Files{% endblock %}
+{% block second_bar_secondary_content_right %}
+    {#    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'development.add_developmentasset' }}"#}
+{#        href="{% url 'development:secureasset-create' %}">#}
+{#        <div class="valign-wrapper">#}
+{#            <i class="material-icons">add_circle</i>#}
+{#            &nbsp;File#}
+{#        </div>#}
+{#    </a>#}
+{% endblock %}

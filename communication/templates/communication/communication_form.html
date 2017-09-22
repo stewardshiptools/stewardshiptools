@@ -1,0 +1,47 @@
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load cedar_settings %}
+<div>
+    {{ inline_communication_formset.management_form }}
+    {{ inline_communication_formset.non_form_errors }}
+    {% for form in inline_communication_formset %}
+        <div style="display: none;">
+            {{ form.errors }}
+        </div>
+
+        <div class="col s12 m6">
+            {{ form.subject|materializecss }}
+        </div>
+        <div class="col s12">
+            {{ form.date_picker|materializecss:"s6" }}
+            {{ form.time_picker|materializecss:"s6" }}
+        </div>
+        <div class="col s12 m6">
+            <div class="col s12">
+                {{ form.from_contacts|materialselect2 }}
+            </div>
+        </div>
+        <div class="col s12 m6">
+            <div class="col s12">
+                {{ form.to_contacts|materialselect2 }}
+            </div>
+        </div>
+
+    <script>
+
+        $(document).ready(function () {
+            $("#{{ form.date_picker.auto_id }}").pickadate(
+                {
+                    selectYears: {{ 'cedar__default_datepicker_years'|get_setting }},
+                    selectMonths: true,
+                    format: 'yyyy-mm-dd',
+                    max: new Date() //limits max date to today.
+                }
+            );
+        });
+    </script>
+
+    {% endfor %}
+
+</div>

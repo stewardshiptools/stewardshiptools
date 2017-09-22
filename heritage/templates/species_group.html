@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+        <div class="mdl-cell mdl-cell--1-col">
+            <a href="../"><i class="material-icons" id="back-button">keyboard_backspace</i></a>
+        </div>
+        <div class="mdl-cell mdl-cell--3-col mdl-cell--3-col-tablet mdl-cell--3-col-phone">
+            <h1>Species groups</h1>
+            <p>Click on a species group for more information.</p>
+            <div class="mdl-spinner mdl-js-spinner"></div>
+        </div>
+        <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-tablet mdl-cell--12-col-phone">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width" id="species-table">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Description</th>
+                    <th class="mdl-data-table__cell--non-numeric">Species Group</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{#    <script src="{% static 'js/species.js' %}"></script>#}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% load staticfiles %}
+
+<script type="text/javascript">
+
+    var crm_person_list_attach_id = "{{ attach_id|escapejs }}";
+    var crm_person_list_ajax_url = "{{ ajax_url|escapejs }}";
+    var crm_person_list_show_pager = {{ pager|escapejs }};
+    var crm_person_list_show_search = {{ search|escapejs }};
+    var crm_person_list_grid_class = '{{ grid_class|default:'s12 m6 l4' }}';
+
+</script>
+<script type="text/javascript" src="{% static 'bower_components/jquery-typewatch/jquery.typewatch.js' %}"></script>
+<script type="text/javascript" src="{% static 'build/crm/js/person_list.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/cedar-react-list.css' %}">

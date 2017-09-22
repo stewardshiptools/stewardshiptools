@@ -1,0 +1,36 @@
+{% extends "special_page_base.html" %}
+{% load cedar_extras %}
+{% block title %}403 Forbidden{% endblock %}
+
+
+{% block stylesheets %} {# override regular cedar css #}
+    <style>
+        /* Override the padding for the nav side bar: */
+        header, main, footer {
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block subtitle %}
+    <h5>403 Forbidden</h5>
+{% endblock subtitle %}
+
+
+{% block nav %}{% endblock %} {# override the nav block #}
+{% block second_bar %}{% endblock %} {# override the bar block #}
+
+{% block main_area %}
+<div class="center-align">
+    <div class="yellow-text text-darken-4"><i class="medium material-icons">error_outline</i></div>
+    <h6>Uh oh! You are not authorized to view the information you requested.</h6>
+    <br/>
+    {% if user.is_authenticated %}
+        {% back_button %}
+    {% else %}
+        <a href="{% url 'login' %}" class="btn-large waves-effect waves-light yellow darken-4">Login</a>
+    {% endif %}
+</div>
+{% endblock %}

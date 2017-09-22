@@ -1,0 +1,9 @@
+<div class="{{ div_classes }}">
+    <a href="
+                {% if request.META.HTTP_REFERER %}
+                    {{ request.META.HTTP_REFERER }}
+                {% else %}
+                    ../
+                {% endif %}
+            "><i class="material-icons pink-text text-accent-3" id="back-button">keyboard_backspace</i></a>
+</div>

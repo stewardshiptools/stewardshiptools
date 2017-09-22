@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load geoinfo %}
+
+{# Note: {{ block.super }} must appear in the {% block content %} tag for the following to work. #}
+{# Note: uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Spatial Reports{% endblock %}
+{% block second_bar_secondary_title %}<span class="spatialreport-list-count">{{ object_list.count }}</span> report
+    {{ spatialreport_list|pluralize }} {% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'geoinfo.add_spatialreport' }}"
+       href="{% url 'geoinfo:spatialreport-create' %}">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">add_circle</i>
+            &nbsp;Spatial Report
+        </div>
+    </a>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+
+    <!--
+    <div class="row">
+        {# todo Replace this with an ajaxified list #}
+        <div class="collection col s12">
+            {% for report in spatialreport_list %}
+                <a class="collection-item" href="{% url 'geoinfo:spatialreport-detail' report.id %}">{{ report }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    -->
+    <div class="row">
+        <div class="col s12">
+            <div id="spatialreport-list"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% geoinfo_report_list 'spatialreport-list' %}
+{% endblock %}

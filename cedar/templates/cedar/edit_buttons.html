@@ -1,0 +1,12 @@
+{% load cedar_extras %}
+<span class="edit-object-mixin">
+    {% if edit_object_submit_selector %}
+        {% edit_submit_button edit_object_submit_selector %}
+    {% endif %}
+    {% if edit_object_cancel_url %}
+        {% edit_cancel_button edit_object_cancel_url %}
+    {% endif %}
+    {% if edit_object_delete_url %}
+        {% edit_delete_button edit_object_delete_url edit_object_delete_perm %}
+    {% endif %}
+</span>

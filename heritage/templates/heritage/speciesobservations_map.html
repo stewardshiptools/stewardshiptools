@@ -1,0 +1,15 @@
+{% extends 'geoinfo/gisfeature_map_include.html' %}
+{% load staticfiles %}
+{% load heritage %}
+
+{% block javascript_vars %}
+    <script type="text/javascript">
+        var speciesobservations_map_id = "{{ attach_id|escapejs }}";
+        var speciesobservations_map_settings = {{ map_settings|safe }};
+    </script>
+{% endblock %}
+
+{% block override_area_2 %}
+    {% heritage_load_map_utils %}
+    <script type="text/javascript" src="{% static 'build/heritage/js/speciesobservations_map.js' %}"></script>
+{% endblock %}

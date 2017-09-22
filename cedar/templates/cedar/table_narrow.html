@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block stylesheets %}
+    <link href="{% static 'lib/DataTables/datatables-materialize.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col s4">
+            <div id="con-vert">  {# Vertically oriented table controls. #}
+                <div id="search-box-input-field" class="input-field">
+                    {# <i class="material-icons prefix">search</i>#}
+                    <input id="search-box" type="text">
+                    <label for="search-box">Filter...</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m12 l12">
+            <div class="">
+                <table id="datatable" class="highlight">
+                    <thead>
+                    <tr>
+                        {% block table-head %}{% endblock %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

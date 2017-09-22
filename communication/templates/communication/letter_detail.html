@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load html_filters %}
+{% load crm %}
+{% load communication %}
+{% load cedar_settings %}
+
+{% block second_bar_page_title %}Letter{% endblock %}
+{% block second_bar_secondary_title %}Subject: {{ communication.subject|strip_html_wrap }} {% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 red-text text-darken-1 {{ user|is_disabled:'communication.delete_communication' }}"
+       href="{% url 'communication:communication-delete' pk=communication.id %}">
+        <div class="valign-wrapper"><i class="material-icons valign ">delete</i></div>
+    </a>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    {% get_communication_object object.communication as communication%}
+
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12 m3 l3">
+            <div class="section">
+                {% for rel in communication_relations %}
+                    <a href="{{ rel.related_object.get_absolute_url }}{{ 'communication__comm_items_panel_html_id'|get_setting }}">{{ rel.related_object }}</a>&nbsp;
+                {% endfor  %}
+            </div>
+            <div class="section">
+                <strong>CRM Contacts</strong>
+                <p>
+                    <strong>From: </strong>
+                    <div id="from_person_list" class="row"></div>
+                    <strong>To: </strong>
+                    <div id="to_person_list" class="row"></div>
+                </p>
+            </div>
+        </div>
+        <div class="col s12 m8 l8">
+            <div class="section">
+                <strong>Date: </strong><span class=" grey-text">{{ communication.date }}</span><br/>
+                <strong>Duration: </strong><span class=" grey-text">{{ communication.duration|default_if_none:"" }}</span><br/>
+                <strong>Subject: </strong><span class="grey-text">{{ communication.subject|strip_html_wrap }}</span>
+                <div class="divider"></div>
+            </div>
+            <div class="section">
+                <strong>Document: </strong><br/>
+                <div class="section">
+                    <a href="{{ object.document.asset.url }}">{{ object.document.asset.name }}</a>
+                </div>
+                <div class="divider"></div>
+            </div>
+            {% if object.notes %}
+            <div class="section">
+                <strong>Notes: </strong>
+                <div class="grey-text">{{ object.notes|default_if_none:""|linebreaksbr}}</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <script type="text/javascript"></script>
+{% endblock content %}
+
+{% block javascripts %}
+    {% react %}
+    {% react_dom %}
+    {% crm_person_list 'from_person_list' from_contact_url pager=0 search=0 grid_class='s12' %}
+    {% crm_person_list 'to_person_list' to_contact_url pager=0 search=0 grid_class='s12' %}
+
+    <script>
+{#        var current_nav_url = '{% url 'development:project-list' %}';#}
+        var from_contact_url = '{{ from_contact_url }}';
+        var to_contact_url = '{{ to_contact_url }}';
+
+        $(document).ready(function (evt) {});
+    </script>
+
+{% endblock %}

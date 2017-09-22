@@ -1,0 +1,23 @@
+{% load help %}
+
+{% if page_help %}
+    {% if page_help.help_text.all %}
+        <div id="help-menu-modal" class="modal modal-fixed-footer">
+            <div class="modal-header"></div>
+            {#  this can only appear once #}
+            <div class="modal-content">
+                <div class="modal-body">
+                    {% for help_text in page_help.help_text.all %}
+                        {% autoescape off %}
+                            {{ help_text.sanitized_html|render_as_template }}
+                        {% endautoescape %}
+                        <div class="divider"></div>
+                    {% endfor %}
+                </div>
+        </div>
+            <div class="modal-footer">
+                <a href="#!" class=" modal-action modal-close waves-effect waves-grey btn-flat">Dismiss</a>
+            </div>
+    </div>
+    {% endif %}
+{% endif %}

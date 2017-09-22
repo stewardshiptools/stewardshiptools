@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block stylesheets %}
+    <link href="{% static 'lib/DataTables/datatables-materialize.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="progress">
+            <div class="indeterminate"></div>
+        </div>
+    </div>
+    <div class="row">
+        {#        <div class="col s1 hide-on-med-and-down">&nbsp;</div>#}
+        {#        <div class="col s1">#}
+        {#            <a href="#}
+        {#                {% if request.META.HTTP_REFERER %}#}
+        {#                    {{ request.META.HTTP_REFERER }}#}
+        {#                {% else %}#}
+        {#                    ../#}
+        {#                {% endif %}#}
+        {#            "><i class="material-icons pink-text text-accent-3" id="back-button">keyboard_backspace</i></a>#}
+        {#        </div>#}
+        <div class="col s12">
+            <h2>{% block title %}{% endblock %}</h2>
+        </div>
+    </div>
+    <div id="con-hor" class="row">  {# Table controls in horizontal configuration. #}
+        <div class="col s1 hide-on-med-and-down">&nbsp;</div>
+        <div class="col s1">&nbsp;</div>
+        <div id="search-box-input-field" class="col s2 input-field">
+            {# <i class="material-icons prefix">search</i> #}
+            <input id="search-box" type="text">
+            <label for="search-box">Search...</label>
+        </div>
+
+        <div class="col s1 hide-on-med-and-down">&nbsp;</div>
+
+        <div id="page-length-wrapper" class="input-field col sm1">
+            <select id="page-length" class="browser-default">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="-1">all</option>
+            </select>
+            rows per page
+        </div>
+
+        <div class="col s1 hide-on-med-and-down">&nbsp;</div>
+
+
+        <div id="paging-buttons-wrapper" class="col sm1">
+            <a id="page-previous" class="btn-floating btn-flat pink accent-3" href="#"><i class="material-icons">skip_previous</i></a>
+            <a id="page-next" class="btn-floating btn-flat pink accent-3" href="#"><i
+                    class="material-icons">skip_next</i></a>
+        </div>
+
+        <div class="col s1 hide-on-med-and-down">&nbsp;</div>
+
+        <div id="page-info-wrapper" class="col sm1">
+            <span id="page-start"></span>-<span id="page-end"></span> of <span id="record-length"></span>
+        </div>
+
+    </div>
+    <div class="col s12 m12 l6">
+        <table id="species-table" class="highlight">
+            <thead>
+                {% block table-head %}{% endblock %}
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <div class="row">
+
+    </div>
+{% endblock %}

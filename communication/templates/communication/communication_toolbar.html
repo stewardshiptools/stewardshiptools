@@ -1,0 +1,270 @@
+{% load staticfiles %}
+{% load communication %}
+<script type="text/javascript" src="{% static 'bower_components/jquery-typewatch/jquery.typewatch.js' %}"></script>
+
+<div id="{{ element_id }}_toolbar">
+    <div class="tight-row row">
+        <div style="display: none;">
+            related object is: {{ related_object }}
+        </div>
+        <div>
+{#            <label >Filters</label>#}
+              <button
+                      id="comm-btn-filters-show"
+                      class="waves-effect waves-light btn-flat white tooltip-comms"
+                      type="submit"
+                      name="action"
+                      data-position="bottom"
+                      data-tooltip="Show/Hide Filters">Filters
+                <i class="material-icons right">keyboard_arrow_down</i>
+              </button>
+        </div>
+        <div id="comm-panel-filters" class="" style="display:none;">
+            <div class="col s12 m4">
+                <div class="input-field" style="margin-top:0px;">
+{#                    <label>Filter</label>#}
+                    <input class="search" placeholder="Keyword" type="text">
+                </div>
+
+            </div>
+            <div class="col s6 m5">
+{#                <label>Filter by type</label>#}
+                <select class="comm-type-filter">
+                <option value="">All types</option>
+
+                {% get_comm_type_names_list related_object as comm_type_options %}
+
+                    {% for opt in comm_type_options %}
+                        <option value="{{ opt.ct_name }}">{{ opt.pretty_name|capfirst }}</option>#}
+                    {% endfor %}
+                </select>
+
+            </div>
+            <div class="col s6 m3">
+{#                <label>Limit results</label>#}
+                <div class="valign-wrapper">
+                    <select class="comm-results-limit">
+                        <option value="10">See 10</option>
+                        <option value="20">See 20</option>
+                        <option value="100">See 100</option>
+                        <option value="">See All</option>
+                    </select>
+                    <a class="datesort tooltip-comms"
+                       data-sort="-comm_date"
+                       data-position="left"
+                       data-tooltip="Click to sort by date (asc)"
+                       style="cursor: pointer;">
+                        <i class="rotate material-icons circle grey-text text-darken-1">sort</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tight-row row">
+        <div class="center spinner" style="display: none;">
+            <div class="preloader-wrapper small active">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if related_object %}
+        {% get_content_type related_object as related_object_ct %}
+    <div class="fixed-action-btn horizontal click-to-toggle communication-new-items-fab" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating">
+            <i class="material-icons grey darken-3 ">add</i>
+        </a>
+        <ul>
+            <li class="comm-fab-item">
+                <a class="btn-floating btn-small green darken-1 tooltip-comms"
+                   data-position="top"
+                   data-tooltip="New fax"
+                   href="{% url 'communication:fax-create' related_ct_id=related_object_ct.id related_oid=related_object.id %}">
+                    <i class="material-icons">insert_drive_file</i>
+                </a>
+            </li>
+            <li class="comm-fab-item">
+                <a class="btn-floating btn-small blue tooltip-comms"
+                   data-position="top"
+                   data-tooltip="New phone conversation"
+                   href="{% url 'communication:phonecall-create' related_ct_id=related_object_ct.id related_oid=related_object.id %}">
+                    <i class="material-icons">phone</i>
+                </a>
+            </li>
+            <li class="comm-fab-item">
+                <a class="btn-floating btn-small orange tooltip-comms"
+                   data-position="top"
+                   data-tooltip="New letter"
+                   href="{% url 'communication:letter-create' related_ct_id=related_object_ct.id related_oid=related_object.id %}">
+                    <i class="material-icons">mail_outline</i>
+                </a>
+            </li>
+            {#            <li class="comm-fab-item">#}
+            {#                <a class="btn-floating btn-small red tooltip-comms"#}
+            {#                   data-position="top"#}
+            {#                   data-tooltip="EH?">#}
+            {#                    <i class="material-icons">insert_chart</i>#}
+            {#                </a>#}
+            {#            </li>#}
+            {#            <li class="comm-fab-item">#}
+            {#                <a class="btn-floating btn-small green tooltip-comms"#}
+            {#                   data-position="top"#}
+            {#                   data-tooltip="New email">#}
+            {#                    <i class="material-icons">email</i>#}
+            {#                </a>#}
+            {#            </li>#}
+        </ul>
+    </div>
+    {% endif %}
+
+    <script type="text/javascript">
+        var el_prefix = '{{ element_id }}'; // This is the target div that the toolbar will manipulate.
+        var target_div_id = '#' + el_prefix;
+        var target_div = null;
+{#        console.log("target:", target_div);#}
+        var toolbar = $('#' + el_prefix + '_toolbar');
+
+        var search_box = $(toolbar).find('.search');
+        var spinner = $(toolbar).find('.spinner');
+
+        var order_field = 'comm__date';
+
+        var base_url = '{{ base_url }}';
+
+        $(document).ready(function () {
+            target_div = $('#' + el_prefix);
+
+            // set up search box:
+            $(search_box).typeWatch({
+                wait: 550,
+                callback: function (value) {
+                    get_data(build_query_url());
+                },
+                captureLength: 1,
+                allowSubmit: true
+            });
+
+            // set up order toggle:
+            $('.datesort').on('click', function (evt) {
+                var order = $(this).attr('data-sort');
+                if (order.charAt(0) === '-') {
+                    $(this).attr('data-sort', '+' + order_field);
+                    $(this).attr('data-tooltip', 'Click to sort by date (asc)');
+                    get_data(build_query_url());
+                }
+                else {
+                    $(this).attr('data-sort', '-' + order_field);
+                    $(this).attr('data-tooltip', 'Click to sort by date (desc)');
+                    get_data(build_query_url());
+                }
+                //console.log($(this).attr('data-sort'));
+                $(this).find('i').toggleClass('rotated');
+            });
+
+            // set up tooltips:
+            $('.tooltip-comms').tooltip();
+
+            // set up select:
+            $('select').material_select();
+
+            // set change listener on selects:
+            $("select.comm-type-filter, select.comm-results-limit").on('change', function () {
+                get_data(build_query_url());
+            });
+
+            // set click listener on filters show:
+            $("#comm-btn-filters-show").on('click', function (e) {
+                var text = $(this).children('i').text();
+                if (text == 'keyboard_arrow_down'){
+                    $("#comm-panel-filters").slideDown();
+                    $(this).children('i').text('keyboard_arrow_up');
+                }
+                else{
+                    $("#comm-panel-filters").slideUp();
+                    $(this).children('i').text('keyboard_arrow_down');
+                }
+            });
+
+
+            // Execute a search on load:
+            get_data(build_query_url());
+        })
+
+        function get_data(url) {
+            $.ajax({
+                url: url,
+                dataType: 'html',
+                cache: false,
+                beforeSend: function () {
+                    spinner.slideToggle();
+                },
+                success: function (data) {
+                    target_div.empty();
+                    target_div.html(data);
+
+                    set_page_listeners();
+                }.bind(this),
+                error: function (xhr, status, err) {
+                    console.error(base_url, status, err.toString());
+                }.bind(this),
+                complete: function () {
+                    spinner.slideToggle();
+                }
+            });
+        }
+
+        function set_page_listeners() {
+            /* Will look for and set paging listeners if they exist: */
+            $(target_div).find(".btn-next-page, .btn-previous-page").on('click', function (evt) {
+                get_data($(this).attr('data-url'));
+            })
+        }
+
+        function build_query_url() {
+            var limit = $('select.comm-results-limit').val();
+            var search_value = $(search_box).val();
+            var comm_type_filter = $(".comm-type-filter").find('option:selected').attr('value');
+
+            //var query_url = base_url + "?" + extra_query + "&limit=" + this.state.externalResultsPerPage + "&offset=" + this.state.currentPage * this.state.externalResultsPerPage + "&ordering=" + sort + "&search=" + this.state.search,
+            var query_url = base_url + "?";
+
+            {% if related_object %}
+                var related_ct = '{{ related_ct.id }}';
+                var related_oid = {{ related_object.id }};
+
+            {%  else %}
+                var related_ct = null;
+            {% endif %}
+
+            //Restrict the queryset to the related object if it has been provided:
+            if (related_ct) {
+                query_url += "&related_object_oid=" + related_oid + "&related_object_ct=" + related_ct;
+            }
+
+            if (comm_type_filter) {
+                query_url += "&comm_type_model=" + comm_type_filter;
+            }
+
+            query_url += "&search=" + search_value;
+
+            query_url += "&limit=" + limit;
+
+            query_url += "&ordering=" + $(".datesort").attr('data-sort');
+
+            console.log("query_url", query_url);
+            return query_url
+        }
+
+
+    </script>
+</div>

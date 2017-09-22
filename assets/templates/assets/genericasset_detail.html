@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}File Details{% endblock %}
+{% block second_bar_secondary_title %}{{ title_text }} {{ object.name }}{% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'development.change_developmentproject' }}"
+       {% comment %}
+       {# TODO Delete this comment block if there aren't any problems #}
+       href="{% url 'assets:secureasset-serve' object.id %}">
+       {% endcomment %}
+       href="{{ object.serve_url }}">
+        <div class="valign-wrapper">
+            <i class="material-icons">open_in_browser</i>&nbsp;Open
+        </div>
+    </a>
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'development.change_developmentproject' }}"
+       href="{{ object.download_url }}">
+        <div class="valign-wrapper">
+            <i class="material-icons">file_download</i>&nbsp;Download
+        </div>
+    </a>
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'development.change_developmentproject' }}"
+        {% if edit_url %}
+       href="{{ edit_url }}">
+        {% else %}
+            href="{% url 'assets:secureasset-update' object.id %}">
+       {% endif %}
+        <div class="valign-wrapper">
+            <i class="material-icons">mode_edit</i>&nbsp;Edit
+        </div>
+    </a>
+    <a class="waves-effect waves-light btn grey lighten-5 red-text text-darken-1 {{ user|is_disabled:'development.add_developmentprojectasset' }}"
+        {% if delete_url %}
+       href="{{ delete_url }}">
+        {% else %}
+            href="{% url 'assets:secureasset-delete' object.id %}">
+        {% endif %}
+        <div class="valign-wrapper">
+            <i class="material-icons">delete</i>
+        </div>
+    </a>
+{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    {% block additional_content_1 %}{% endblock %}
+    <div class="section">
+        <div class="row">
+            <div class="col s12 m6 l4">
+                <div class="col s12 teal-text text-darken-5">
+                    Filename:
+                    <span class="col s12 grey-text text-lighten">
+                        {{ object.name }}
+                    </span>
+                </div>
+                {% if object.asset_type %}
+                    <div class="col s12 teal-text text-darken-5">
+                        Asset type:
+                        <span class="col s12 grey-text text-lighten">
+                            {{ object.asset_type }}
+                        </span>
+                    </div>
+                {% endif %}
+                {% if object.modified %}
+                    <div class="col s12 teal-text text-darken-5">
+                        <strong>Date modified:</strong>
+                        <span class="col s12 grey-text text-lighten">
+                            {{ object.modified }}
+                        </span>
+                    </div>
+
+                {% endif %}
+
+                {% if object.comment %}
+                    <div class="col s12 teal-text text-darken-5">
+                        <strong>Comment:</strong>
+                        <section class="col s12 grey-text text-lighten" style="margin-top: 0;">
+                            {{ object.comment | linebreaks }}
+                        </section>
+                    </div>
+
+                {% endif %}
+            </div>
+            <div class="col s12 m6 l8">
+                {% if object.meta_document %}
+                    <div class="">
+                        <h5 class="grey-text text-darken-2">Dublin Core Meta</h5>
+                        <div class="divider"></div>
+                        {% include 'assets/metadocument_detail_fields.html' with meta=object.meta_document %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% block additional_content_2 %}{% endblock %}
+{% endblock content %}
+
+{% block javascripts %}
+    <script src="{% static 'bower_components/select2/dist/js/select2.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            // Fix select 2 style:
+            $('.select2.select2-container').css({
+                'width': 'inherit'
+            });
+        });
+    </script>
+{% endblock %}

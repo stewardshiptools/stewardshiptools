@@ -1,0 +1,146 @@
+from django.conf import settings
+from django.template.defaultfilters import stringfilter
+from django.utils.safestring import mark_safe
+from django import template
+
+import bleach
+
+ALLOWED_TAGS = getattr(settings, 'ALLOWED_HTML_TAGS', [])
+ALLOWED_ATTRIBUTES = getattr(settings, 'ALLOWED_HTML_ATTRIBUTES', dict())
+ALLOWED_STYLES = getattr(settings, 'ALLOWED_HTML_STYLES', [])
+
+register = template.Library()
+
+
+@stringfilter
+def sanitize(value):
+    '''
+    Sanitizes strings according to SANITIZER_ALLOWED_TAGS,
+    SANITIZER_ALLOWED_ATTRIBUTES and SANITIZER_ALLOWED_STYLES variables in
+    settings.
+    Example usage:
+    {% load sanitizer %}
+    {{ post.content|escape_html }}
+    '''
+    if isinstance(value, str):
+        value = bleach.clean(value, tags=ALLOWED_TAGS,
+                             attributes=ALLOWED_ATTRIBUTES,
+                             styles=ALLOWED_STYLES, strip=False)
+    return mark_safe(value)
+
+register.filter('escape_html', sanitize, is_safe=True)
+
+
+@stringfilter
+def strip_html_filter(value):
+    '''
+    Strips HTML tags from strings according to SANITIZER_ALLOWED_TAGS,
+    SANITIZER_ALLOWED_ATTRIBUTES and SANITIZER_ALLOWED_STYLES variables in
+    settings.
+    Example usage:
+    {% load sanitizer %}
+    {{ post.content|strip_html }}
+    '''
+    if isinstance(value, str):
+        value = bleach.clean(value, tags=ALLOWED_TAGS,
+                             attributes=ALLOWED_ATTRIBUTES,
+                             styles=ALLOWED_STYLES, strip=True)
+    return mark_safe(value)
+
+
+register.filter('strip_html', strip_html_filter, is_safe=True)
+
+
+@stringfilter
+def sanitize_allow(value, args=''):
+    '''
+    Strip HTML tags other than provided tags and attributes.
+    Example usage:
+    {% load sanitizer %}
+    {{ post.body|sanitize_allow:'a, strong, img; href, src'}}
+    '''
+    if isinstance(value, str):
+        allowed_tags = []
+        allowed_attributes = []
+        allowed_styles = ALLOWED_STYLES
+
+        args = args.strip().split(';')
+        if len(args) > 0:
+            allowed_tags = [tag.strip() for tag in args[0].split(',')]
+        if len(args) > 1:
+            allowed_attributes = [attr.strip() for attr in args[1].split(',')]
+
+        value = bleach.clean(value, tags=allowed_tags,
+                             attributes=allowed_attributes,
+                             styles=allowed_styles, strip=True)
+    return value
+
+register.filter('sanitize_allow', sanitize_allow)
+
+
+@register.simple_tag
+def escape_html(value, *, allowed_tags=None, allowed_attributes=None,
+                allowed_styles=None):
+    """
+    Template tag to sanitize string values. It accepts lists of
+    allowed tags, attributes or styles in comma separated string or list format.
+    For example:
+    {% load sanitizer %}
+    {% escape_html '<a href="">bar</a> <script>alert('baz')</script>' "a,img' 'href',src' %}
+    Will output:
+    <a href="">bar</a> &lt;cript&gt;alert('baz')&lt;/script&gt;
+    On django 1.4 you could also use keyword arguments:
+    {% escape_html '<a href="">bar</a>' allowed_tags="a,img' allowed_attributes='href',src' %} 
+    """
+    if isinstance(value, str):
+        if allowed_tags is None:
+            allowed_tags = []
+        if allowed_attributes is None:
+            allowed_attributes = dict()
+        if allowed_styles is None:
+            allowed_styles = []
+
+        value = bleach.clean(value, tags=allowed_tags,
+                             attributes=allowed_attributes,
+                             styles=allowed_styles, strip=False)
+    return value
+
+
+@register.simple_tag
+def strip_html(value, allowed_tags=None, allowed_attributes=None,
+               allowed_styles=None):
+    """
+    Template tag to strip html from string values. It accepts lists of
+    allowed tags, attributes or stylesin comma separated string or list format.
+    For example:
+    {% load sanitizer %}
+    {% strip_html '<a href="">bar</a> <script>alert('baz')</script>' "a,img' 'href',src' %}
+    Will output:
+    <a href="">bar</a> alert('baz');
+    On django 1.4 you could also use keyword arguments:
+    {% strip_html '<a href="">bar</a>' allowed_tags="a,img' allowed_attributes='href',src' %}    
+    """
+    if isinstance(value, str):
+        if allowed_tags is None:
+            allowed_tags = []
+        if allowed_attributes is None:
+            allowed_attributes = dict()
+        if allowed_styles is None:
+            allowed_styles = []
+
+        value = bleach.clean(value, tags=allowed_tags,
+                             attributes=allowed_attributes,
+                             styles=allowed_styles, strip=True)
+    return value
+
+
+@register.filter()
+def strip_html_wrap(value, css_class='strip-wrap'):
+    """
+    Borrows from strip_html and wraps with a <span> and a specified css class
+    :param value: 
+    :param css_class: 
+    :return: 
+    """
+    value = strip_html_filter(value)
+    return mark_safe('<span class="{}">{}</span>'.format(css_class, value))

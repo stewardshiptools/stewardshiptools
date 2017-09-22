@@ -1,0 +1,48 @@
+a.task-trigger.task-running {
+    color: #26af7c;
+}
+a.task-trigger > i.running-icon {
+    display:none;
+}
+a.task-trigger.task-running > i.start-icon {
+    display:none;
+}
+a.task-trigger.task-running > i.running-icon {
+    display:inline;
+}
+
+a.task-killer {
+    display: none;
+}
+a.task-trigger.task-running + a.task-killer {
+    color: #df1bdc;
+    display:inline;
+}
+
+a.task-trigger.pending{
+    pointer-events: none;
+    color: #a2a2a2;
+}
+
+a.task-trigger:hover {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+
+.pulsar{
+  animation: pulse 2.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        /*background-color: rgba(255,255,255,0);*/
+        opacity: 1;
+    }
+    50% {
+        opacity: .15;
+    }
+    100% {
+        /*background-color: #fffc2d;*/
+        opacity: 1;
+    }
+}

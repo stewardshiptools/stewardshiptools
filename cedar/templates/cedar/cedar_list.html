@@ -1,0 +1,53 @@
+{% load staticfiles %}
+
+{# Load the dependencies... #}
+<link rel="stylesheet" type="text/css" href="{% static 'css/cedar-react-list.css' %}">
+<script type="text/javascript" src="{% static 'bower_components/jquery-typewatch/jquery.typewatch.js' %}"></script>
+<link href="{% static 'bower_components/select2/dist/css/select2.min.css' %}" rel="stylesheet"/>
+<link href="{% static 'css/materialize_select2.css' %}" rel="stylesheet"/>
+<script src="{% static 'bower_components/select2/dist/js/select2.min.js' %}"></script>
+
+{# Prepare the settings for our custom list... #}
+<script type="text/javascript">
+    const reset_event = "CedarListResetState-{{ attach_id|escapejs }}";
+    var page_size_options = {{ page_size_options|safe }};
+    var sort_field_options = {{ sort_field_options|safe }};
+    var filters = {{ filters|safe }};
+    var fields = {{ fields|safe }};
+
+    if (!Window.cedarListSettings) {
+        Window.cedarListSettings = {};
+    }
+
+    var list_settings = {
+        '{{ attach_id|escapejs }}': {
+            attach_id: "{{ attach_id|escapejs }}",
+            ajax_url: "{{ ajax_url|escapejs }}",
+            show_pager: "{{ pager|escapejs }}",
+            show_search: "{{ search|escapejs }}",
+            show_set_page_size: "{{ set_page_size|escapejs }}",
+            default_page_size: "{{ default_page_size|escapejs }}",
+            show_set_sort: "{{ set_sort|escapejs }}",
+            default_sort: "{{ default_sort|escapejs }}",
+            show_reset: "{{ show_reset|escapejs }}",
+            show_filters: "{{ show_filters|escapejs }}",
+            filters: filters,
+            reset_event: reset_event,
+            page_size_options: page_size_options,
+            sort_field_options: sort_field_options,
+            fields: fields,
+            list_type: "{{ list_type|escapejs }}",
+            extra_options: {{ extra_options|safe }}
+        }
+    };
+
+    $.extend(Window.cedarListSettings, list_settings);
+</script>
+
+{# If an extra jsx file was provided, attach it here... #}
+{% if js_file %}
+    <script type="text/javascript" src="{% static js_file %}"></script>
+{% endif %}
+
+{# load the actual cedar_list scripts... #}
+<script type="text/javascript" src="{% static 'build/cedar/js/cedar_list.js' %}"></script>

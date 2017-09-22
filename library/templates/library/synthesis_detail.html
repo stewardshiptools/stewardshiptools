@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load cedar_extras %}
+{% load html_filters %}
+{% load cedar_settings %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load crm %}
+
+{% block second_bar_page_title %}
+    Synthesis Details{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }} ({{ object.prefixed_id }}){% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="hide-on-print waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'library.change_synthesis' }}"
+       href="{% url 'library:synthesis-update' object.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">mode_edit</i>
+            &nbsp;Edit
+        </div>
+    </a>
+    <a class="hide-on-print waves-effect waves-light btn grey lighten-5 grey-text text-darken-2"
+       target="_blank"
+       href="{% url 'library:synthesis-detail-print' object.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">print</i>
+            &nbsp;Report
+        </div>
+    </a>
+    <span class="show-on-print right grey-text text-lighten"><h6>PRINTED {% now "SHORT_DATE_FORMAT" %}</h6></span>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <style>
+        td, th {
+            padding: 0px 0px;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12">
+{#            <table class="cedar-horz-table">#}
+{#                <tbody>#}
+{#                <tr>#}
+{#                    <td class="th teal-text text-darken-5">FN Identifier</td>#}
+{#                    <td class="td grey-text text-darken-1">{{ object.prefixed_id }}</td>#}
+{#                </tr>#}
+{#                </tbody>#}
+{#            </table>#}
+            <span class="th teal-text text-darken-5">FN Identifier:</span>
+            <span class="td grey-text text-darken-1">{{ object.prefixed_id }}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <ul class="collapsible" data-collapsible="expandable">
+                {% for synthesisitem in object.synthesisitem_set.all %}
+                    <li id='synthesis-item-{{ synthesisitem.id }}'>
+                        <div class="collapsible-header grey-text grey lighten-4 active">
+                            <i class="material-icons">subject</i>Concept {{ forloop.counter0|add:1 }}: {{ synthesisitem.subject | strip_html_wrap }}
+                        </div>
+                        <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                            <div class="row">
+                                <div class="col s12">
+                                    <table class="cedar-horz-table">
+                                        <tbody>
+                                        <tr>
+                                            <td class="th teal-text text-darken-5">Subject</td>
+                                            <td class="td grey-text text-darken-1">{{ synthesisitem.subject | strip_html_wrap }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="th teal-text text-darken-5">Category</td>
+                                            <td class="td grey-text text-darken-1">{{ synthesisitem.category }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    <table class="cedar-horz-table">
+                                        <tbody>
+                                        <tr>
+                                            <td class="th teal-text text-darken-5">Overview</td>
+                                            <td class="td grey-text text-darken-1">{{ synthesisitem.overview | strip_html_wrap }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col s12 m6">
+                                    <div class="divider hide-on-med-and-up"></div>
+                                    <table class="cedar-horz-table">
+                                        <tbody>
+                                        <tr>
+                                            <td class="th teal-text text-darken-5">Item Sources</td>
+                                            <td class="td grey-text text-darken-1">
+                                                {% for it in synthesisitem.items.all %}
+                                                    {{ it }}&nbsp;&nbsp;
+                                                    <a class="btn btn-little rounded waves-effect waves-light grey lighten-5 grey-text text-darken-1"
+                                                       href="{% url 'library:item-detail' it.id %}">
+                                                        {{ it.prefixed_id }}
+                                                    </a><br/>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="th teal-text text-darken-5">Case Brief Sources</td>
+                                            <td class="td grey-text text-darken-1">
+                                                {% for cb in synthesisitem.casebriefs.all %}
+                                                    {{ cb }}&nbsp;&nbsp;
+                                                    <a class="btn btn-little rounded waves-effect waves-light grey lighten-5 grey-text text-darken-1"
+                                                       href="{% url 'library:casebrief-detail' cb.id %}">
+                                                        {{ cb.prefixed_id }}
+                                                    </a><br/>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function (e) {
+            console.log("init stuff");
+            $('.toggler').click(function (evt) {
+                var text = $(this).children('i').text();
+                var target_cls = "." + $(this).attr('data-toggle-target-class');
+
+                if (text == 'keyboard_arrow_right') {
+                    $(target_cls).slideDown();
+                    Materialize.showStaggeredList(target_cls + " ul");
+                    $(this).children('i').text('keyboard_arrow_down');
+                }
+                else {
+                    $(target_cls).slideUp();
+                    $(this).children('i').text('keyboard_arrow_right');
+                }
+            });
+
+            {% if is_print_view %}
+                togglePrintMode(true);
+            {% endif %}
+        });
+
+        function togglePrintMode(print_mode) {
+            if (print_mode) {
+                $('.hide-on-print').hide();
+                $('.show-on-print').show();
+                $('nav').hide();
+                $('header, main, footer').css('padding-left', '0');
+
+                // expand the collapsibles by triggering clicks - some may already be expanded so be clever.
+                $('ul.collapsible > li > div.collapsible-header').each(function () {
+                    if (!$(this).hasClass('active')) {
+                        $(this).trigger('click');
+                    }
+                });
+            }
+            else {
+                $('.hide-on-print').show();
+                $('.show-on-print').hide();
+                $('nav').show();
+                $('header, main, footer').css('padding-left', '260px');
+            }
+        }
+    </script>
+
+{% endblock javascripts %}

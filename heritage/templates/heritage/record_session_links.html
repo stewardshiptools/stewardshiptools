@@ -1,0 +1,77 @@
+{% load html_filters %}
+{% load sanitizer %}
+{% load heritage %}
+
+{% regroup links by session as session_list %}
+
+<ul class="collection with-header">
+    {% for session in session_list %}
+        <li class="collection-header row">
+            {% heritage_get_session_spatial_transcripts session.grouper as transcripts %}
+            {% if transcripts %}
+                <div class="col s12 m4 l4">
+            {% else %}
+                <div class="col s12">
+            {% endif %}
+                <a href="{% url 'heritage:interview-detail' session.grouper.interview.id %}"><strong>{{ session.grouper }}</strong></a>
+            </div>
+            <div class="secondary-content col s12 m8 l8">
+
+                {% for transcript in transcripts %}
+                    <a href="{{ transcript.url }}" >
+                        {% if perms.heritage.view_sensitive_interview_data %}
+                            {{ transcript.name }}
+                        {% else %}
+                            {% sanitize transcript.name obj=session.grouper.interview as sanitized_transcript_name %}
+                            {{ sanitized_transcript_name }}
+                        {% endif %}
+                    </a>
+                    {% if not forloop.last %}
+                        <br />
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </li>
+        {% for link in session.list %}
+            <li class="collection-item row">
+                {% if link.transcript_excerpt_full %}
+                    <div class="col s12 m4 l4">
+                {% else %}
+                    <div class="col s12 m12 l12">
+                {% endif %}
+
+
+                {% if link.comment_number %}
+                    <div>Comment number: {{ link.comment_number }}</div>
+                {% endif %}
+                {% if link.page_number %}
+                    <div>Page number: {{ link.page_number }}</div>
+                {% endif %}
+                {% if link.line_number %}
+                    <div>Line number: {{ link.line_number }}</div>
+                {% endif %}
+                {% if link.original_comment_on_map %}
+                    <div>Original comment in transcript: {{ link.original_comment_on_map|strip_html_wrap }}</div>
+                {% endif %}
+                {% if link.spatial_code %}
+                    <div>Spatial code: {{ link.spatial_code }}</div>
+                {% endif %}
+                </div>
+
+                {% if link.transcript_excerpt_full %}
+                    <div class="secondary-content col s12 m8 l8">
+                        <p>
+                            {% if perms.heritage.view_sensitive_interview_data %}
+                                {{ link.transcript_excerpt_full|heritage_highlight_excerpt:link.transcript_excerpt|strip_html_wrap }}
+                            {% else %}
+                                {% sanitize link.transcript_excerpt_full obj=session.grouper.interview as sanitized %}
+                                {% sanitize link.transcript_excerpt obj=session.grouper.interview as sanitized_excerpt %}
+                                {{ sanitized|heritage_highlight_excerpt:sanitized_excerpt|strip_html_wrap }}
+                            {% endif %}
+                        </p>
+                    </div>
+                {% endif %}
+            </li>
+        {% endfor %}
+    {% endfor %}
+</ul>

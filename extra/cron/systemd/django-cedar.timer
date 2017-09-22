@@ -1,0 +1,11 @@
+[Unit]
+Description=Runs django-cron services every hour
+
+[Timer]
+# Time between running each consecutive time
+OnCalendar=hourly
+Unit=django-cedar.target
+#Unit=django-cedar-update-index.service
+
+[Install]
+WantedBy=timers.target

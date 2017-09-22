@@ -1,0 +1,10 @@
+[Unit]
+Description=Run cron commands for django-cedar
+#Wants=django-cedar.timer
+
+[Service]
+ExecStart=/data/ve/cedar/bin/python /data/django/django-cedar/cedar/manage.py update_index --remove
+User=www-data
+
+[Install]
+WantedBy=django-cedar.target

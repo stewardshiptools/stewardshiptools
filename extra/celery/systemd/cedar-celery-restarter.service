@@ -1,0 +1,7 @@
+[Unit]
+Description=Automatic restarter for celery service
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/bin/systemctl restart cedar-celery.service

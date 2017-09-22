@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load cedar_extras %}
+{% load cedar_material_form %}
+{% load cedar_settings %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load crm %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link href="{% static 'jquery-autosuggest/css/autoSuggest.css' %}" type="text/css" media="all" rel="stylesheet" />
+    <link href="{% static 'css/autoSuggest_overrides.css' %}" type="text/css" media="all" rel="stylesheet" />
+{% endblock %}
+
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Synthesis{% endblock %}
+{% block second_bar_secondary_title %}{{ object.name }} {% if object %}({{ object.prefixed_id }}){% endif %}{% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if form.errors %}
+            <div class="row yellow lighten-3 form-error-div">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+        <div style="display:none;">
+            {{ form.belongs_to.as_hidden }}
+        </div>
+        <div class="row">
+            <div class="col s6">
+                {{ form.name | materializecss}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <div class="synthesis-items">
+                    <ul class="collapsible synthesis-items" data-collapsible="expandable">
+                        {{ synthesis_item_formset.management_form }}
+                        {% for synthesis_item_form in synthesis_item_formset.forms %}
+                                {{ synthesis_item_form.belongs_to.as_hidden }}
+                                <li>
+                                    <div class="collapsible-header grey-text grey lighten-4 active">
+                                        <i class="material-icons">subject</i> Synthesis Concept {{ forloop.counter0|add:1 }}
+                                    </div>
+                                    <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                                        <div class="row">
+                                            <div class="synthesis-item-item item-{{ forloop.counter0 }} col s12">
+                                                <div class="row">
+                                                    <div class="col s12 m6">
+                                                        {{ synthesis_item_form.subject | materializecss }}
+                                                    </div>
+                                                    <div class="col s12 m6">
+                                                        <div style="width:100%;padding-top:0.47rem;">
+                                                            {{ synthesis_item_form.category | materialselect2 }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="divider"></div>
+                                                <div class="row">
+                                                    <br/>
+                                                    <div class="col s12 m6">
+                                                        {{ synthesis_item_form.overview | materializecss }}
+                                                    </div>
+                                                    <div class="col s12 m6">
+                                                        <div style="width:100%">
+                                                            {{ synthesis_item_form.items | materialselect2 }}
+                                                        </div>
+                                                        <div style="width:100%;padding-top:0.5rem;">
+                                                            {{ synthesis_item_form.casebriefs | materialselect2 }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% for hidden in synthesis_item_form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                                {% is_update_view 1 0 as update_view %}
+                                                {% if update_view %}
+                                                    <div class="row">
+                                                        {{ synthesis_item_form.DELETE|materializecss }}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <a id="synthesis_add_another"
+               class="right waves-effect waves-light btn grey lighten-4 grey-text text-darken-1 waves-input-wrapper">
+                <i class="material-icons left">add</i>Synthesis Concept
+            </a>
+        </div>
+    </form>
+    <div id="synthesis_item_empty_form" style="display: none;">
+        <li>
+            <div class="collapsible-header grey-text grey lighten-4 active">
+                <i class="material-icons">subject</i> Synthesis Concept __prefix_plus_1__
+            </div>
+            <div class="collapsible-body" style="display: none;padding:0.3rem;">
+                <div class="row">
+                    <div class="synthesis-item-item item-__prefix__ col s12">
+                        <div class="row">
+                            <div class="col s12 m6">
+                                {{ synthesis_item_formset.empty_form.belongs_to.as_hidden }}
+                                {{ synthesis_item_formset.empty_form.subject | materializecss }}
+                            </div>
+                            <div class="col s12 m6">
+                                <div style="width:100%;padding-top:0.47rem;">
+                                    <label>Category</label>
+                                    {{ synthesis_item_formset.empty_form.category  }} {# init as materializeselect2 in the Add New onclick event #}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="row">
+                            <br/>
+                            <div class="col s12 m6">
+                                {{ synthesis_item_formset.empty_form.overview | materializecss }}
+                            </div>
+                            <div class="col s12 m6">
+                                <div style="width:100%">
+                                    <label>Item Sources</label>
+                                    {{ synthesis_item_formset.empty_form.items }} {# init as materializeselect2 in the Add New onclick event #}
+                                </div>
+                                <div style="width:100%;padding-top:0.5rem;">
+                                    <label>Case Brief Sources</label>
+                                    {{ synthesis_item_formset.empty_form.casebriefs }} {# init as materializeselect2 in the Add New onclick event #}
+                                </div>
+                            </div>
+                        </div>
+                        {% for hidden in synthesis_item_formset.empty_form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        {% is_update_view 1 0 as update_view %}
+                        {% if update_view %}
+                            <div class="row">
+                                {{ synthesis_item_formset.empty_form.DELETE|materializecss }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+        </div>
+        </li>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function(){
+           // Code to add another synthesis item field when add another is clicked...
+            $('#synthesis_add_another').click(function (e) {
+                var form_idx = $('#id_synthesisitem_set-TOTAL_FORMS').val();
+
+                var empty_html = $('#synthesis_item_empty_form').html()
+                    .replace(/__prefix__/g, parseInt(form_idx))
+                    .replace(/__prefix_plus_1__/g, parseInt(form_idx)+1);
+
+{#                var form_ul = $('form .synthesis-item-item').last();#}
+{#                form_ul.after(empty_html);#}
+
+                var form_ul = $('ul.synthesis-items');
+                form_ul.append(empty_html);
+                form_ul.collapsible();
+
+                // Manually sync up the management_form data so django can properly parse the formset output.
+                $('#id_synthesisitem_set-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+
+                $('#id_synthesisitem_set-' + form_idx + '-category').material_select();
+                $('#id_synthesisitem_set-' + form_idx + '-casebriefs').select2();
+                $('#id_synthesisitem_set-' + form_idx + '-items').select2();
+
+                // Fix dumb select 2 style - could be made more efficient but it's really late.
+                $('.select2.select2-container').css({
+                    'width': 'inherit'
+                });
+
+                $('.synthesis-item-item.item-' + form_idx).slideDown();
+            });
+        });
+    </script>
+{% endblock javascripts%}

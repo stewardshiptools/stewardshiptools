@@ -1,0 +1,10 @@
+{% load staticfiles %}
+
+<script type="text/javascript">
+    var geoinfo_report_list_attach_id = "{{ attach_id|escapejs }}";
+    var geoinfo_report_list_ajax_url = "{{ ajax_url|escapejs }}";
+    var geoinfo_report_list_show_pager = "{{ pager|escapejs }}";
+    var geoinfo_report_list_show_search = "{{ search|escapejs }}";
+</script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/cedar-react-list.css' %}">
+<script type="text/javascript" src="{% static 'build/geoinfo/js/spatialreport_list.js' %}"></script>

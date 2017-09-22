@@ -1,0 +1,20 @@
+{{ object.name }}
+{{ object.prefixed_id }}
+
+{{ object.notes | default:"" }}
+
+{% for name in object.alternateplacename_set.all %}
+    {{ name.name }}
+{% endfor %}
+
+{% for name in object.commonplacename_set.all %}
+    {{ name.name }}
+{% endfor %}
+
+{% for name in object.gazetteer_names.all %}
+    {{ name.name }}
+{% endfor %}
+
+{% for place_type in object.place_types.all %}
+    {{ place_type.place_type }}
+{% endfor %}

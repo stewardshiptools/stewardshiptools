@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load communication %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load crm %}
+
+{# Note: {{ block.super }} must appear in the {% block content %} tag for the following to work. #}
+{# Note: uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Communications{% endblock %}
+{% block second_bar_secondary_title %} {{ object_list.count }} communication record{{ object_list|pluralize }}.{% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'communication.add_communication' }}"
+       href="{% url 'communication:communication-list' %}">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">add_circle</i>
+            &nbsp;Communication
+        </div>
+    </a>
+{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12">
+            {#  could do: #}
+            {#            {% render_communication_toolbar comms_list_id='hey' %}#}
+            {#            {% render_communication_items comms_list_id='hey' data=communication_list %}#}
+
+            {#  or: #}
+            {% render_communication_tools element_id='comms_panel' %}
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    <!-- todo Comment out the babel cdn line for production -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script> -->
+    {% react %}
+    {% react_dom %}
+
+    {#    {% crm_person_list 'content' ajax_url %}#}
+{% endblock %}

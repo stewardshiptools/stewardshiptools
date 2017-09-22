@@ -1,0 +1,47 @@
+{% load staticfiles %}
+<div class="select2-outer">
+    {% if field.is_hidden %}
+        <div style="display: none;">
+    {% endif %}
+
+    <label class="control-label {{ classes.label }}
+        {% if field.field.required %}    {#  we're not actually using this. requires a Formclass variable to be set #}
+            {{ field.required_css_class }}
+        {% endif %}">{{ field.label }}
+    </label>
+    {{ field }}
+
+    {% for error in field.errors %}
+        <span class="help-block orange-text{{ form.error_css_class }}">{{ error }}</span>
+    {% endfor %}
+
+    {% if field.help_text %}
+        <p class="help-block help-text grey-text">
+            {{ field.help_text|safe }}
+        </p>
+    {% endif %}
+
+    {% if field.is_hidden %}
+        </div>
+    {% endif %}
+
+    {% if not field.is_hidden %}
+        <link href="{% static 'bower_components/select2/dist/css/select2.min.css' %}" rel="stylesheet"/>
+        <link href="{% static 'css/materialize_select2.css' %}" rel="stylesheet"/>
+        <script src="{% static 'bower_components/select2/dist/js/select2.min.js' %}"></script>
+
+        <script>
+            $(document).ready(function () {
+                //initialize select2 js:
+                $('#{{ field.auto_id }}').each(function () {
+                    $(this).select2();
+
+                    // Fix dumb select 2 style - could be made more efficient but it's really late.
+                    $('.select2.select2-container').css({
+                        'width': 'inherit'
+                    });
+                });
+            });
+        </script>
+    {% endif %}
+</div>

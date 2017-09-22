@@ -1,0 +1,15 @@
+{% extends 'geoinfo/gislayermaster_list.html' %}
+
+{% load cedar_extras %}
+
+{% block second_bar_page_title %}Heritage Layers{% endblock %}
+
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'geoinfo.add_gislayer' }}"
+       href="{% url 'heritage:gislayer-create-generic' %}">
+        <div class="valign-wrapper">
+            <i class="material-icons valign ">add_circle</i>
+            &nbsp;Layer
+        </div>
+    </a>
+{% endblock %}

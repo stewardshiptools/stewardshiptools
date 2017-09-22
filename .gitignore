@@ -1,0 +1,30 @@
+# For Jetbrains:
+
+.idea/
+tmp/
+
+# Media files. May want to check these in to deploy them eventually.
+media/
+
+# Compiled Python:
+
+*.pyc
+
+# Node.js stuff
+
+node_modules/
+
+# Compass SASS stuff
+.sass-cache
+
+# Local settings. Don't commit your passwords.
+
+cedar/settings_badger.py
+cedar/settings_cnbMBP.py
+cedar/settings_prod2.py
+cedar/settings_adam.py
+cedar/settings_local.py
+
+/communication/logs/debug.log
+
+migrate_cedar8/*

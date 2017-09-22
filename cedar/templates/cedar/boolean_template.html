@@ -1,0 +1,13 @@
+{% if value = True %}
+    <span class="green-text text-lighten-1">
+        <i class="material-icons">done</i>
+    </span>
+{% elif value = False %}
+    <span class="red-text text-lighten-2">
+        <i class="material-icons">clear</i>
+    </span>
+{% else %}
+    <span class="grey-text text-lighten">
+        <i class="material-icons">remove</i>
+    </span>
+{% endif %}

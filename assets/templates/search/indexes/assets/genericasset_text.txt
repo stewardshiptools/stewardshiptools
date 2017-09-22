@@ -1,0 +1,19 @@
+{{ object.name }}
+{% if object.meta_document %}
+    {{ object.meta_document.contributor|default_if_none:"" }}
+    {{ object.meta_document.coverage|default_if_none:"" }}
+    {{ object.meta_document.creator|default_if_none:"" }}
+    {{ object.meta_document.date|default_if_none:"" }}
+    {{ object.meta_document.description|default_if_none:"" }}
+    {{ object.meta_document.format|default_if_none:"" }}
+    {{ object.meta_document.identifier|default_if_none:"" }}
+    {{ object.meta_document.language|default_if_none:"" }}
+    {{ object.meta_document.publisher|default_if_none:"" }}
+    {{ object.meta_document.relation|default_if_none:"" }}
+    {{ object.meta_document.rights|default_if_none:"" }}
+    {{ object.meta_document.source|default_if_none:"" }}
+    {{ object.meta_document.subject|default_if_none:"" }}
+    {{ object.meta_document.title|default_if_none:"" }}
+    {{ object.meta_document.type|default_if_none:"" }}
+{% endif %}
+{{ extracted.contents|striptags|safe }}

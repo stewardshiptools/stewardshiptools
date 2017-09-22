@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load leaflet_assets %}
+
+{% block stylesheets %}
+    {% leaflet_assets_css %}
+    <link href="{% static 'css/griddle_style.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{# Note: {{ block.super }} must appear in the {% block content %} tag for the following to work. #}
+{# Note: uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Cultural Records{% endblock %}
+{% block second_bar_secondary_title %}# Results: <span class="cultural-records-result-count">...</span>{% endblock %}
+{% block second_bar_secondary_content_right %} {% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col">
+            {# Need to add the div manually.  The include tag is for adding the javascript. #}
+            <div id="cultural-obs-table"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="cultural-obs-map-container"></div>
+    </div>
+    {#    </div>#}
+{% endblock %}
+
+{% block javascripts %}
+    {% react %}
+    {% react_dom %}
+    {% griddle %}
+    {% leaflet_assets_js %}
+    {% leaflet_load_main %}
+    {% leaflet_map_json 'map_default' as map_json %}
+    {% include 'heritage/culturalobservations_map.html' with attach_id='cultural-obs-map-container' map_id='cultural-obs-map' map_settings=map_json %}#}
+    {% include 'heritage/culturalobservations_table.html' with table_id='cultural-obs-table' ajax_url=ajax_url %}
+{% endblock %}

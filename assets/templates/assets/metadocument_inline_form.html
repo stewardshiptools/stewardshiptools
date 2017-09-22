@@ -1,0 +1,81 @@
+{#Requires the form context varible: "metadocument_formset"#}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load assets %}
+{% load cedar_settings %}
+
+<div class="row meta-doc-form-area">
+    {{ context.metadocument_formset.management_form }}
+    <div class="row"></div>
+    <label class="col s12">Metadata Document</label>
+
+    {% for metadocument_form in context.metadocument_formset.forms %}
+        <div class="metadocument-item item-{{ forloop.counter0 }} col s12">
+
+            <ul class="collapsible" data-collapsible="expandable">
+            {% for field in metadocument_form %}
+
+                {% form_field_has_data field 'active' 'grey-text' as has_data %}
+
+                {% if field.name == 'id' %}
+
+                {% elif field.name == 'asset' %}
+
+                {% else %}
+                    <li class="">
+                        <div class="collapsible-header {{ has_data }} grey lighten-4">
+                            <i class="material-icons">
+                                {% if field.name == 'date' %}
+                                    date_range
+                                {% else %}
+                                    subject
+                                {% endif %}
+                            </i> {{ field.name|capfirst }}
+                        </div>
+                        <div class="collapsible-body" style="display: none;">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    {% if field.name == 'date' %}
+                                        {{ field|materializecss:"s12 no-icon" }}
+                                    {% else %}
+                                        {{ field|materializecss }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                {% endif %}
+
+
+                {% if field.name == 'date' %}
+                    <script>
+                    $(document).ready(function () {
+                        $('.datepicker').pickadate(
+                            {
+                                selectYears: {{ 'cedar__default_datepicker_years'|get_setting }},
+                                selectMonths: true,
+                                format: 'yyyy-mm-dd',
+                                max: new Date() //limits max date to today.
+                            }
+                        );
+                    });
+                    </script>
+                {% endif %}
+
+            {% endfor %}
+            </ul>
+
+            {% for hidden in metadocument_form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% is_update_view 1 0 as update_view %}
+            {% if update_view %}
+                <div class="row">
+                    {{ metadocument_form.DELETE|materializecss }}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>

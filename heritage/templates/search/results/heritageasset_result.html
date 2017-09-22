@@ -1,0 +1,71 @@
+{% extends 'search/results/search_result_base.html' %}
+{% load cedar_extras %}
+{% load library %}
+
+{% block result %}
+    {{ block.super }}
+
+    {% get_model_class result.object as object_class %}
+    {% get_model_subclass result.object as submodel %}
+    {% is_submodel submodel result.object as is_a_subclass %}
+
+    {#  this is also a recursion check: if a child didn't create its own template we would loop forever #}
+    {% if is_a_subclass and submodel.search_template != result.object.search_template %}
+        {% include submodel.search_template %}
+    {% else %}
+
+        {% get_dict_val object_list_subtexts result.pk as result_subtexts %}
+
+        {% get_model_class_name submodel as heritage_asset_class %}
+
+        <td class="tight-table-row">
+            <div class="row tight-row">
+                <div class="col s12 m8 l8" style="padding: 0 0.05rem;">
+                    <div class="valign-wrapper">
+                        <i class="material-icons start-icon grey-text">insert_drive_file</i>
+                        &nbsp;<strong><span class="teal-text text-darken-5">File:</span></strong>
+                        <a class="tooltipped" data-tooltip="View" href="{{ submodel.url }}">
+                            &nbsp;{{ submodel.name }}
+                        </a>
+                    </div>
+                    <div class="col s12">
+                        <div class="result-text">
+                            {% if heritage_asset_class == 'ProjectAsset' %}
+                                <span class="teal-text text-darken-5">Project:</span>
+                                <a href="{{ submodel.source_url }}{{ files_tab_id }}">{{ submodel.source_string }}</a>
+                            {% elif heritage_asset_class == 'InterviewAsset' or heritage_asset_class == 'SessionAsset' %}
+                                <span class="teal-text text-darken-5">Project:</span>
+                                <a href="{% url 'heritage:project-detail' submodel.interview.phase.id %}{{ files_tab_id }}">
+                                    {{ submodel.interview.phase }}
+                                </a>
+                                <br/>
+                                <span class="teal-text text-darken-5">Interview:</span>
+                                <a href="{{ submodel.source_url }}{{ files_tab_id }}">{{ submodel.source_string }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="result-text">
+                            {{ result.object | render_related_items }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m4 l4" style="padding: 0 0.05rem;">
+                    <a href="#!" class="btn-flat waves-effect tight-button"
+                       onclick="showSubtexts('#subtext-list-{{ result.pk }}');">Show/Hide
+                        Excerpt{{ result_subtexts|pluralize }} ({{ result_subtexts|length }})</a>
+                </div>
+            </div>
+            <div class="row tight-row">
+                <ul id='subtext-list-{{ result.pk }}' class="collection" style="display:none">
+                    {% for subtext in result_subtexts %}
+                        <li class="collection-item" style="opacity:0;">
+                            {{ subtext|replace_highlight_tags:"highlighted"|safe|linebreaks }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </td>
+    {% endif %}
+
+{% endblock result %}

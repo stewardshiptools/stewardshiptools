@@ -1,0 +1,9 @@
+{% if point_count %}<div class="chip">{{ point_count }} point{{ point_count|pluralize }}</div>{% endif %}
+{% if line_count %}<div class="chip">{{ line_count }} line{{ line_count|pluralize }}</div>{% endif %}
+{% if polygon_count %}
+    <div class="chip">
+        {{ polygon_count }} polygon{{ polygon_count|pluralize }}
+        with a{% if polygon_count > 1 %} combined{% else %}n{% endif %} area of
+        {{ polygon_area }} {{ polygon_area_units|safe }}
+    </div>
+{% endif %}

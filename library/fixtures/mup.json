@@ -1,0 +1,106 @@
+[
+	{
+		"fields": {
+			"weight": 0,
+			"name": "Continuity"
+		},
+		"model": "library.mupcategory",
+		"pk": 1154
+	},
+	{
+		"fields": {
+			"weight": 0,
+			"name": "Indigenous Law"
+		},
+		"model": "library.mupcategory",
+		"pk": 1155
+	},
+	{
+		"fields": {
+			"weight": 0,
+			"name": "Successor"
+		},
+		"model": "library.mupcategory",
+		"pk": 1156
+	},
+	{
+		"fields": {
+			"weight": 0,
+			"name": "Occupation"
+		},
+		"model": "library.mupcategory",
+		"pk": 1157
+	},
+	{
+		"fields": {
+			"weight": 0,
+			"name": "Travel/Trade"
+		},
+		"model": "library.mupcategory",
+		"pk": 1158
+	},
+	{
+		"fields": {
+			"weight": 0,
+			"name": "Other"
+		},
+		"model": "library.mupcategory",
+		"pk": 1159
+	},
+	{
+		"fields": {
+			"weight": 0,
+			"name": "FSC (Food, Social, Ceremonial)"
+		},
+		"model": "library.mupcategory",
+		"pk": 1160
+	},
+	{
+		"fields": {
+			"weight": 0,
+			"name": "Harvest"
+		},
+		"model": "library.mupcategory",
+		"pk": 1161
+	},
+	{
+		"fields": {
+			"weight": 0,
+			"name": "Pre-1846 Society"
+		},
+		"model": "library.mupcategory",
+		"pk": 1162
+	},
+	{
+		"fields": {
+			"weight": 0,
+			"name": "Resource Management"
+		},
+		"model": "library.mupcategory",
+		"pk": 1163
+	},
+	{
+		"fields": {
+			"weight": 0,
+			"name": "Exclusivity"
+		},
+		"model": "library.mupcategory",
+		"pk": 1164
+	},
+	{
+		"fields": {
+			"weight": 0,
+			"name": "Oral History"
+		},
+		"model": "library.mupcategory",
+		"pk": 1165
+	},
+	{
+		"fields": {
+			"weight": 0,
+			"name": "Prevented from Using Territory"
+		},
+		"model": "library.mupcategory",
+		"pk": 1166
+	}
+]

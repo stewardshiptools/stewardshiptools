@@ -1,0 +1,14 @@
+{% if page_help %}
+    {% if page_help.help_text.all %}
+        <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 help-icon-secondary-menu"
+           data-position="bottom"
+           data-delay="50"
+           data-tooltip="{{ page_help.tooltip }}"
+           onclick="$('#help-menu-modal').openModal();">
+            <div class="valign-wrapper">
+                <i class="small material-icons">help_outline</i>
+                &nbsp;Help
+            </div>
+        </a>
+    {% endif %}
+{% endif %}

@@ -1,0 +1,90 @@
+{% comment %}
+Call this template using (the management_form must be added in the parent template)
+   {{ formset.management_form }}
+   {% include 'ecosystems/alternate_species_name_formsets.html' with
+               name='name to put in header' formset=formset
+               form_identifier='use the css id prefix from the management form' %}
+
+   form_identifier should probaby be... id_[related_name] where related name is
+   the related_name value of the ForeignKey field in question.
+
+{% endcomment %}
+{% load cedar_extras %}
+{% load cedar_material_form %}
+
+{% is_update_view 1 0 as update_view %}
+{{ formset.management_form }}
+<ul class="collapsible" data-collapsible="expandable">
+    <li>
+        <div class="collapsible-header grey-text grey lighten-4 active">
+            <i class="material-icons">label</i> {{ name }}
+        </div>
+        <div class="collapsible-body {{ form_identifier }}-container" style="display: none;padding:0.3rem;">
+            {% for formset_form in formset.forms %}
+                <div class="row {{ form_identifier }} {{ form_identifier }}-{{ forloop.counter0 }}">
+                    {% if not forloop.first %}
+                        <div class="divider"></div>
+                    {% endif %}
+
+                    {% if update_view %}
+                        {{ formset_form.name|materializecss:"s8" }}
+                        {{ formset_form.DELETE|materializecss:"s4" }}
+                    {% else %}
+                        {{ formset_form.name|materializecss }}
+                    {% endif %}
+
+                    {% for hidden in formset_form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="row">
+                <a id="{{ form_identifier }}_add_another"
+                   style="margin-right: 1rem;"
+                   class="right waves-effect waves-light btn grey lighten-4 grey-text text-darken-1 waves-input-wrapper">
+                    <i class="material-icons left">add</i>Add another
+                </a>
+            </div>
+        </div>
+    </li>
+</ul>
+
+<div id="{{ form_identifier }}_empty_form" style="display: none;">
+    <div class="row {{ form_identifier }} {{ form_identifier }}-__prefix__" style="display: none;">
+        <div class="divider"></div>
+
+        {% if update_view %}
+            {{ formset.empty_form.name | materializecss:"s8" }}
+            {{ formset.empty_form.DELETE|materializecss:"s4" }}
+        {% else %}
+            {{ formset.empty_form.name | materializecss }}
+        {% endif %}
+
+        {% for hidden in formset.empty_form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    $( document ).ready(function () {
+        // Code to add another common name field when add another is clicked...
+        $('#{{ form_identifier }}_add_another').click(function (e) {
+            var form_idx = $('#{{ form_identifier }}-TOTAL_FORMS').val();
+            console.log("Total forms:", form_idx);
+
+            var empty_html = $('#{{ form_identifier }}_empty_form').html().replace(/__prefix__/g, parseInt(form_idx));
+            console.log("Empty html:", empty_html);
+
+            var last_form_group = $('form .{{ form_identifier }}-container .{{ form_identifier }}').last();
+            console.log("Last form group:", last_form_group);
+
+            last_form_group.after(empty_html);
+
+            // Manually sync up the management_form data so django can properly parse the formset output.
+            $('#{{ form_identifier }}-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+
+            $('.{{ form_identifier }}-' + form_idx).slideDown();
+        });
+    });
+</script>

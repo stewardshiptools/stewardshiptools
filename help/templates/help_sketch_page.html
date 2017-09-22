@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load highlight %}
+{% load cedar_material_form %}
+{% load help %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}SKETCH UP YOUR HELP DIALOG HERE{% endblock %}
+{% block second_bar_secondary_title %}If you wrote the modal content correctly it should open on load. {% endblock %}
+{% block second_bar_secondary_content_right %}{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+    </div>
+    <div id="help_modal_sketch" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div class="modal-body">
+                {#  ################################################################################## #}
+                {# PUT MODAL CONTENT HERE #}
+                {#  THE STUFF IN HERE SHOULD BE COPIED INTO THE HELP TEXT HTML attribute #}
+
+
+                {#<h5>File Type Filters:</h5>#}
+                {#<div class="row">#}
+                {#    <div class="col s12">#}
+                {#        Selecting one or more document type(s) from the file type drop-down list will restrict the search results by document type. If the list is#}
+                {#        empty or if all items in the list are checked, then the search will not be restricted by file type.#}
+                {#        The <strong>Clear Filters</strong> button will reset the list of selected file types to its default setting. By default, the search#}
+                {#        does not filter results by file type.#}
+                {#    </div>#}
+                {#    <div class="col push-s2 s10">#}
+                {#        <blockquote>#}
+                {#            Selecting <strong>all</strong> or <strong>none</strong> of the file types in the list#}
+                {#            are functionally equivalent#}
+                {#        </blockquote>#}
+                {#    </div>#}
+                {#</div>#}
+
+                <h5>Heritage Records</h5>
+                <div class="row">
+                    This heritage records page shows a table of records above and a slippy map below. The map and the list are
+                    linked - filters applied in the table above determine what records are displayed on the map. The map updates automatically
+                    based on changes to the table.
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <blockquote>
+                            Click VIEW in the table will take you to the individual record.
+                        </blockquote>
+                        <blockquote>
+                            Click on a feature in map will open a pop-up with a link to the feature.
+                        </blockquote>
+                        <blockquote>
+                            If there are 10 records in the table, only 10 records will display on the map.
+                        </blockquote>
+                    </div>
+                </div>
+
+
+                Filter Results: The table/map can be filtered by entering terms in this field. All the fields in the table, for all the Species
+                records, are filterable. Fields that are not in the table are not available.
+
+                Example: __pot______ displays 17 results in table and map. Note that ‘pot’ also returns ‘spot’. __pot_agri_____ displays 2 results.
+
+                Note: the filter does not take AND or OR strings, nor “”.
+
+                SETTINGS: The structure of the table can be adjusted by opening the SETTINGS button and modifying the table configuration.
+
+                You can remove fields from the table by clicking on the radio buttons beside field labels. You can also change the number of rows in
+                the table to 5, 25, 50 or 100.
+
+                Example: entering __deer__ into the Filter field and selecting 100 from SETTINGS results in a table with 75 records in the table and
+                75 features in the map.
+
+                Map controls: Zoom and pan using your mouse. You can also zoom with the “+” and “-” controls, top left. Clicking on the Full screen
+                button will expand the map tot he full size of your web browser window. Change the map base map on the top right by clicking the
+                different layer radio buttons.
+
+
+
+                {#  ################################################################################## #}
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+        $(document).ready(function (evt) {
+            console.log("Document ready");
+            $('select').material_select();
+            $('#help_modal_sketch').openModal();
+        })
+
+    </script>
+    {{ block.super }}
+{% endblock %}

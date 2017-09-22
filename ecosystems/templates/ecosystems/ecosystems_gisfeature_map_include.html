@@ -1,0 +1,24 @@
+{% extends 'geoinfo/gisfeature_map_include.html' %}
+{% load staticfiles %}
+
+{% comment %}
+We are reusing DEV code here; trying to avoid rewriting the map js/jsx so
+leaving the variables prefixed with "dev_"
+{% endcomment %}
+
+{% block override_area_1 %}
+    {% if ecosystems_project %}
+        <script type="text/javascript">
+            var dev_project_id = {{ ecosystems_project.id }};
+            var dev_project_url = "{% url 'ecosystems:project-detail' pk=ecosystems_project.id %}";
+            var dev_project_loc_edit_base_url = dev_project_url + "location/edit/";
+            var dev_project_loc_new_base_url = dev_project_url + "location/new/";
+            var dev_project_loc_delete_base_url = dev_project_url + "location/delete/";
+        </script>
+    {% endif %}
+{% endblock override_area_1 %}
+
+
+{% block override_area_2 %}
+    <script type="text/javascript" src="{% static 'build/development/js/development_project_feature_map.js' %}"></script>
+{% endblock override_area_2 %}

@@ -1,0 +1,21 @@
+{% load staticfiles %}
+
+<script type="text/javascript">
+    var ecosystemsproject_list_attach_id = "{{ attach_id|escapejs }}";
+    var ecosystemsproject_list_ajax_url = "{{ ajax_url|escapejs }}";
+    var ecosystemsproject_list_show_pager = "{{ pager|escapejs }}";
+    var ecosystemsproject_list_show_search = "{{ search|escapejs }}";
+    var ecosystemsproject_list_show_set_page_size = "{{ set_page_size|escapejs }}";
+    var ecosystemsproject_list_default_page_size = "{{ default_page_size|escapejs }}";
+    var ecosystemsproject_list_show_set_sort = "{{ set_sort|escapejs }}";
+    var ecosystemsproject_list_default_sort = "{{ default_sort|escapejs }}";
+    var ecosystemsproject_list_show_reset = "{{ show_reset|escapejs }}";
+</script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/cedar-react-list.css' %}">
+<script type="text/javascript" src="{% static 'bower_components/jquery-typewatch/jquery.typewatch.js' %}"></script>
+<link href="{% static 'bower_components/select2/dist/css/select2.min.css' %}" rel="stylesheet"/>
+<link href="{% static 'css/materialize_select2.css' %}" rel="stylesheet"/>
+<script src="{% static 'bower_components/select2/dist/js/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'build/ecosystems/js/project_list.js' %}"></script>
+<script type="text/javascript" src="{% static 'build/cedar/js/cedar_list.js' %}"></script>

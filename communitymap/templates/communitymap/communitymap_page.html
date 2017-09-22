@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% load leaflet_tags %}
+{% load staticfiles %}
+
+{% block second_bar_page_title %}
+    Community map{% endblock %}
+{% block second_bar_secondary_title %}{% endblock %}
+{% block second_bar_secondary_content_right %}
+    {% comment %}
+    {# Links to the community map admin can be put here when its ready. #}
+    <a class="hide-on-print waves-effect waves-light btn grey lighten-5 grey-text text-darken-1 {{ user|is_disabled:'heritage.change_place' }}"
+       href="{% url 'heritage:place-update' object.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">mode_edit</i>
+            &nbsp;Edit
+        </div>
+    </a>
+    {% endcomment %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    {% leaflet_css %}
+    <link href="{% static 'communitymap/css/community_map_inlaid.css' %}" rel="stylesheet" />
+    <style>
+        #community-map {
+            height: 600px;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        <div class="col s12">
+            {% include 'communitymap/communitymap_inlaid.html' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+    {% include 'communitymap/communitymap_javascripts.html' with leaflet_settings=leaflet_settings is_app_page=is_app_page %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{#  This template should not need to be rendered directly. #}
+{# It is extended by each of the communication type objects. #}
+{% load repeatedblocks %}
+
+<li class="collection-item grey-text communication-item">
+    {#    <div class="divider"></div>#}
+    <span class="title grey-text text-darken-4">
+        {{ object.date }}
+    </span>
+    <a href="{{ object.get_absolute_url }}" class="secondary-content ">
+        <i class="material-icons circle btn-small {% repeated_block material_icon_colour %}grey-text text-darken-1{% endblock %} grow">
+            {% block material_icon_code %}{% endblock %}
+        </i>
+    </a>
+    <p class="flow-text">
+        <a href="{{ object.get_absolute_url }}" class="subject-text {% repeat material_icon_colour %}">{{ object.subject|striptags }}</a>
+    </p>
+    <p>
+        {% if object.from_contacts.all.count > 1 %}
+            <span class="grey-text text-darken-4">From</span>
+            {% for person in  object.from_contacts.all %}
+                {# TODO: Make a fancier PIC + Person hidable list for comms FROM/TO contacts #}
+                {{ person }}
+            {% endfor %}
+        {% endif %}
+        {% if object.to_contacts.all.count > 1 %}
+            </br>
+            <span class="grey-text text-darken-4">To</span>
+            {% for person in  object.to_contacts.all %}
+                {# TODO: Make a fancier PIC + Person hidable list for comms FROM/TO contacts #}
+                {{ person }}
+            {% endfor %}
+        {% endif %}
+    </p>
+    <div class="divider"></div>
+    {% block comm_type_content %}{% endblock %}
+
+</li>

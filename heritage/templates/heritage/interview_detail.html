@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load heritage %}
+{% load sanitizer %}
+{% load leaflet_assets %}
+{% load thumbnail %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    {% leaflet_assets_css %}
+    <link href="{% static 'css/griddle_style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'lib/DataTables/datatables-materialize.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}Interview Details{% endblock %}
+{% block second_bar_secondary_title %}{{ object }}{% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'heritage.change_interview' }}"
+       href="{% url 'heritage:interview-update' pk=object.pk %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">edit</i>
+            &nbsp;Edit
+        </div>
+    </a>
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'heritage.add_interviewasset' }}"
+       href="{% url 'heritage:interview-secureasset-create' interview_pk=object.pk %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">add_circle</i>
+            &nbsp;File
+        </div>
+    </a>
+
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'heritage.add_layer' }}"
+       href="{% url 'heritage:layergroup-create' interview_pk=object.pk %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">add_circle</i>
+            &nbsp;Dataset
+        </div>
+    </a>
+{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <section>
+        <div class="row">
+            <div class="col s12 m4 l4">
+                <h6>Project</h6>
+                <div class="row">
+                    <div class="col s6 m6 l6 grey-text text-lighten">
+                        <a href="{{ object.phase.get_absolute_url }}">{{ object.phase }}</a>
+                    </div>
+                </div>
+                <h6>Participant{{ object.participants.all|pluralize }}</h6>
+                {% for p in object.participants.all %}
+                    <div class="card  white z-depth-1">
+                        <div class="row valign-wrapper">
+                            <div class="col s3">
+                                {% if p.pic and perms.heritage.view_sensitive_interview_data %}
+                                    <img class="materialboxed responsive-img person-pic" src="{{ p.pic|thumbnail_url:'detail' }}">
+                                {% else %}
+                                    <img class="materialboxed responsive-img person-pic" src="{% static 'crm/img/trees_small.jpg' %}">
+                                {% endif %}
+                            </div>
+                            <div class="col s9">
+                                {% if perms.heritage.view_sensitive_interview_data %}
+                                    <a href="{% url 'crm:person-detail' p.id %}">{{ p.name_first }} {{ p.name_last }} {{ p.name_suffix }}</a>
+                                    <div class="grey-text text-lighten">
+                                        Indigenous Name:{{ p.indigenous_name }}<br>
+                                        Clan Family: {{ p.clan_family }}<br>
+                                        Email: {{ p.email }}<br>
+                                    </div>
+                                {% else %}
+                                    {% sanitize p|stringformat:"s" obj=interview as sanitized_name %}
+                                    <a href="#!">{{ sanitized_name }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                </div>
+                {% endfor %}
+                <h6>Staff</h6>
+                <div class="row">
+                    <div class="col s6 m6 l6 grey-text text-lighten">
+                        <a href="{% url 'crm:person-detail' object.primary_interviewer.id %}">{{ object.primary_interviewer }}</a>
+                    </div>
+                    <div class="col s6 m6 l6 grey-text text-lighten">
+                        Primary Interviewer
+                    </div>
+                </div>
+
+                {% for person in object.other_interviewers.all %}
+                    <div class="row">
+                        <div class="col s6 m6 l6 grey-text text-lighten">
+                            <a href="{% url 'crm:person-detail' person.id %}">{{ person }}</a>
+                        </div>
+                        <div class="col s6 m6 l6 grey-text text-lighten">
+                            Assisting Interviewer
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <h6>Location</h6>
+                <div class="row">
+                    <div class="col s6 m6 l6 grey-text text-lighten">
+                        {{ object.community }}
+                    </div>
+                </div>
+                <h6>Date</h6>
+                <div class="row">
+                    <div class="col s12 m12 l12 grey-text text-lighten">
+                        {{ object.date }}
+                    </div>
+                </div>
+                {% if unique_session_dates %}
+                    <h6>Session Dates</h6>
+                    <div class="row">
+                        <div class="col s12 m12 l12 grey-text text-lighten">
+                            {% for session in unique_session_dates %}
+                                {{ session.date|date:'j F o'|default:"Date unknown" }} ({{ session.num_dates }} session{{ session.num_dates|pluralize }})
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+                <h6>
+                    Statistics
+                </h6>
+                <div class="row">
+                    <div class="col s12 grey-text text-lighten">
+                        {# Record stats #}
+                        {% get_interview_record_stats interview as record_stats %}
+                        <strong>Species records:</strong> {{ record_stats.species }}<br />
+                        <strong>Cultural records:</strong> {{ record_stats.cultural }}<br />
+                        <strong>Total records:</strong> {{ record_stats.total }}<br />
+
+                        {# Asset stats #}
+                        <br />
+                        {% get_interview_asset_stats interview as asset_stats %}
+                        {% if asset_stats|length > 0 %}
+                            <strong>Files by type</strong><br/>
+                            {% for asset_type in asset_stats %}
+                                <strong>{{ asset_type.name }}:</strong> {{ asset_type.count }}
+                                {% if not forloop.last %}
+                                <br />
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m8 l8 thin-border-left-grey">
+                <div class='row'>
+                    <div class="col s12 m12 l12">
+                        <div class="left">
+                            <h6>Files</h6>
+                        </div>
+                        <div class="right">  {# Vertically oriented table controls. #}
+                            <div id="search-box-input-field" class="input-field">
+                                {# <i class="material-icons prefix">search</i>#}
+                                <input id="search-box" type="text">
+                                <label for="search-box">Filter...</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12 info-panel-height-max">
+                        <table id="asset_datatable" class="highlight" style="max-height:600px; overflow-y: scroll">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Session</th>
+                                <th>Date Modified</th>
+                                <th>Size</th>
+                                <th>Manage</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LayerGroups AKA Datasets -->
+    <div class="divider"></div>
+    {% if interview.layergroup_set.exists %}
+        {% for layergroup in interview.layergroup_set.all %}
+            <div class="row">
+                <div class="col s12 m6 l8 valign-wrapper">
+                    <h6 class="left">{% if layergroup.name %}{{ layergroup.name }}{% else %}&nbsp;{% endif %}</h6>
+                    <div class="links left valign" >
+                        <a class="waves-grey lighten-5 grey-text text-darken-1 tooltipped {{ user|is_disabled:"heritage.change_layergroup" }}"
+                           href="{% url 'heritage:layergroup-update' interview.pk layergroup.pk %}"
+                           data-tooltip="Edit dataset">
+                            <i class="half-small material-icons">edit</i>
+                        </a>
+                        <a class="waves-grey lighten-5 grey-text text-darken-1 tooltipped {{ user|is_disabled:"heritage.delete_layergroup" }}"
+                           href="{% url 'heritage:layergroup-delete' interview.pk layergroup.pk %}"
+                           data-tooltip="Delete dataset">
+                            <i class="material-icons">delete</i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <span class="valign-wrapper">
+                        <strong>Layers - </strong>
+                        <a class="valign waves-grey lighten-5 grey-text text-darken-1 tooltipped"
+                           href="{% url 'heritage:gislayer-create' interview_pk=interview.pk layergroup_pk=layergroup.pk %}"
+                           data-tooltip="Add layer">
+                            <i class="material-icons">add_circle</i>
+                        </a>
+                    </span>
+                    {% for layer in layergroup.heritagegislayer_set.all %}
+                        <span class="valign-wrapper">
+                            <strong>{{ layer }} - </strong>
+                            <a class="valign waves-grey lighten-5 grey-text text-darken-1 tooltipped {{ user|is_disabled:"heritage.change_heritagegislayer" }}"
+                               href="{% url 'heritage:gislayer-update' interview_pk=interview.pk layergroup_pk=layergroup.pk pk=layer.pk %}"
+                               data-tooltip="Edit layer">
+                                <i class="material-icons">edit</i>
+                            </a>
+                            <a class="valign waves-grey lighten-5 grey-text text-darken-1 tooltipped {{ user|is_disabled:"heritage.delete_heritagegislayer" }}"
+                               href="{% url 'heritage:gislayer-delete' interview_pk=interview.pk layergroup_pk=layergroup.pk pk=layer.pk %}"
+                               data-tooltip="Delete layer">
+                                <i class="material-icons">delete</i>
+                            </a>
+                        </span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row">
+                {% if layergroup.features.exists %}
+                    <div id="layergroup-{{ layergroup.pk }}-feature-list" class="col s12 m6 l6"></div>
+                    <div id="layergroup-{{ layergroup.pk }}-feature-map" class="col s12 m6 l6"></div>
+                {% endif %}
+            </div>
+            {% if not forloop.last %}
+                <div class="divider"></div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <!-- End of Datasets -->
+
+    {% if IS_HAIDA %}
+        <!-- Records -->
+        {% if cultural_records_count > 0 %}
+        <div class="row">
+            <!-- Cultural Records -->
+            <div class="col l6 m12 s12">
+                <h6 class="center-align">Cultural Records</h6>
+                <div id="cultural-obs-table"></div>
+            </div>
+            <div class="col l6 m12 s12">
+                <div id="cultural-obs-map">
+                    <h6 class="center-align">Cultural Records Map</h6>
+                    <div id="cultural-obs-map-container"></div>
+                </div>
+            </div>
+        </div>
+        <div class="divider"></div>
+        {% endif %}
+        {% if species_records_count > 0 %}
+
+        <div class="row">
+            <!-- Species Records -->
+            <div class="col l6 m12 s12">
+                <h6 class="center-align">Species Records</h6>
+                <div id="species-obs-table"></div>
+            </div>
+            <div class="col l6 m12 s12">
+                <div id="species-obs-map">
+                    <h6 class="center-align">Species Map</h6>
+                    <div id="species-obs-map-container"></div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {% react %}
+    {% react_dom %}
+    {% griddle %}
+    {% leaflet_assets_js %}
+
+    <script>
+        var assets_interviews_ajax_url = "{{ assets_interviews_ajax_url|escapejs }}";
+        var assets_sessions_ajax_url = "{{ assets_sessions_ajax_url|escapejs }}";
+        console.log("assets_interviews:", assets_interviews_ajax_url);
+        console.log("assets_session:", assets_sessions_ajax_url);
+
+        var enable_pagination = false;
+
+        $( document ).ready(function () {
+            $(".tooltipped").tooltip();
+        });
+    </script>
+
+    <script type="text/javascript" src="{% static 'bower_components/jquery-typewatch/jquery.typewatch.js' %}"></script>
+    <script src='{% static 'lib/DataTables/datatables.js' %}'></script>
+    <script src="{% static 'heritage/js/assets_table.js' %}"></script>
+
+    {% leaflet_load_main %}
+    {% leaflet_map_json 'map_default' as map_json %}
+
+    {% if IS_HAIDA %}
+        {% include 'heritage/speciesobservations_map.html' with attach_id='species-obs-map-container' map_settings=map_json %}
+        {% include 'heritage/culturalobservations_map.html' with attach_id='cultural-obs-map-container' map_settings=map_json %}
+
+        {% include 'heritage/speciesobservations_table.html' with table_id='species-obs-table' ajax_url=species_data_url ajax_url_extra_query=ajax_url_filter_by_interview_id %}
+        {% include 'heritage/culturalobservations_table.html' with table_id='cultural-obs-table' ajax_url=cultural_data_url ajax_url_extra_query=ajax_url_filter_by_interview_id %}
+    {% endif %}
+
+    {% for layergroup in interview.layergroup_set.all %}
+        {% if layergroup.features.exists %}
+            {% heritage_feature_map "layergroup-"|concat:layergroup.pk|concat:"-feature-map" map_settings=map_json list_attach_id="layergroup-"|concat:layergroup.pk|concat:"-feature-list" %}
+            {% heritage_feature_list "layergroup-"|concat:layergroup.pk|concat:"-feature-list" layergroup.get_features_ajax_url %}
+        {% endif %}
+    {% endfor %}
+
+    <script>
+        var current_nav_url = '{% url 'heritage:interviews' %}';
+    </script>
+{% endblock %}

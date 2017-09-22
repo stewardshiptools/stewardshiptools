@@ -1,0 +1,10 @@
+div.result-text {
+    text-overflow: ellipsis;
+    white-space: normal;
+    overflow: hidden;
+}
+
+ul.facets div.input-field input {
+    font-size: 0.83rem;
+    color: #686464;
+}

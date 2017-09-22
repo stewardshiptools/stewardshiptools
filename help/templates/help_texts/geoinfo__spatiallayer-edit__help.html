@@ -1,0 +1,104 @@
+<ul>
+    <li>
+        <div class="collapsible-header"><i class="material-icons">list</i>Edit Spatial Layer Instructions</div>
+        <div class="collapsible-body"><p></div>
+    </li>
+</ul>
+
+<strong>Instructions</strong>
+<br/>You can now make changes to these fields:
+<ul class="collection">
+    <li class="collection-item">Name - Change the name. It is recommended that you include the Project or Heritage Interview ID
+        in the name.
+    </li>
+    <li class="collection-item">Location - The Input Type defaults to the method originally used to create the Spatial
+        Layer. Update the Location using the method-specific instructions below.
+    </li>
+    <li class="collection-item">Notes - Edit Notes text</li>
+</ul>
+<br/><strong>Can I change the Input type?</strong>
+<br/>
+Yes. However changing the Input type will delete any features created using the previous/original input.
+<br/><br/>
+<strong>Update Location using using revised WKT</strong>
+<br/>Follow these steps:
+<ol class="collection">
+    <li class="collection-item">Copy and paste the updated WKT text into the "Wkt" field.</li>
+    <li class="collection-item">Edit Notes field as needed.</li>
+    <li class="collection-item">Click the UPDATE PROJECT LOCATION button to save your changes.</li>
+</ol>
+<br/>
+<strong>Update Location using using Draw on a map</strong>
+<br/>Follow these steps:
+<ol class="collection">
+    <li class="collection-item">Activate the pencil button to <strong>create</strong> one or more point features.
+        Each <i>single-mouse-click</i> with the <img
+                src="http://www.cedarbox.ca/wp-content/uploads/2016/06/OL-edit-point.png">
+        pencil button activated will add a point feature.
+    </li>
+    <li class="collection-item">Activate the <img
+            src="http://www.cedarbox.ca/wp-content/uploads/2016/06/OL-edit-line.png">
+        line button to <strong>create</strong> one or more line features. Start a line with a <i>single-mouse-click</i>
+        and
+        add vertices (turns) with another <i>single-mouse-click</i>. End the line drawing with a
+        <i>double-mouse-click</i>.
+    <li class="collection-item">Multiple line features are allowed.</li>
+    <li class="collection-item">Activate the <img
+            src="http://www.cedarbox.ca/wp-content/uploads/2016/06/OL-edit-poly.png">
+        polygon button to <strong>create</strong> one or more polygons. Start a polygon with a <i>single-mouse-click</i>
+        and
+        add vertices (turns) with another <i>single-mouse-click</i>. End the polygon drawing with a <i>double-mouse-click</i>.
+    </li>
+    <li class="collection-item">It is a good habit to deactivate your tool by clicking the
+        <img src="http://www.cedarbox.ca/wp-content/uploads/2016/06/OL-hand.png"> hand tool.
+    </li>
+    <li class="collection-item"><strong>Edit</strong> your features by clicking on the
+        <img src="http://www.cedarbox.ca/wp-content/uploads/2016/06/OL-four-way-arrows.png"> edit button. Point: select
+        and move. Line: select, then move a vertice or add
+        a vertice by dragging an intermediate vertice. Polygon: select and move any vertices, and/or create a new
+        vertices
+        by dragging an intermediate vertices.
+    </li>
+    <li class="collection-item"><strong>Delete</strong> features using the <font color="039be5">Delete all
+        features</font>
+        link below the map.
+    </li>
+    <li class="collection-item">Click the UPDATE PROJECT LOCATION button to save your changes.</li>
+</ol>
+<br/>
+<strong>Update Location using a replacement Shapefile</strong>
+<br/>Follow these steps:
+<ol class="collection">
+    <li class="collection-item">Preparation: Shapefiles must be a zipped collection of all the individual Shapefile
+        files. It is recommended that the name of the zip file be the same as the contained files. E.g.
+        "project_polygon.zip" would include the following files: project_polygon.shp, and project_polygon.dbf and
+        project_polygon.prj. Multi-part polygons are NOT allowed.
+    </li>
+    <li class="collection-item">(Optional) Preparation: Use ArcGIS or QGIS to examine the dbf file and determine what
+        attribute labels are available. Make note of these labels and think about the titles you would like for
+        individual features in the map layer.
+    </li>
+    <li class="collection-item">(Optional) Designate an automatically generated feature label, e.g. My layer feature
+        %ID% %poly name%. Note that feature labels are not available from KMZ files.
+    </li>
+    <li class="collection-item">Select File and add (a) Title and (b) Notes as instructed above above.</li>
+    <li class="collection-item">Click the FILE button and locate the zipped Shapefile on your local system.</li>
+    <li class="collection-item">Click the UPDATE PROJECT LOCATION button to save your changes.</li>
+</ol>
+<br/>
+<strong>Update Location using a replacement KMZ (zipped Google KML file)</strong>
+<br/>Follow these steps:
+<ol class="collection">
+    <li class="collection-item">Preparation: Save/export your layer(s) in Google Earth as a KMZ. Warning: don't make
+        this too complex! Also note that feature attributes are not always ingested from a KMZ.
+    </li>
+    <li class="collection-item">Select File and add (a) Title and (b) Notes as instructed above above.</li>
+    <li class="collection-item">Click the FILE button and locate the GMZ file on your local system.</li>
+    <li class="collection-item">Click the UPDATE PROJECT LOCATION button to save your changes.</li>
+</ol>
+<br/>
+<strong>Instructions for Custom</strong>
+<br/>Follow these steps:
+<ol class="collection">
+    <li class="collection-item">More information to be added later.</li>
+</ol>

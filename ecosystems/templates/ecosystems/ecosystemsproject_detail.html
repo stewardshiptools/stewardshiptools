@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{#{% extends "cedar/table_narrow.html" %}#}
+
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load html_filters %}
+{% load crm %}
+{% load leaflet_assets %}
+{% load ecosystems %}
+{% load communication %}
+{% load threadedcomments_tags %}
+{% load discussion %}
+{% load cedar_settings %}
+
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{% block second_bar_page_title %}
+    Project Details
+{% endblock %}
+{% block second_bar_secondary_title %}
+    {{ object.cedar_project_name }}
+{% endblock %}
+{% block second_bar_secondary_content_right %}
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'ecosystems.change_ecosystemsproject' }}"
+       href="{% url 'ecosystems:project-update' object.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">mode_edit</i>
+            &nbsp;Edit
+        </div>
+    </a>
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2 {{ user|is_disabled:'ecosystems.add_ecosystemsprojectasset' }}"
+       href="{% url 'ecosystems:project-secureasset-create' object.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">add_circle</i>
+            &nbsp;File
+        </div>
+    </a>
+    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2"
+       target="_blank"
+       href="{% url 'ecosystems:project-detail-print' object.id %}">
+        <div class="valign-wrapper">
+            <i class="material-icons">print</i>
+            &nbsp;Report
+        </div>
+    </a>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    {% leaflet_assets_css %}
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="section">
+        <div class="row">
+            <div class="col s12 m3 l3 thin-border-right-grey">
+                <div class="">
+                    <strong>Project Code (Mail Harvest)</strong>
+                    <p class=" grey-text">{{ object.cedar_project_code }}</p>
+                </div>
+                <div class="">
+                    <strong>Filing Code</strong>
+                    <p class=" grey-text">{{ object.filing_code|default_if_none:'' }}</p>
+                </div>
+                <div class="section">
+                    <strong>Tags</strong>
+                    {% for tag in object.tags.all %}
+                    <div class="chip">
+                        {{ tag }}
+                        {# <i class="material-icons">close</i>#}
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <div class="col s12 m9 l9">
+                <div>
+                    <div>
+                        <ul class="tabs hide-scroll-x">
+                            <li class="tab col s3">
+                                <a href="#tab-main"
+                                   class="active tooltipped-project-details"
+                                   data-tooltip="Details"
+                                   data-position="top">
+                                    <i class="material-icons" style="font-size:35px;">subject</i>
+                                </a>
+                            </li>
+                            <li class="tab col s3">
+                                <a href="#tab-location"
+                                   class="tooltipped-project-details"
+                                   data-tooltip="Location"
+                                   data-position="top">
+                                    <i class="material-icons" style="font-size:35px;">place</i>
+                                </a>
+                            </li>
+                            <li class="tab col s3">
+                                <a href="#tab-files"
+                                   class="tooltipped-project-details"
+                                   data-tooltip="Files"
+                                   data-position="top">
+                                    <i class="material-icons" style="font-size:35px;">attach_file</i>
+                                </a>
+                            </li>
+                            <li class="tab col s3">
+                                <a href="{{ 'communication__comm_items_panel_html_id'|get_setting }}"
+                                   class="tooltipped-project-details"
+                                   data-tooltip="Communications"
+                                   data-position="top">
+                                    <i class="material-icons" style="font-size:35px;">{{ 'communication__comm_items_panel_icon_text'|get_setting }}</i>
+                                </a>
+                            </li>
+                            <li class="tab col s3">
+                                <a href="{{ 'communication__disc_items_panel_html_id'|get_setting }}"
+                                   class="tooltipped-project-details"
+                                   data-tooltip="Discussion"
+                                   data-position="top">
+                                    <i class="material-icons" style="font-size:35px;">{{ 'communication__disc_items_panel_icon_text'|get_setting }}</i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="tab-main" class="info-panel-height-max">
+                        <div class="section">
+                            <div class="row">
+                                <div class="col s12 m4">
+                                    <strong>Project Status:&nbsp;&nbsp;&nbsp;</strong>
+                                    {% if object.status == 'active' %}
+                                        <span class="badge cedar-badge green white-text">Active</span>
+                                    {% else %}
+                                        <span class="badge cedar-badge grey darken-3 white-text">Inactive</span>
+                                    {% endif %}
+                                </div>
+                                <div class="hide-on-med-and-up"><br/><br/></div>
+                                <div class="col s6 m4">
+                                    <strong>Start Date:&nbsp;&nbsp;&nbsp;</strong>
+                                    <span class=" grey-text pre">{{ object.start_date| default:"Not specified" }}</span>
+                                </div>
+                                <div class="col s6 m4">
+                                    <strong>End Date:&nbsp;&nbsp;&nbsp;</strong>
+                                    <span class=" grey-text pre">{{ object.end_date| default:"Not specified" }}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    <p>
+                                        <strong>Author:&nbsp;&nbsp;&nbsp;</strong>
+                                        <span class="grey-text lighten-1">
+                                            {{ object.author|default:"Not specified" }}
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="col s12 m6">
+                                    <p><strong>Contacts</strong></p>
+                                    <div class="">
+                                        {% for person in object.contacts.all %}
+                                            <div class="grey-text lighten-1">
+                                                <a href="{% url "crm:person-detail" pk=person.id %}">{{ person }}</a>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <p><strong>Project Description</strong></p>
+                                    <div class="col">
+                                        <span class=" grey-text">{{ object.description|strip_html_wrap }}</span>
+                                    </div>
+                                </div>
+                                {% for key in misc_textarea_fields %}
+                                    {% get_dict_val object.misc_textareas key as misc_textarea %}
+                                    {% if misc_textarea %}
+                                        <div class="row">
+                                            <p><strong>{{ key }}</strong></p>
+                                            <div class="col">
+                                                <span class=" grey-text">{{ misc_textarea|safe }}</span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-location" class="info-panel-height-max">
+                        <div class="section">
+                            <div id="project-location-map"></div>
+                        </div>
+                    </div>
+                    <div id="tab-files" class="col s12  info-panel-height-max">
+                        <div id="assets-table">
+                            <table class="highlight">
+                                <tbody>
+                                <th data-field="name">Filename</th>
+                                <th data-field="type">Date Modified</th>
+                                <th data-field="type">Size</th>
+                                <th data-field="manage">Manage</th>
+                                {% for asset in object.ecosystemsprojectasset_set.all %}
+                                    <tr>
+                                        <td class="extra-tight-table-row"><a href="{% url 'ecosystems:project-secureasset-detail' pk=asset.pk project_pk=object.pk %}">
+                                            {{ asset.name }}
+                                        </a></td>
+                                        <td class="extra-tight-table-row">{{ asset.modified }}</td>
+                                        <td class="extra-tight-table-row">{{ asset.file_size_str }}</td>
+                                        <td class="extra-tight-table-row">
+                                            <a class="waves-grey lighten-5 grey-text text-darken-1 tooltipped-secureasset-delete" href="
+                                                {% url 'ecosystems:project-secureasset-delete' project_pk=object.id pk=asset.id %}
+                                                " data-tooltip="Delete File" data-position="left">
+                                                <i class="material-icons" style="font-size:inherit;">delete</i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="{{ 'communication__comm_items_panel_html_id'|get_setting|slice:"1:" }}" class="col s12  info-panel-height-max">
+                        {% render_communication_tools related_object=object element_id='comms_panel' %}
+                    </div>
+                    <div id="{{ 'communication__disc_items_panel_html_id'|get_setting|slice:"1:" }}" class="col s12  info-panel-height-max">
+                        {% render_comment_list for object %}
+                        {% render_cedar_comment_form object=object %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        var project_info_ajax_url = "{{ project_info_ajax_url }}";
+        console.log("project: ", project_info_ajax_url);
+
+    </script>
+{% endblock content %}
+
+{% block javascripts %}
+    {% react %}
+    {% react_dom %}
+
+    {#    <script type="text/javascript" src="{% static 'build/heritage/js/project_detail.js' %}"></script>#}
+    {# crm_person_list 'project_person_list' person_info_ajax_url pager=0 search=0 #}
+
+    <script>
+        var enable_pagination = false;
+    </script>
+    <script src='{% static 'lib/DataTables/datatables.js' %}'></script>
+
+    <script>
+        var current_nav_url = '{% url 'ecosystems:project-list' %}';
+
+        $(document).ready(function (evt) {
+            $('a.tooltipped-secureasset-delete').tooltip();
+            $('.tooltipped-project-details').tooltip();
+        });
+    </script>
+
+    {% leaflet_assets_js %}  {# Load the leaflet assets from the vendor #}
+    {% leaflet_load_main %}  {# Load our main leaflet react class #}
+    {% leaflet_map_json 'map_default' as map_settings_json %}  {# Load the template map as a starter #}
+
+    {# Pass the template map and ajax url into the leaflet feature map code #}
+    {% ecosystems_geoinfo_feature_map attach_id='project-location-map' map_settings=map_settings_json ajax_url=feature_ajax_url ecosystems_project=object %}
+    <script>console.log("ajax_url:", "{{feature_ajax_url}}");</script>
+{% endblock %}

@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load cedar_extras %}
+{% load library %}
+{% load staticfiles %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link href="{% static 'bower_components/select2/dist/css/select2.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/materialize_select2.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/task-mon.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block second_bar_page_title %}Heritage App{% endblock %}
+{% block second_bar_secondary_title %}
+    {% if IS_HAIDA %}
+        Welcome to the Haida Heritage Explorer
+    {% else %}
+        Welcome to the CedarBox Heritage App
+    {% endif %}
+{% endblock %}
+{% block second_bar_secondary_content_right %} {% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="row">
+        {% if perms.heritage.view_project %}
+            <div class="col s12 m6 l4">
+                <div class="card dashboard-card big-card hoverable">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">work</i>
+                                <a href="{% url 'heritage:project-list' %}">Projects ({{ project_count }})</a>
+                            </div>
+                        </span>
+                        <p>
+                            Highest level organizational structure of TUS, TEK and U&O studies.
+                        </p><br/>
+                        <p>
+                            <select class="quickjump"></select>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if perms.heritage.view_interview %}
+            <div class="col s12 m6 l4">
+                <div class="card dashboard-card big-card hoverable">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">folder_shared</i>
+                                <a href="{% url 'heritage:interviews' %}">Interviews ({{ interview_count }})</a>
+                            </div>
+                        </span>
+                        <p>
+                            Groups of sessions with one (or more) Elders, community members,
+                            resource gatherers, and experts as of any TUS, TEK, and U&O study.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% include_library_items %}
+        {% include_library_collectiontags %}
+        {% include_library_casebriefs %}
+        {% include_library_syntheses %}
+
+        <div class="col s12 m6 l4">
+            <div class="card dashboard-card big-card hoverable">
+                <div class="card-content">
+                    <span class="card-title">
+                        <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">layers</i>
+                            <a href="{% url 'heritage:gislayer-list' %}">Layers ({{ spatial_layers_count }})</a>
+                        </div>
+                    </span>
+                    <p>
+                        GIS Layers related to Heritage.
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% if IS_HAIDA %}
+            <div class="col s12 m6 l4">
+                <div class="card dashboard-card big-card hoverable">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">star_border</i>
+                                <a href="{% url 'heritage:cultural-observations' %}">Cultural records ({{ cultural_records_count }})</a>
+                            </div>
+                        </span>
+                        <p>
+                            Records of cultural use and occupancy in the Territory, explorable as a
+                            filter table or interactive map.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 l4">
+                <div class="card dashboard-card big-card hoverable">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">star_half</i>
+                                <a href="{% url 'heritage:species-observations' %}">Species records ({{ species_records_count }}) </a>
+                            </div>
+                        </span>
+                        <p>
+                            Records of species observations or use within the Territory, explorable as a
+                            filter table or interactive map.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% include_library_search %}
+
+        <div class="col s12 m6 l4">
+            <div class="card dashboard-card  hoverable">
+                <div class="card-content">
+                    <span class="card-title">
+                        <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">place</i>
+                            <a href="{% url "heritage:place-list" %}">Named Places ({{ places_count | default:0 }})</a>
+                        </div>
+                    </span>
+                    <p>
+                        Explore and manage all named places. <br/>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m6 l4">
+            <div class="card dashboard-card  hoverable">
+                <div class="card-content">
+                    <span class="card-title">
+                        <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">map</i>
+                            <a href="{% url "communitymap:map" %}">Community Map</a>
+                        </div>
+                    </span>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="col s6 center">
+                            <a href="{% url "communitymap:app" %}">
+                                <div class="hoverable">
+                                    <div class="valign-wrapper center" style="display:inline-flex">
+                                        <i class="material-icons small grey-text text-darken-2">map</i>
+                                        <i class="material-icons tiny grey-text text-darken-2">add</i>
+                                        <i class="material-icons small grey-text text-darken-2">fullscreen</i>
+                                    </div>
+                                    <br/>
+                                    Community Map Fullscreen
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s6 center">
+                            <a href="{% url "communitymap:map" %}">
+                                <div class="hoverable" style="height:100%;">
+                                    <i class="material-icons small grey-text text-darken-2">map</i><br/>
+                                    Community Map
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m6 l4">
+            <div class="card dashboard-card  hoverable">
+                <div class="card-content">
+                    <span class="card-title">
+                        <div class="valign-wrapper"><i class="material-icons left grey-text text-darken-2">insert_drive_file</i>
+                            <a href="{% url 'heritage:secureasset-list' %}">Browse Files ({{ documents_count }})</a>
+                        </div>
+                    </span>
+                    <p>
+                        View a list of all uploaded heritage files ({{ documents_count }}).<br/>
+                        Sort and filter the list.<br/>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+    <script src="{% static 'bower_components/select2/dist/js/select2.min.js' %}"></script>
+    <script src="{% static 'js/quick_jump.js' %}"></script>
+
+    <script>
+        $(document).ready(function (e) {
+            prepare_quickjump({
+                filter_field: "id",
+                jump_url_property: 'project_url',
+                query_url: "{% url 'heritage:api:project-list' %}?",
+                formatResult: formatQuickJumpResult,
+                formatResultSelection: formatQuickJumpResultSelection
+            });
+            $('.select2.select2-container').css({
+                'width': '100%',
+            });
+        });
+
+        function formatQuickJumpResult(result) {
+            if (result.loading) {
+                return result.text;
+            }
+            else {
+                //var markup = "<div>" + result.cedar_project_code + "<a href='" + result.url + "'>" + result.cedar_project_name + "</a></div>";
+                var markup = "<div>" + result.cedar_project_code + "</div>";
+                return markup;
+            }
+        }
+        function formatQuickJumpResultSelection(result_selection) {
+            return result_selection.cedar_project_code || result_selection.text;
+        }
+    </script>
+{% endblock javascripts %}

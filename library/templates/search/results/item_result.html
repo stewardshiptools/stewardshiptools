@@ -1,0 +1,53 @@
+{% extends 'search/results/search_result_base.html' %}
+{% load cedar_extras %}
+
+{% block result %}
+    {{ block.super }}
+
+    {% get_dict_val object_list_subtexts result.pk as result_subtexts %}
+
+    <td class="tight-table-row">
+        <div class="row tight-row">
+            <div class="col s12 m8 l8" style="padding: 0 0.05rem;">
+                <div class="valign-wrapper">
+                    <i class="material-icons start-icon grey-text">format_list_bulleted</i>
+                    &nbsp;<strong><span class="teal-text text-darken-5">Item:</span></strong>
+                    <a class="tooltipped" data-tooltip="View" href="{% url 'library:item-detail' result.object.id %}">
+                        &nbsp;{{ result.object.name }}
+                    </a>
+                </div>
+                <div class="col">
+                    <div>
+                        <span class="teal-text text-darken-5">Date Created:</span>
+                        {{ result.object.dublin_core.date | default:"" }}
+                    </div>
+                    <div>
+                        <span class="teal-text text-darken-5">Subject:</span>
+                        {{ result.object.dublin_core.subject | default:"" }}
+                    </div>
+                    <div>
+                        <span class="teal-text text-darken-5">Description:</span>
+                        <div class="result-text">
+                            {{ result.object.dublin_core.description | default:"" | truncatechars:100 | linebreaksbr  }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m4 l4" style="padding: 0 0.05rem;">
+                <a href="#!" class="btn-flat waves-effect tight-button"
+                   onclick="showSubtexts('#subtext-list-{{ result.pk }}');">Show/Hide
+                    Excerpt{{ result_subtexts|pluralize }} ({{ result_subtexts|length }})</a>
+            </div>
+        </div>
+        <div class="row tight-row">
+            <ul id='subtext-list-{{ result.pk }}' class="collection" style="display:none">
+                {% for subtext in result_subtexts %}
+                    <li class="collection-item" style="opacity:0;">
+                        {{ subtext|replace_highlight_tags:"highlighted"|safe|linebreaks }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </td>
+
+{% endblock result %}

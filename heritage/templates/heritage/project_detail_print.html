@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+{#{% extends "cedar/table_narrow.html" %}#}
+{% load thumbnail %}
+{% load staticfiles %}
+{% load cedar_extras %}
+{% load html_filters %}
+{% load crm %}
+{% load communication %}
+{% load cedar_settings %}
+{% load threadedcomments_tags %}
+{% load discussion %}
+
+{% block nav %}{% endblock %}
+{%  block second_bar %}{% endblock %}
+{# Uncomment the next line to blankout/override the 2nd bar #}
+{#{% block second_bar %}{% endblock %}#}
+{#{% block second_bar_page_title %}Project Details{% endblock %}#}
+{#{% block second_bar_secondary_title %}{{ object.cedar_project_name }} {% endblock %}#}
+{#{% block second_bar_secondary_content_right %} {{time|date:"M-D-Y"}} {% endblock %}#}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <style>
+        header, main, footer {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+{#        section {#}
+{#            page-break-inside: avoid;#}
+{#        }#}
+        .progress {
+            display:none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+{#    REDO TITLE AREA DUE TO WEIRNDESS IN PRINT RENDER#}
+
+    <div class="row grey lighten-4">
+        <div class="valign-wrapper">
+            <div class="col s12">
+                <div class="grey-text text-darken-2" style="display: inline-block"><h4>Project Details</h4></div>
+                <div class="right grey-text text-lighten" style="display: inline-block; padding-top: 15px;"><h6>PRINTED {% now "SHORT_DATE_FORMAT" %}</h6></div>
+                <div class="grey-text text-lighten"><h5>{{ object.name }} </h5></div>
+            </div>
+        </div>
+    </div>
+
+    {{ block.super }}
+    <div class="section">
+        <div class="row">
+            <div class="col s12">
+                <div>
+                    <div id="tab-main" class="col s12">
+                        <ul class="collection">
+                            <li class="collection-item center">MAIN</li>
+                        </ul>
+                        <div class="section">
+                            <div class="col s6">
+                                <div class="section">
+                                    <strong>Project Code</strong>
+                                    <p class=" grey-text">{{ object.phase_code|default_if_none:"" }}</p>
+                                </div>
+                                <div class="">
+                                    <h6>Mail Harvest Code</h6>
+                                    <p class=" grey-text">{{ object.cedar_project_code|default_if_none:"" }}</p>
+                                </div>
+                                <div class="section">
+                                    <strong>Project Location(s)</strong>
+                                    <p class=" grey-text">{{ object.location }}</p>
+                                </div>
+                                <div class="section">
+                                    <strong>Tags</strong>
+                                    <div class="chip">
+                                        Heritage
+                                        {#                        <i class="material-icons">close</i>#}
+                                    </div>
+                                </div>
+                                <p><strong>Dates</strong></p>
+                                <div class="col">From: <span class=" grey-text">{{ object.start_date| default:"Not specified" }}</span></div>
+                                <div class="col">To: <span class=" grey-text">{{ object.end_date | default:"Not specified" }}</span></div>
+                            </div>
+                            <div class="col s6">
+                                {% if project.picture %}
+                                    <div id="heritage-project-picture" class="section">
+                                        <img class="materialboxed responsive-img" src="{{ project.picture|thumbnail_url:'detail' }}" alt="Heritage project picture"/>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="section">
+                            <p><strong>Background</strong></p>
+                            <div >
+                                <span class=" grey-text">{{ object.background|strip_html_wrap }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-people" class="col s12">
+                        <ul class="collection">
+                            <li class="collection-item center">PEOPLE</li>
+                        </ul>
+                        <div id="project_person_list" class="row"></div>
+                    </div>
+                    <div id="tab-interviews" class="col s12">
+                        <ul class="collection">
+                            <li class="collection-item center">INTERVIEWS</li>
+                        </ul>
+                        <div class="col s12 m3 m3">
+                            <div id="con-horz">  {# Vertically oriented table controls. #}
+                                <div id="search-box-input-field" class="input-field">
+                                    {# <i class="material-icons prefix">search</i>#}
+                                    <input id="search-box" type="text">
+                                    <label for="search-box">Filter...</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m9 l9">
+                            <table id="datatable" class="highlight">
+                                <thead>
+                                <tr>
+                                    {% block table-head %}
+                                        <th></th>
+                                        <th>Project</th>
+                                        <th>Interviewer Initials</th>
+                                        <th>Interview Number</th>
+                                    {% endblock %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="tab-files" class="col s12">
+                        <ul class="collection">
+                            <li class="collection-item center">FILES</li>
+                        </ul>
+                        <div id="assets-table">
+                            <table class="highlight">
+                                <thead>
+                                <tr>
+                                    <th data-field="name">Filename</th>
+                                    <th data-field="type">Date Modified</th>
+                                    <th data-field="type">Size</th>
+                                    <th data-field="manage">Manage</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for asset in assets_list %}
+                                    <tr>
+                                        <td class="tight-table-row"><a href="{% url 'heritage:project-secureasset-detail' pk=asset.pk project_pk=asset.project.pk %}">{{ asset.name }}</a></td>
+                                        <td class="tight-table-row">{{ asset.modified }}</td>
+                                        <td class="extra-tight-table-row">{{ asset.file_size_str }}</td>
+                                        <td class="tight-table-row">
+                                            <a href="{% url 'heritage:project-secureasset-delete' project_pk=object.pk pk=asset.pk %}"
+                                               class="waves-grey lighten-5 grey-text text-darken-1 tooltipped-secureasset-delete"
+                                               data-tooltip="Delete File" data-position="left">
+                                                <i class="material-icons" style="font-size: inherit;">delete</i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="{{ 'communication__comm_items_panel_html_id'|get_setting|slice:"1:" }}" class="col s12 print-avoid-page-break">
+                        <ul class="collection">
+                            <li class="collection-item center">COMMUNICATIONS</li>
+                        </ul>
+                        {% render_communication_tools related_object=object element_id='comms_panel' include_toolbar=False loadall=True %}
+                    </div>
+                    <div id="{{ 'communication__disc_items_panel_html_id'|get_setting|slice:"1:" }}" class="col s12 print-avoid-page-break">
+                        <ul class="collection">
+                            <li class="collection-item center">DISCUSSION</li>
+                        </ul>
+                        {% render_comment_list for object %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" >
+
+    var project_info_ajax_url = "{{ project_info_ajax_url }}";
+    console.log("project: ", project_info_ajax_url);
+
+    </script>
+{% endblock content %}
+
+{% block javascripts %}
+    <!-- todo Comment out the babel cdn line for production -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script> -->
+
+    {% react %}
+    {% react_dom %}
+
+    {% crm_person_list 'project_person_list' person_info_ajax_url pager=0 search=0 %}
+
+    <script>
+        var interview_ajax_url = "{{ interview_ajax_url|escapejs }}";
+        var enable_pagination = false;
+
+        $(document).ready(function (evt) {
+{#            window.print();#}
+        });
+    </script>
+
+    <script type="text/javascript" src="{% static 'bower_components/jquery-typewatch/jquery.typewatch.js' %}"></script>
+    <script src='{% static 'lib/DataTables/datatables.js' %}'></script>
+    <script src="{% static 'heritage/js/interviews.js' %}"></script>
+    <script>
+        var current_nav_url = '{% url 'heritage:project-list' %}';
+    </script>
+{% endblock %}

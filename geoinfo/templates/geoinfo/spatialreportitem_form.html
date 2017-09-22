@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load cedar_material_form %}
+{% load staticfiles %}
+{% load cedar_extras %}
+
+{% block second_bar_page_title %}
+    {% is_update_view "Update" "New" as title_text %}
+    {{ title_text }} Spatial Report Item
+{% endblock %}
+{% block second_bar_secondary_title %}{{ view.report.name }}
+   {% if spatialreportitem %} - Item#{{ spatialreportitem.id }}: {{ spatialreportitem.layer.name }}{% endif %}
+{% endblock %}
+{% block second_bar_secondary_content_right %}
+    {#    <a class="waves-effect waves-light btn grey lighten-5 grey-text text-darken-2"#}
+    {#       href="{% url 'geoinfo:spatialreport-detail' view.kwargs.report_pk %}">#}
+    {#        <div class="valign-wrapper">#}
+    {#            <i class="material-icons valign ">cancel</i>#}
+    {#            &nbsp;Cancel#}
+    {#        </div>#}
+    {#    </a>#}
+{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+    <div class="section">
+        <div class="row">
+            <div class="col">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {% include 'geoinfo/spatialreportitem_form_fields.html' with form=form %}
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var current_nav_url = '{% url "geoinfo:spatialreport-list" %}';
+
+    </script>
+
+{% endblock %}

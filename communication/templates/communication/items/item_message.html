@@ -1,0 +1,21 @@
+{% extends 'communication/items/item.html' %}
+{% load communication %}
+{% block material_icon_colour %}teal-text text-darken-1{% endblock %}
+{% block material_icon_code %}email{% endblock %}
+{% block comm_type_content %}
+    {% if object.comm_type.attachments %}
+        <span class="grey-text text-darken-4">{{ object.comm_type.attachments.all.count }}</span> attachment{{ object.comm_type.attachments.all.count|pluralize }}.
+    {% endif %}
+    Folder: <span class="grey-text text-darken-4">{{ object.comm_type.mailbox.folder_pretty }}.</span>
+
+    Sent By: <span class="grey-text text-darken-4">{{ object.comm_type.from_address.0 }}.</span>
+
+    {% direction_icon_type object.comm_type.mailbox.incoming as icon_type %}
+
+    <span class="right">
+        <i class="material-icons circle grey-text text-darken-1">
+            {{ icon_type }}
+        </i>
+    </span>
+
+{% endblock %}

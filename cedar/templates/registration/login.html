@@ -1,0 +1,58 @@
+{% extends "special_page_base.html" %}
+{% load cedar_settings %}
+
+{% block title %}Login to Cedar{% endblock %}
+
+
+{% block stylesheets %} {# override regular cedar css #}
+    <style>
+        /* Override the padding for the nav side bar: */
+        header, main, footer {
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+    </style>
+{% endblock %}
+
+{% block nav %}{% endblock %} {# override the nav block #}
+{% block second_bar %}{% endblock %} {# override the bar block #}
+
+{% block subtitle %}<h5>Sign in using your registered account</h5>{% endblock %}
+{% block main_area %}
+    <form id="login-form" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+        <div class="">
+            {% if form.errors %}
+                <div class="row">
+                    <div class="materialize-red-text center-align">
+                        Your username and password didn't match. Please try again.
+                    </div>
+                </div>
+            {% endif %}
+            <div class="row">
+
+                {% csrf_token %}
+                <div class="input-field">
+                    <input id="id_username" class="grey-text text-darken-4" maxlength="254" name="username" type="text">
+                    <label for="id_username">Username</label>
+                </div>
+                <div class="input-field">
+                    <input id="id_password" class="grey-text text-darken-4" name="password" type="password">
+                    <label for="id_password">Password</label>
+                </div>
+
+            </div>
+        </div>
+        <div class="center grey-text text-lighten-5">
+            <button class="btn-large waves-effect waves-light yellow darken-4 fat-button" type="submit" name="action" value="login">
+                <strong>Sign In</strong>
+            </button>
+            <input type="hidden" name="next" value="{{ next }}"/>
+        </div>
+    </form>
+    <div class="center grey-text">
+        <br/>
+        <a class='left' href="{% url 'password_reset' %}" style="color:inherit;">Forgot Password? Reset it here.</a>
+        <a class='right' target='_blank' href="{{ 'cedar__default_support_url'|get_setting }}" style="color:inherit;">Support Ticket</a>
+        <br/>
+    </div>
+{% endblock main_area %}

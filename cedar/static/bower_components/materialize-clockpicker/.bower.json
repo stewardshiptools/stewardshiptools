@@ -1,0 +1,43 @@
+{
+	"version": "0.1.1",
+	"name": "materialize-clockpicker",
+	"homepage": "https://github.com/chingyawhao/materialize-clockpicker",
+	"authors": [
+		"chingyawhao"
+	],
+	"contributors": [
+		"victor-perez <vpjs@victor-perez.nl> (https://github.com/victor-perez)"
+	],
+	"description": "A materialize clockpicker",
+	"main": "js/materialize.clockpicker.js",
+	"moduleType": [
+		"amd",
+		"globals"
+	],
+	"keywords": [
+		"jquery",
+		"materialize",
+		"clockpicker"
+	],
+	"license": "MIT",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	],
+	"dependencies": {
+		"Materialize": "materialize#~0.97.6"
+	},
+	"_release": "0.1.1",
+	"_resolution": {
+		"type": "version",
+		"tag": "v0.1.1",
+		"commit": "aaf0246ba5180a4ace4c56a836867c5d46ffae02"
+	},
+	"_source": "https://github.com/chingyawhao/materialize-clockpicker.git",
+	"_target": "^0.1.1",
+	"_originalSource": "materialize-clockpicker",
+	"_direct": true
+}

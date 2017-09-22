@@ -1,0 +1,86 @@
+[
+	{
+		"model": "assets.assettype",
+		"pk": 1,
+		"fields": {
+			"type_of_asset": "Photo"
+		}
+	},
+	{
+		"model": "assets.assettype",
+		"pk": 2,
+		"fields": {
+			"type_of_asset": "Map"
+		}
+	},
+	{
+		"model": "assets.assettype",
+		"pk": 3,
+		"fields": {
+			"type_of_asset": "Video"
+		}
+	},
+	{
+		"model": "assets.assettype",
+		"pk": 4,
+		"fields": {
+			"type_of_asset": "Audio"
+		}
+	},
+	{
+		"model": "assets.assettype",
+		"pk": 6,
+		"fields": {
+			"type_of_asset": "Document"
+		}
+	},
+	{
+		"model": "assets.assettype",
+		"pk": 7,
+		"fields": {
+			"type_of_asset": "Uncategorized"
+		}
+	},
+	{
+		"model": "assets.assettype",
+		"pk": 8,
+		"fields": {
+			"type_of_asset": "Transcript"
+		}
+	},
+	{
+		"model": "assets.assettype",
+		"pk": 9,
+		"fields": {
+			"type_of_asset": "Index"
+		}
+	},
+	{
+		"model": "assets.assettype",
+		"pk": 10,
+		"fields": {
+			"type_of_asset": "Bio"
+		}
+	},
+	{
+		"model": "assets.assettype",
+		"pk": 11,
+		"fields": {
+			"type_of_asset": "Note"
+		}
+	},
+	{
+		"model": "assets.assettype",
+		"pk": 12,
+		"fields": {
+			"type_of_asset": "Map Georeferenced"
+		}
+	},
+	{
+		"model": "assets.assettype",
+		"pk": 13,
+		"fields": {
+			"type_of_asset": "Transcript Spatial References"
+		}
+	}
+]
