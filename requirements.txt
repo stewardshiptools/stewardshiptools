@@ -42,7 +42,7 @@ easy-thumbnails==2.3
 env-tools==2.0.0
 futures==3.0.3
 html5lib==0.999999999
-httpie==0.9.3
+httpie==1.0.3
 httplib2==0.9.2
 idna==2.1
 jsonpickle==0.9.3
