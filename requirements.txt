@@ -35,7 +35,7 @@ django-softdelete==0.7.0
 django-taggit==0.22.0
 django-taggit-autosuggest==0.3.0
 django-threadedcomments==1.0.1
-djangorestframework==3.3.2
+djangorestframework==3.11.2
 -e git+git://github.com/djangonauts/django-rest-framework-gis.git@master#egg=djangorestframework-gis
 djangorestframework-xml==1.3.0
 easy-thumbnails==2.3
